@@ -5,11 +5,24 @@ export const Wrapper = styled.div`
   max-width: var(--wrapper-width);
   margin: 0 auto;
 `
+export const Display = styled.h2`
+  font-size: 3rem;
+`
 
-export const Btn = styled.button`
+export const LeadMuted = styled.p`
+  font-size: 1.25rem;
+  color: #6c757d;
+  font-weight: 300;
+`
+
+type ColorProps = {
+  color?: string
+}
+
+export const Btn = styled.button<ColorProps>`
   cursor: pointer;
-  background-color: linear-gradient(180deg, #007bff, #007bff);
-  border: 1px solid #007bff;
+  background-color: ${props => (props.color ? `${props.color}` : "var(--primary)")};
+  border: 1px solid ${props => (props.color ? `${props.color}` : "var(--primary)")};
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
   border-radius: 0.2rem;
   margin: 0.2rem;
@@ -18,6 +31,7 @@ export const Btn = styled.button`
   font-size: 1rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   line-height: 1.5;
+  font-family: var(--font-family-sans-serif);
 
   :disabled {
     cursor: wait;
@@ -27,6 +41,6 @@ export const Btn = styled.button`
   }
 
   :focus {
-    outline: 2px solid var(--primary);
+    outline: 2px solid ${props => (props.color ? `${props.color}` : "var(--primary)")};
   }
 `

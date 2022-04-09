@@ -3,27 +3,41 @@ import { breakpoints } from "../styles/breakpoints"
 
 export const GlobalStyles = createGlobalStyle`
 
-/* #003594 */
+/* Colors from Bootstrap */
 
 :root {
-  --primary: #1b262c;
-  --secondary: #869397;
-  --tertiary: #041E42;
-  --cuatro: #0085a3;
-  --cinco: #5661ff;
-  --seis: #d38558;
-  --transparent-light: rgba(0,0,0,0);
-  --transparent-dark: rgba(0,0,0,.4);
+  --blue: #007bff;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
   --white: #fff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #212529;
   --wrapper-width: 1015px;
   --wrapper-width-narrow: 400px;
   --font-primary: monospace, sans-serif;
   --font-secondary: 'Bebas Neue', cursive;
+  --font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  --font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
 
   * {
     box-sizing: border-box;
-    font-family: monospace, sans-serif;  
+    font-family: var(--font-family-sans-serif);  
   }
 
   html {
@@ -49,17 +63,18 @@ export const GlobalStyles = createGlobalStyle`
     }
   }
 
-  h1,h2,h3,h4,h5,h6,button {
+  h1,h2,h3,h4,h5,h6 {
     font-family: var(--font-secondary);
     margin: 0;
     padding: 0;
     //border: 1px solid hotpink;
+    font-weight: 400;
   }
 
   p {
-    font-size: 0.7rem;
+    font-size: 1rem;
     @media ${breakpoints.sm} {
-      font-size: .8rem;
+      font-size: 1rem;
     }
   }
 
@@ -67,6 +82,15 @@ export const GlobalStyles = createGlobalStyle`
 
   a {
     text-decoration: none;
+    color: var(--primary);
+
+    :hover {
+      text-decoration: underline;
+    }
+
+    :visited {
+      color: var(--indigo);
+    }
   }
 
 

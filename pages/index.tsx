@@ -2,7 +2,7 @@ import Link from "next/link"
 import Head from "next/head"
 import { SITENAME } from "./_app"
 
-import { Wrapper } from "../styles/GlobalComponents"
+import { Wrapper, Display, LeadMuted } from "../styles/GlobalComponents"
 
 export default function Home() {
   return (
@@ -13,10 +13,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Wrapper>
-        <h2>A Simple Way to Compare Vehicle Prices</h2>
-        <p>
-          The typical vehicle listing is missing some very important information. Summarize a vehicle's price into a simple "cost per remaining month" value based on how much driving you do and other basic assumptions.<Link href="#">Learn more...</Link>
-        </p>
+        <Display>A Simple Way to Compare Vehicle Prices</Display>
+        <LeadMuted>
+          The typical vehicle listing is missing some very important information. Summarize a vehicle's price into a simple "cost per remaining month" value based on how much driving you do and other basic assumptions. <Link href="#">Learn more...</Link>
+        </LeadMuted>
       </Wrapper>
     </>
   )

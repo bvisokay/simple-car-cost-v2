@@ -4,7 +4,7 @@ import { Wrapper } from "../styles/GlobalComponents"
 import { breakpoints } from "../styles/breakpoints"
 
 const FooterContainer = styled.div`
-  background: var(--primary);
+  background: var(--dark);
   width: 100%;
 
   ul {

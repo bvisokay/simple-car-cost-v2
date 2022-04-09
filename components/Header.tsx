@@ -3,8 +3,11 @@ import { breakpoints } from "../styles/breakpoints"
 import Link from "next/link"
 import { FaCar } from "react-icons/fa"
 
+// comps
+import MainNav from "./MainNav"
+
 const HeaderContainer = styled.div`
-  background: var(--primary);
+  background: var(--dark);
   width: 100%;
 `
 
@@ -72,7 +75,7 @@ const Header: React.FC = () => {
           </Link>
         </LogoContainer>
 
-        {/* <MainNav /> */}
+        <MainNav />
         {/* <p>{appState.loggedIn ? "Logged In" : "Logged Out"}</p> */}
         {/*  <LogInOutBtns /> */}
         {/* <GiHamburgerMenu size={24} /> */}
