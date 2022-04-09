@@ -11,7 +11,7 @@ const FooterContainer = styled.div`
   ul {
     display: flex;
     justify-content: center;
-    padding: 1rem 0;
+    padding: 1rem 0 0.25rem 0;
     text-align: center;
   }
 
@@ -41,6 +41,11 @@ const FooterContainer = styled.div`
     text-align: center;
     color: var(--gray);
   }
+
+  a.photo-creds {
+    color: var(--gray);
+    text-decoration: underline;
+  }
 `
 
 export default function Footer() {
@@ -59,6 +64,12 @@ export default function Footer() {
             </Link>
           </li>
         </ul>
+        <p className="white">
+          Photo Credit:{" "}
+          <a className="photo-creds" href="https://www.vecteezy.com/vector-art/550435-stylized-convertible-sports-car">
+            Brian Goff
+          </a>
+        </p>
         <p className="white">
           Copyright &copy; {new Date().getFullYear()} {SITENAME} | All Rights Reserved
         </p>

@@ -2,6 +2,11 @@ import Link from "next/link"
 import Head from "next/head"
 import { SITENAME } from "./_app"
 
+// comps
+import CarImage from "../components/CarImage"
+import TestDrive from "../components/TestDrive"
+
+// styled comps
 import { WrapperNarrow, Display, LeadMuted } from "../styles/GlobalComponents"
 
 export default function Home() {
@@ -17,6 +22,8 @@ export default function Home() {
         <LeadMuted>
           The typical vehicle listing is missing some very important information. Summarize a vehicle's price into a simple "cost per remaining month" value based on how much driving you do and other basic assumptions. <Link href="#">Learn more...</Link>
         </LeadMuted>
+        <CarImage />
+        <TestDrive />
       </WrapperNarrow>
     </>
   )
