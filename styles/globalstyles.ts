@@ -28,7 +28,8 @@ export const GlobalStyles = createGlobalStyle`
   --light: #f8f9fa;
   --dark: #212529;
   --wrapper-width: 1015px;
-  --wrapper-width-narrow: 400px;
+  --wrapper-width-narrow: 600px;
+  --wrapper-width-very-narrow: 400px;
   --font-primary: monospace, sans-serif;
   --font-secondary: 'Bebas Neue', cursive;
   --font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
@@ -115,6 +116,10 @@ export const GlobalStyles = createGlobalStyle`
     border-bottom: 3px solid var(--primary);
     color: orangered;
     border-radius: 8px;
+  }
+
+  .white {
+    color: #fff;
   }
 
 `

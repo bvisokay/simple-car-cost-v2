@@ -19,7 +19,7 @@ const HeaderWrapper = styled.div`
   color: white;
   font-family: var(--font-secondary);
   padding: 1rem;
-  max-width: var(--wrapper-width);
+  max-width: var(--wrapper-width-narrow);
   margin: 0 auto;
 
   @media ${breakpoints.sm} {
@@ -28,6 +28,7 @@ const HeaderWrapper = styled.div`
   @media ${breakpoints.md} {
     flex-direction: row;
     justify-content: space-between;
+    padding: 1rem 0;
   }
 
   a {

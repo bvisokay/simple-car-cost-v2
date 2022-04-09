@@ -9,7 +9,7 @@ const MainNavContainer = styled.div`
 const MainNav = () => {
   return (
     <MainNavContainer>
-      <Btn>Login</Btn>
+      <Btn>Log In</Btn>
       <Btn color={"var(--teal)"}>Register</Btn>
     </MainNavContainer>
   )

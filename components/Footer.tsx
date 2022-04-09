@@ -2,6 +2,7 @@ import Link from "next/link"
 import styled from "styled-components"
 import { Wrapper } from "../styles/GlobalComponents"
 import { breakpoints } from "../styles/breakpoints"
+import { SITENAME } from "../pages/_app"
 
 const FooterContainer = styled.div`
   background: var(--dark);
@@ -9,7 +10,9 @@ const FooterContainer = styled.div`
 
   ul {
     display: flex;
+    justify-content: center;
     padding: 1rem 0;
+    text-align: center;
   }
 
   li {
@@ -32,6 +35,12 @@ const FooterContainer = styled.div`
   @media ${breakpoints.md} {
     font-size: 1rem;
   }
+
+  p {
+    padding: 0 1rem;
+    text-align: center;
+    color: var(--gray);
+  }
 `
 
 export default function Footer() {
@@ -50,6 +59,9 @@ export default function Footer() {
             </Link>
           </li>
         </ul>
+        <p className="white">
+          Copyright &copy; {new Date().getFullYear()} {SITENAME} | All Rights Reserved
+        </p>
       </Wrapper>
     </FooterContainer>
   )
