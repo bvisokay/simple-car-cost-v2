@@ -20,7 +20,10 @@ export default function Home() {
       <WrapperNarrow>
         <Display>A Simple Way to Compare Vehicle Prices</Display>
         <LeadMuted>
-          The typical vehicle listing is missing some very important information. Summarize a vehicle's price into a simple "cost per remaining month" value based on how much driving you do and other basic assumptions. <Link href="#">Learn more...</Link>
+          The typical vehicle listing is missing some very important information. Summarize a vehicle's price into a simple "cost per remaining month" value based on how much driving you do and other basic assumptions.{" "}
+          <Link href="/overview">
+            <a>Learn more...</a>
+          </Link>
         </LeadMuted>
         <CarImage />
         <TestDrive />
