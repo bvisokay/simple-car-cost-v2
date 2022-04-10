@@ -19,7 +19,7 @@ export const WrapperNarrow = styled.div`
 export const Display = styled.h2`
   line-height: 1.1;
   font-size: 2rem;
-  padding-top: 1rem;
+  padding: 1.25rem 0;
   text-align: center;
 
   @media ${breakpoints.md} {
@@ -36,6 +36,7 @@ export const SectionTitle = styled.h2<ColorProps>`
   font-family: var(--font-family-monospace);
   letter-spacing: -1.5px;
   text-transform: uppercase;
+  padding: 1.25rem 0;
 `
 
 export const LeadMuted = styled.p`
@@ -43,7 +44,7 @@ export const LeadMuted = styled.p`
   color: #6c757d;
   font-weight: 300;
   text-align: center;
-  margin: 2rem auto;
+  margin: 1.25rem auto;
 
   @media ${breakpoints.md} {
     max-width: 500px;

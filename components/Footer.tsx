@@ -1,10 +1,9 @@
-import Link from "next/link"
 import styled from "styled-components"
 import { Wrapper } from "../styles/GlobalComponents"
-import { breakpoints } from "../styles/breakpoints"
 import { SITENAME } from "../pages/_app"
 
 const FooterContainer = styled.div`
+  font-size: 0.8rem;
   background: var(--dark);
   width: 100%;
 
@@ -29,22 +28,17 @@ const FooterContainer = styled.div`
     }
   }
 
-  @media ${breakpoints.xs} {
-    font-size: 1rem;
-  }
-  @media ${breakpoints.md} {
-    font-size: 1rem;
-  }
-
   p {
     padding: 0 1rem;
     text-align: center;
     color: var(--gray);
+    font-size: 0.8rem;
   }
 
   a.photo-creds {
     color: var(--gray);
     text-decoration: underline;
+    font-size: 0.8rem;
   }
 `
 
@@ -52,7 +46,7 @@ export default function Footer() {
   return (
     <FooterContainer>
       <Wrapper>
-        <ul>
+        {/*  <ul>
           <li>
             <Link href="#">
               <a>Support</a>
@@ -63,7 +57,7 @@ export default function Footer() {
               <a>About</a>
             </Link>
           </li>
-        </ul>
+        </ul> */}
         <p className="white">
           Photo Credit:{" "}
           <a className="photo-creds" href="https://www.vecteezy.com/vector-art/550435-stylized-convertible-sports-car">
