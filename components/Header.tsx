@@ -37,6 +37,11 @@ const HeaderWrapper = styled.div`
     padding: 0;
     //border: 1px solid violet;
   }
+
+  a:hover {
+    text-decoration: none;
+    cursor: pointer;
+  }
 `
 
 const LogoText = styled.div`
@@ -52,6 +57,10 @@ const IconContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 0.5rem;
+
+  :hover {
+    cursor: pointer;
+  }
 `
 
 const LogoContainer = styled.div`
