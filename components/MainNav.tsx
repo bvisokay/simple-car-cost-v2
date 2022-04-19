@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import { Btn } from "../styles/GlobalComponents"
+import Link from "next/link"
 
 const MainNavContainer = styled.div`
   display: flex;
@@ -9,8 +10,12 @@ const MainNavContainer = styled.div`
 const MainNav = () => {
   return (
     <MainNavContainer>
-      <Btn>Log In</Btn>
-      <Btn color={"var(--teal)"}>Register</Btn>
+      <Link href="/login">
+        <Btn>Log In</Btn>
+      </Link>
+      <Link href="/register">
+        <Btn color={"var(--teal)"}>Register</Btn>
+      </Link>
     </MainNavContainer>
   )
 }

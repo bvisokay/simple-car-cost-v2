@@ -32,6 +32,26 @@ export const Section = styled.div`
   margin: 4rem auto;
 `
 
+export const SectionNarrow = styled.section`
+  padding: 1rem;
+  margin: 0.5rem auto;
+  width: 100%;
+  max-width: var(--wrapper-width-narrow);
+  border: 3px solid var(--tertiary);
+  //background: var(--transparent-dark);
+  border-radius: 10px;
+`
+
+export const SectionVeryNarrow = styled.section`
+  padding: 1rem;
+  margin: 0.5rem auto;
+  width: 100%;
+  max-width: var(--wrapper-width-very-narrow);
+  border: 3px solid var(--tertiary);
+  //background: var(--transparent-dark);
+  border-radius: 10px;
+`
+
 export const SectionTitle = styled.h2<ColorProps>`
   font-weight: 700;
   margin: 0.5rem 0;
@@ -115,9 +135,9 @@ export const BtnWide = styled.button<ColorProps>`
     color: #555;
   }
 
-  :focus {
-    outline: 2px solid ${props => (props.color ? `${props.color}` : "var(--primary)")};
-    box-shadow: 0 0 0 0.1rem ${props => (props.color ? `${props.color}` : "var(--primary)")};
+  :hover {
+    background-color: ${props => (props.color === "var(--green)" ? "var(--teal)" : "var(--primary)")};
+    border: 1px solid ${props => (props.color === "var(--green)" ? "var(--teal)" : "var(--primary)")};
   }
 `
 

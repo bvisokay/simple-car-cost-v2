@@ -1,10 +1,17 @@
 import React, { useEffect } from "react"
 import { useImmerReducer } from "use-immer"
 import Link from "next/link"
+import styled from "styled-components"
 
 //comps
 import CarCard from "./CarCard"
 import { Section, SectionTitle, FormControl, BtnWide } from "../styles/GlobalComponents"
+
+const TestDriveListGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+`
 
 const initialState = {
   testDriveItems: [],
@@ -296,9 +303,11 @@ const TestDrive: React.FC = () => {
       {state.testDriveItems.length >= 1 && (
         <>
           <SectionTitle color={"var(--dark-gray)"}>Your List</SectionTitle>
-          {state.testDriveItems.map((item: any) => {
-            return <CarCard key={item.uniqueId} item={item} deleteHandler={deleteHandler} />
-          })}
+          <TestDriveListGrid>
+            {state.testDriveItems.map((item: any) => {
+              return <CarCard key={item.uniqueId} item={item} deleteHandler={deleteHandler} />
+            })}
+          </TestDriveListGrid>
         </>
       )}
     </Section>
