@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { FaExternalLinkAlt, FaTrash } from "react-icons/fa"
 
 const Container = styled.div`
   max-width: 100%;
@@ -16,15 +17,24 @@ const ListGroupTitleItem = styled.div`
   display: flex;
   justify-content: space-between;
   font-weight: 700;
+  position: relative;
+
+  .tdCarTitle {
+    //border: 1px solid aqua;
+    display: flex;
+    padding-top: 0.2rem;
+  }
 
   .tdCarDelete {
-    background-color: crimson;
-    border-radius: 0.35rem;
+    position: relative;
+    top: 3px;
     border: none;
-    padding: 0.25rem 0.5rem;
-    transform: scaleX(1.2);
-    color: white;
-    font-weight: 700;
+    background-color: transparent;
+    color: crimson;
+
+    :hover {
+      cursor: pointer;
+    }
   }
 `
 
@@ -37,6 +47,17 @@ const ListGroupItem = styled.div`
   }
 `
 
+const LinkIconContainer = styled.div`
+  //border: 2px solid red;
+  //height: 100%;
+  margin-left: 0.5rem;
+  margin-top: 0.1rem;
+
+  a {
+    color: var(--primary);
+  }
+`
+
 interface CarItemProps {
   deleteHandler: (uniqueId: number) => void
   item: {
@@ -46,6 +67,7 @@ interface CarItemProps {
     miles: number
     rem_months: number
     cost_per_rem_mos: number
+    link: string
   }
 }
 
@@ -54,14 +76,24 @@ const CarCard: React.FC<CarItemProps> = props => {
   return (
     <Container>
       <ListGroupTitleItem>
-        <div className="tdCarTitle">{props.item.description}</div>
+        <div className="tdCarTitle">
+          {props.item.description}
+          {props.item.link !== "" && (
+            <LinkIconContainer>
+              <a href={props.item.link} target="_blank">
+                <FaExternalLinkAlt size={16}></FaExternalLinkAlt>
+              </a>
+            </LinkIconContainer>
+          )}
+        </div>
+
         <button
           onClick={() => {
             props.deleteHandler(props.item.uniqueId)
           }}
           className="tdCarDelete"
         >
-          X
+          <FaTrash size={16} />
         </button>
       </ListGroupTitleItem>
       <ListGroupItem>Price: ${props.item.price.toLocaleString()}</ListGroupItem>

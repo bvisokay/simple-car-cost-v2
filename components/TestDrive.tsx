@@ -178,7 +178,7 @@ const TestDrive: React.FC = () => {
     }
   }, [])
 
-  // remove client-side-validation error after a few seconds: PRICE
+  // remove client-side-validation error after a few seconds
   useEffect(() => {
     if (state.description.hasErrors || state.price.hasErrors || state.miles.hasErrors) {
       const timer = setTimeout(() => {
@@ -272,7 +272,7 @@ const TestDrive: React.FC = () => {
           {state.miles.hasErrors && <div className="liveValidateMessage">{state.miles.message}</div>}
         </FormControl>
         <FormControl>
-          <label htmlFor="link">Link</label>
+          <label htmlFor="link">Link (Paste URL here or leave blank)</label>
           <input
             id="link"
             type="text"
