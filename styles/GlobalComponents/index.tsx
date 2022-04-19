@@ -28,6 +28,10 @@ export const Display = styled.h2`
   }
 `
 
+export const Section = styled.div`
+  margin: 4rem auto;
+`
+
 export const SectionTitle = styled.h2<ColorProps>`
   font-weight: 700;
   margin: 0.5rem 0;
@@ -96,9 +100,12 @@ export const BtnWide = styled.button<ColorProps>`
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   line-height: 1.5;
   font-family: var(--font-family-sans-serif);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 
   @media ${breakpoints.md} {
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 
   :disabled {

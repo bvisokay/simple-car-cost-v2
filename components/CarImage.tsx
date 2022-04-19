@@ -8,7 +8,8 @@ const ImageWrapper = styled.div`
 const CarImage = () => {
   return (
     <ImageWrapper>
-      <svg width="474" height="141" viewBox="0 0 474 141" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* width="474" height="141" */}
+      <svg viewBox="0 0 474 141" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="Car">
           <path id="Windshield" d="M223.5 3L166 36L174 42L225.5 5.5L223.5 3Z" fill="#C4C4C4" />
           <path id="ConvertibleTop" d="M289.5 5L277 44.5H296L306 33.5L373 31L363 11.5L302 24L296 3.5L289.5 5Z" fill="#080F19" />
