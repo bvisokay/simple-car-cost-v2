@@ -65,22 +65,34 @@ export default class User {
         }
 
         // Only if username is valid then check to see if it's already taken
-        //
-        /* if (this.data.username.length > 2 && this.data.username.length < 31 && validator.isAlphanumeric(this.data.username)) {
-        let usernameExists = await usersCollection.findOne({username: this.data.username})
-        if (usernameExists) {this.errors.push("That username is already taken.")}
-      } */
+        if (this.data.username.length > 2 && this.data.username.length < 31 && validator.isAlphanumeric(this.data.username)) {
+          try {
+            let client = await connectToDatabase()
+            let usernameExists = await client.db().collection("users").findOne({ username: this.data.username })
+            if (usernameExists) {
+              this.errors.push("That username is already taken.")
+            }
+          } catch (e) {
+            console.log("There was an error seeing if that username already exists.")
+          }
+        }
 
         // Only if email is valid then check to see if it's already taken
-        //
-        /* if (validator.isEmail(this.data.email)) {
-        let emailExists = await usersCollection.findOne({email: this.data.email})
-        if (emailExists) {this.errors.push("That email is already being used.")}
-      } */
+        if (validator.isEmail(this.data.email)) {
+          try {
+            let client = await connectToDatabase()
+            let emailExists = await client.db().collection("users").findOne({ email: this.data.email })
+            if (emailExists) {
+              this.errors.push("That email is already being used.")
+            }
+          } catch (e) {
+            console.log("There was an error seeing if that email already exists.")
+          }
+        }
 
         resolve({ message: "success" })
       } catch (e) {
-        reject("failure")
+        reject(e)
       }
     }) // end promise
   } // end validate
@@ -89,12 +101,11 @@ export default class User {
 
   //register
   register() {
-    console.log("register ran from model")
     return new Promise(async (resolve: any, reject: any) => {
       //Step #1 Validate user submitted data
       this.cleanup()
-      const result = await this.validate()
-      console.log(result)
+      await this.validate()
+      //console.log(result)
 
       //Step #2 Only if there are no validation errors
       //Save the user to the database

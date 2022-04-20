@@ -11,6 +11,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     let user = new User(req.body)
     try {
       const response: any = await user.register()
+      console.log(response)
       if (response === "success") {
         res.json({
           token: jwt.sign({ _id: user.data._id, username: user.data.username }, process.env.JWTSECRET, { expiresIn: "365d" }),
@@ -18,7 +19,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         })
       }
     } catch (e) {
-      res.status(500).json("There was an error: (code 5420)")
+      res.status(422).json(e)
     }
   }
 }
