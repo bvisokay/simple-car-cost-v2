@@ -23,11 +23,15 @@ export default class User {
       this.data.password = ""
     }
 
-    // get rid of any bogu properties
+    // get rid of any bogus properties
+    // add a few more of my own
     this.data = {
       username: this.data.username.trim().toLowerCase(),
       email: this.data.email.trim().toLowerCase(),
-      password: this.data.password
+      password: this.data.password,
+      useful_miles: 150000,
+      monthly_miles: 1250,
+      created_date: new Date()
     }
   }
 
