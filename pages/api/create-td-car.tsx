@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { resolve } from "path"
 import TestDriveCar from "../../models/TestDriveCar"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -9,7 +8,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (newTdItem.errors.length) {
       res.json(newTdItem.errors)
     } else {
-      resolve("holla")
       res.json(newTdItem)
     }
   } else {
