@@ -108,7 +108,7 @@ const register: React.FC = () => {
         return
       case "submitForm":
         console.log("SubmitForm ran")
-        if (!draft.username.hasErrors /* && draft.username.isUnique */ && !draft.email.hasErrors /* && draft.email.isUnique */ && !draft.password.hasErrors) {
+        if (!draft.username.hasErrors && draft.username.isUnique && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors) {
           draft.submitCount++
         } else {
           console.log("SubmitForm conditionals failed")
@@ -145,8 +145,66 @@ const register: React.FC = () => {
   }, [state.password.value])
 
   // useEffect to POST /doesUsernameExist
+  useEffect(() => {
+    // if check greater than one
+    if (state.username.checkCount) {
+      const controller = new AbortController()
+      const signal = controller.signal
+      //send post request inside async function and call immediately
+      async function fetchResults() {
+        try {
+          const response: any = await fetch("/api/doesUserValueExist", {
+            signal: signal,
+            method: "POST",
+            body: JSON.stringify({ key: "username", value: state.username.value }),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+          const data = await response.json()
+          dispatch({ type: "usernameUniqueResults", value: data.message })
+        } catch (e) {
+          console.log(`There was a problem or the request was cancelled: ${e}`)
+        }
+      }
+      fetchResults()
+      // teardown
+      return () => {
+        controller.abort()
+      }
+    }
+  }, [state.username.checkCount])
 
   // useEffect to POST /doesEmailExist
+  useEffect(() => {
+    // if check greater than one
+    if (state.email.checkCount) {
+      const controller = new AbortController()
+      const signal = controller.signal
+      //send post request inside async function and call immediately
+      async function fetchResults() {
+        try {
+          const response: any = await fetch("/api/doesUserValueExist", {
+            signal: signal,
+            method: "POST",
+            body: JSON.stringify({ key: "email", value: state.email.value }),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+          const data = await response.json()
+          dispatch({ type: "emailUniqueResults", value: data.message })
+        } catch (e) {
+          console.log(`There was a problem or the request was cancelled: ${e}`)
+        }
+      }
+      fetchResults()
+      // teardown
+      return () => {
+        controller.abort()
+      }
+    }
+  }, [state.email.checkCount])
 
   // useEffect to watch sendCount to submit request
   // don't run when the page first loads
@@ -155,7 +213,7 @@ const register: React.FC = () => {
   // ensure error handling
   useEffect(() => {
     if (state.submitCount) {
-      console.log("state.submitCount Triggered useEffect")
+      //console.log("state.submitCount Triggered useEffect")
       const controller = new AbortController()
       const signal = controller.signal
       async function fetchResults() {
@@ -173,11 +231,11 @@ const register: React.FC = () => {
             }
           })
           const data = await response.json()
-          console.log(`data from endpoint: ${data}`)
+          console.log(`data from req pinging /api/register: ${data}`)
           // update global state with login dispatch action
-          // update gloabl state with flash Message welcome
+          // update global state with flash Message welcome
         } catch (e) {
-          console.log("There was a problem or the request was cancelled.")
+          console.log(`There was a problem or the request was cancelled: ${e}`)
         }
       }
       fetchResults()

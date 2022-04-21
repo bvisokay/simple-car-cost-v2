@@ -33,7 +33,7 @@ export default class User {
       monthly_miles: 1250,
       created_date: new Date()
     }
-  }
+  } // end cleanup
 
   //validate
   validate() {
@@ -139,7 +139,28 @@ export default class User {
     })
   }
 
-  //findByUsername
-
-  //doesEmailExist
-}
+  // meant as aid for client-side
+  // can't pass a property as a value
+  // because we need to hard code prpoerty passed to findOne?
+  // results in second oesEmailExist function
+  // and two endpoints?
+  static async doesUserValueExist(key: string, value: string): Promise<any> {
+    if (typeof key !== "string" || typeof value !== "string") {
+      return false
+    }
+    try {
+      let client = await connectToDatabase()
+      let result = await client
+        .db()
+        .collection("users")
+        .findOne({ [key]: value })
+      if (result) {
+        return true
+      } else {
+        return false
+      }
+    } catch (err) {
+      throw err
+    }
+  }
+} // close User class
