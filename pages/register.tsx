@@ -1,18 +1,25 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles/GlobalComponents"
 import Link from "next/link"
+import { GlobalDispatchContext } from "../store/GlobalContext"
+import { useRouter } from "next/router"
 
 // Should be a page guard if logged in you cannot visit?
 
 // 3 fields, username, email, password
 // client side validation
 // server side validation
-// see if the username or email is already taken
+// simple validation
+// prevent duplicate fileds in db (see if username or email is already taken front and back end)
 // store user in DB if necessary
 // redirect to the profile page on successfuly login
 
 const register: React.FC = () => {
+  const appDispatch = useContext(GlobalDispatchContext)
+
+  const router = useRouter()
+
   // Initial State for Reducer
   const initialState = {
     username: {
@@ -53,6 +60,7 @@ const register: React.FC = () => {
         }
         return
       case "usernameAfterDelay":
+        console.log("usernameAfterDelay ran")
         if (draft.username.value.length < 3) {
           draft.username.hasErrors = true
           draft.username.message = "Username must be at least 3 characters."
@@ -62,12 +70,13 @@ const register: React.FC = () => {
         }
         return
       case "usernameUniqueResults":
-        if (action.value) {
+        if (!action.value) {
+          draft.username.hasErrors = false
+          draft.username.isUnique = true
+        } else {
           draft.username.hasErrors = true
           draft.username.isUnique = false
           draft.username.message = "That username is already taken."
-        } else {
-          draft.username.isUnique = true
         }
         return
       case "emailImmediately":
@@ -75,6 +84,7 @@ const register: React.FC = () => {
         draft.email.value = action.value
         return
       case "emailAfterDelay":
+        console.log("emailAfterDelay ran")
         if (!/^\S+@\S+$/.test(draft.email.value)) {
           draft.email.hasErrors = true
           draft.email.message = "You must provide a valid email address."
@@ -84,12 +94,14 @@ const register: React.FC = () => {
         }
         return
       case "emailUniqueResults":
-        if (action.value) {
+        console.log("emailUniqueResults ran")
+        if (!action.value) {
+          draft.email.hasErrors = false
+          draft.email.isUnique = true
+        } else {
           draft.email.hasErrors = true
           draft.email.isUnique = false
-          draft.email.message = "That email is already being used."
-        } else {
-          draft.email.isUnique = true
+          draft.email.message = "That email is already registered."
         }
         return
       case "passwordImmediately":
@@ -107,11 +119,17 @@ const register: React.FC = () => {
         }
         return
       case "submitForm":
-        console.log("SubmitForm ran")
+        //console.log("SubmitForm ran")
         if (!draft.username.hasErrors && draft.username.isUnique && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors) {
           draft.submitCount++
         } else {
-          console.log("SubmitForm conditionals failed")
+          console.table(`SubmitForm conditionals failed: {
+            draft.username.hasErrors: ${draft.username.hasErrors}
+            draft.username.isUnique: ${draft.username.isUnique}
+            draft.email.hasErrors: ${draft.email.hasErrors}
+            draft.email.isUnique: ${draft.email.isUnique}
+            draft.password.hasErrors: ${draft.password.hasErrors}
+          }`)
         }
         return
     }
@@ -126,7 +144,7 @@ const register: React.FC = () => {
       const delay = setTimeout(() => dispatch({ type: "usernameAfterDelay" }), 800)
       return () => clearTimeout(delay)
     }
-  }, [state.password.value])
+  }, [state.username.value])
 
   // email validation after delay
   useEffect(() => {
@@ -162,6 +180,7 @@ const register: React.FC = () => {
             }
           })
           const data = await response.json()
+          console.log(`data from usernameUnique api: ${data.message}`)
           dispatch({ type: "usernameUniqueResults", value: data.message })
         } catch (e) {
           console.log(`There was a problem or the request was cancelled: ${e}`)
@@ -193,6 +212,7 @@ const register: React.FC = () => {
             }
           })
           const data = await response.json()
+          console.log(`data from emailUnique api: ${data.message}`)
           dispatch({ type: "emailUniqueResults", value: data.message })
         } catch (e) {
           console.log(`There was a problem or the request was cancelled: ${e}`)
@@ -231,9 +251,15 @@ const register: React.FC = () => {
             }
           })
           const data = await response.json()
-          console.log(`data from req pinging /api/register: ${data}`)
+          console.log(`data.token returned from pinging /api/register: ${data.data.usertoken}`)
+          console.log(`data.username returned from pinging /api/register: ${data.data.username}`)
+          console.log(`data._id returned from pinging /api/register: ${data.data._id}`)
           // update global state with login dispatch action
+          appDispatch({ type: "login", value: data.data })
+          // push to new page
+          router.replace("/landing")
           // update global state with flash Message welcome
+          appDispatch({ type: "flashMessage", value: "Congrats! Welcome to your new account" })
         } catch (e) {
           console.log(`There was a problem or the request was cancelled: ${e}`)
         }
@@ -244,7 +270,7 @@ const register: React.FC = () => {
   }, [state.submitCount])
 
   function handleSubmit(e: React.FormEvent) {
-    console.log("HandleSubmit ran")
+    //console.log("HandleSubmit ran")
     e.preventDefault()
     // dispatches the submitForm action
     dispatch({ type: "usernameImmediately", value: state.username.value })

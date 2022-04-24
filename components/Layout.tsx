@@ -3,6 +3,7 @@ import styled from "styled-components"
 // comps
 import Header from "./Header"
 import Footer from "./Footer"
+import FlashMessages from "./FlashMessages"
 
 const LayoutContainer = styled.div`
   display: flex;
@@ -11,6 +12,7 @@ const LayoutContainer = styled.div`
   flex-direction: column;
   //border: 1px solid red;
   margin: 0 auto;
+  position: relative;
 `
 
 const Container = styled.div`
@@ -28,6 +30,7 @@ const Container = styled.div`
 const Layout: React.FC = props => {
   return (
     <LayoutContainer>
+      <FlashMessages />
       <Header />
       <Container>{props.children}</Container>
       <Footer />

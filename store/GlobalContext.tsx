@@ -5,17 +5,25 @@ export const GlobalDispatchContext = createContext((() => {}) as React.Dispatch<
 
 export const GlobalStateContext = createContext({
   loggedIn: false,
+  user: { username: null, usertoken: null, _id: null },
   flashMessages: [] as any,
   language: "",
   theme: ""
 })
 
-type GlobalActionTypes = { type: "login" } | { type: "logout" } | { type: "flashMessage"; value: string } | { type: "setEnglish" } | { type: "setSpanish" } | { type: "setLatin" } | { type: "setLightTheme" } | { type: "setDarkTheme" }
+type GlobalActionTypes = { type: "login"; value: any } | { type: "logout" } | { type: "flashMessage"; value: string } | { type: "setEnglish" } | { type: "setSpanish" } | { type: "setLatin" } | { type: "setLightTheme" } | { type: "setDarkTheme" }
 
 export const GlobalContextProvider: React.FC = props => {
   const initialState = {
     loggedIn: false,
     flashMessages: [] as any,
+    user: {
+      usertoken: null,
+      username: null,
+      _id: null
+      //token: localStorage.getItem("simpleCarCostToken"),
+      //username: localStorage.getItem("simpleCarCostUsername")
+    },
     language: "english",
     theme: "dark"
   }
@@ -24,6 +32,7 @@ export const GlobalContextProvider: React.FC = props => {
     switch (action.type) {
       case "login":
         draft.loggedIn = true
+        draft.user = action.value
         return
       case "logout":
         draft.loggedIn = false

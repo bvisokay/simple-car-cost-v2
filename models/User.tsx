@@ -1,5 +1,5 @@
 import validator from "validator"
-import { hashPassword } from "../lib/auth"
+import { hashPassword, verifyPassword } from "../lib/auth"
 import { addUserDocument, connectToDatabase } from "../lib/db"
 
 export default class User {
@@ -97,8 +97,6 @@ export default class User {
     }) // end promise
   } // end validate
 
-  //login
-
   //register
   register() {
     return new Promise(async (resolve: any, reject: any) => {
@@ -131,19 +129,52 @@ export default class User {
           client.close()
           return
         }
+        client.close()
         //await usersCollection.insertOne(this.data)
         resolve("success")
       } else {
         reject(this.errors)
       }
     })
-  }
+  } // end register method
 
+  // login
+  async login() {
+    this.cleanup()
+
+    // see if user exists
+    try {
+      const client = await connectToDatabase()
+      const usersCollection = client.db().collection("users")
+      const attemptedUserDoc = await usersCollection.findOne({ username: this.data.username })
+      // if user exists hash the submitted password
+      if (attemptedUserDoc) {
+        console.log(attemptedUserDoc)
+        // see if the hashed submitted password matches
+        const isValid = await verifyPassword(this.data.password, attemptedUserDoc.password)
+        if (isValid) {
+          this.data = attemptedUserDoc
+          client.close()
+          // send a success response if matched
+          return {
+            message: "success",
+            data: this.data
+          }
+        } else {
+          client.close()
+          // send a failed response if no match
+          this.errors.push("user does not exist")
+          throw this.errors
+        }
+      }
+    } catch (e) {
+      this.errors.push("Please try again later")
+      throw this.errors
+    }
+  } // end login method
+
+  // doesUserValueExist
   // meant as aid for client-side
-  // can't pass a property as a value
-  // because we need to hard code prpoerty passed to findOne?
-  // results in second oesEmailExist function
-  // and two endpoints?
   static async doesUserValueExist(key: string, value: string): Promise<any> {
     if (typeof key !== "string" || typeof value !== "string") {
       return false
@@ -162,5 +193,5 @@ export default class User {
     } catch (err) {
       throw err
     }
-  }
+  } // end doesUserValue Exist
 } // close User class

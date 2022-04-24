@@ -1,6 +1,6 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import { sign } from "jsonwebtoken"
 import { serialize } from "cookie"
-import type { NextApiRequest, NextApiResponse } from "next"
 import User from "../../models/User"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -9,17 +9,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return
   }
   if (req.method === "POST") {
+    console.log("/api/login endpoint hit with a POST request")
     let user = new User(req.body)
     const { _id, username } = user.data
+
     try {
-      const response: any = await user.register()
-      console.log(response)
-      if (response === "success") {
+      // Check db for match by calling user.login()
+      const result = await user.login()
+      console.log(result)
+      // if there is a take the info returned create token
+      if (result && result.message === "success") {
         // define and sign token
         const token = sign(
           {
-            _id: _id,
-            username: username
+            _id: result.data._id.toString(),
+            username: result.data.username
           },
           process.env.JWTSECRET!,
           { expiresIn: "30d" }
@@ -48,5 +52,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
   }
 }
-
 export default handler
