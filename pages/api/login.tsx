@@ -12,6 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log("/api/login endpoint hit with a POST request")
     let user = new User(req.body)
     const { _id, username } = user.data
+    console.log(_id)
 
     try {
       // Check db for match by calling user.login()
@@ -41,7 +42,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         res.setHeader("Set-Cookie", serialized)
         res.status(200).json({
           data: {
-            usertoken: null,
             username: username,
             _id: _id
           }

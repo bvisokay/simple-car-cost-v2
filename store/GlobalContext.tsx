@@ -4,27 +4,25 @@ import { useImmerReducer } from "use-immer"
 export const GlobalDispatchContext = createContext((() => {}) as React.Dispatch<GlobalActionTypes>)
 
 export const GlobalStateContext = createContext({
+  // helps get good autocompletion
   loggedIn: false,
-  user: { username: null, usertoken: null, _id: null },
+  user: { username: "", _id: "" },
   flashMessages: [] as any,
-  language: "",
   theme: ""
 })
 
-type GlobalActionTypes = { type: "login"; value: any } | { type: "logout" } | { type: "flashMessage"; value: string } | { type: "setEnglish" } | { type: "setSpanish" } | { type: "setLatin" } | { type: "setLightTheme" } | { type: "setDarkTheme" }
+type GlobalActionTypes = { type: "login"; value: any } | { type: "logout" } | { type: "updateUser"; value: any } | { type: "flashMessage"; value: string } | { type: "setLightTheme" } | { type: "setDarkTheme" }
 
 export const GlobalContextProvider: React.FC = props => {
   const initialState = {
     loggedIn: false,
     flashMessages: [] as any,
     user: {
-      usertoken: null,
-      username: null,
-      _id: null
+      username: "",
+      _id: ""
       //token: localStorage.getItem("simpleCarCostToken"),
       //username: localStorage.getItem("simpleCarCostUsername")
     },
-    language: "english",
     theme: "dark"
   }
 
@@ -37,17 +35,11 @@ export const GlobalContextProvider: React.FC = props => {
       case "logout":
         draft.loggedIn = false
         return
+      case "updateUser":
+        draft.user.username = action.value.user?.username
+        return
       case "flashMessage":
         draft.flashMessages.push(action.value)
-        return
-      case "setEnglish":
-        draft.language = "english"
-        return
-      case "setSpanish":
-        draft.language = "spanish"
-        return
-      case "setLatin":
-        draft.language = "latin"
         return
       case "setLightTheme":
         draft.theme = "light"

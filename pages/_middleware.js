@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { verify } from "jsonwebtoken"
 
-export default function middleware(req, res) {
+export default function middleware(req) {
   const { cookies } = req
   const jwt = cookies.SimpleCarCostToken
   const url = req.url
@@ -14,12 +14,10 @@ export default function middleware(req, res) {
     }
 
     try {
-      const user = verify(jwt, process.env.JWTSECRET)
+      verify(jwt, process.env.JWTSECRET)
       // see the token payload on the server
-      console.log(`user from middleware: ${user.username}`)
+      //console.log(`user from middleware: ${user.username}`)
       // not sure how to send data from token payload to the client
-      //res.json({ user: user.username })
-      //
       return NextResponse.next()
     } catch (e) {
       const url = req.nextUrl.clone()

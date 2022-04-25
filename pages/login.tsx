@@ -59,7 +59,7 @@ const Login: React.FC = () => {
       <form onSubmit={loginHandler}>
         <FormControl>
           <label htmlFor="username">Username</label>
-          <input type="text" value={username} onChange={e => setUsername(e.target.value)} aria-label="username" autoComplete="off" placeholder="Username" />
+          <input type="text" value={username} onChange={e => setUsername(e.target.value)} aria-label="username" autoComplete="off" placeholder="Username" autoFocus />
         </FormControl>
         <FormControl>
           <label htmlFor="password">Password</label>
