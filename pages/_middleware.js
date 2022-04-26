@@ -6,7 +6,7 @@ export default function middleware(req) {
   const jwt = cookies.SimpleCarCostToken
   const url = req.url
 
-  if (url.includes("/landing")) {
+  if (url.includes("/profile") || url.includes("/landing")) {
     if (jwt === undefined) {
       const url = req.nextUrl.clone()
       url.pathname = "/login"
