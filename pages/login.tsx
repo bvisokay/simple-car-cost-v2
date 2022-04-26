@@ -41,7 +41,7 @@ const Login: React.FC = () => {
       if (data.data) {
         appDispatch({ type: "login", value: data.data })
         // push to new page
-        router.replace("/landing")
+        router.replace("/profile")
         appDispatch({ type: "flashMessage", value: "You have successfully logged in." })
       } else {
         console.log("Incorrect username / password.")

@@ -251,13 +251,11 @@ const register: React.FC = () => {
             }
           })
           const data = await response.json()
-          console.log(`data.token returned from pinging /api/register: ${data.data.usertoken}`)
           console.log(`data.username returned from pinging /api/register: ${data.data.username}`)
-          console.log(`data._id returned from pinging /api/register: ${data.data._id}`)
           // update global state with login dispatch action
           appDispatch({ type: "login", value: data.data })
           // push to new page
-          router.replace("/landing")
+          router.replace("/profile")
           // update global state with flash Message welcome
           appDispatch({ type: "flashMessage", value: "Congrats! Welcome to your new account" })
         } catch (e) {
