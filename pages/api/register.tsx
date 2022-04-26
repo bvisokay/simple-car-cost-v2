@@ -10,16 +10,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
   if (req.method === "POST") {
     let user = new User(req.body)
-    const { _id, username } = user.data
+
     try {
       const response: any = await user.register()
-      console.log(response)
+      //console.log(response)
       if (response === "success") {
         // define and sign token
         const token = sign(
           {
-            _id: _id,
-            username: username
+            _id: response._id.toString(),
+            username: response.username
           },
           process.env.JWTSECRET!,
           { expiresIn: "30d" }
@@ -37,7 +37,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         res.setHeader("Set-Cookie", serialized)
         res.status(200).json({
           data: {
-            username
+            username: response.username
           }
         })
       }

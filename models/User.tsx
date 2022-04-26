@@ -1,4 +1,3 @@
-import { FaCircleNotch } from "react-icons/fa"
 import validator from "validator"
 import { hashPassword, verifyPassword } from "../lib/auth"
 import { addUserDocument, connectToDatabase } from "../lib/db"
@@ -150,7 +149,7 @@ export default class User {
       const attemptedUserDoc = await usersCollection.findOne({ username: this.data.username })
       // if user exists hash the submitted password
       if (attemptedUserDoc) {
-        console.log(attemptedUserDoc)
+        //console.log(attemptedUserDoc)
         // see if the hashed submitted password matches
         const isValid = await verifyPassword(this.data.password, attemptedUserDoc.password)
         if (isValid) {

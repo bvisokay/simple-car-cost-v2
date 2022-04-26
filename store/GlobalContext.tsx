@@ -1,10 +1,9 @@
-import React, { createContext } from "react"
+import React, { createContext, useEffect } from "react"
 import { useImmerReducer } from "use-immer"
 
 export const GlobalDispatchContext = createContext((() => {}) as React.Dispatch<GlobalActionTypes>)
 
 export const GlobalStateContext = createContext({
-  // helps get good autocompletion
   loggedIn: false,
   user: { username: "" },
   flashMessages: [] as any,
@@ -15,14 +14,27 @@ type GlobalActionTypes = { type: "login"; value: any } | { type: "logout" } | { 
 
 export const GlobalContextProvider: React.FC = props => {
   const initialState = {
-    loggedIn: Boolean(`${typeof window != "undefined" ? localStorage.getItem("simpleCarCostLoggedIn") : false}`),
+    loggedIn: false,
     flashMessages: [] as any,
     user: {
-      username: `${typeof window != "undefined" ? localStorage.getItem("simpleCarCostUsername") : ""}`
-      //username: localStorage.getItem("simpleCarCostUsername")
+      username: ""
     },
     theme: "dark"
   }
+
+  // See if user is logged in on page load
+  useEffect(() => {
+    //console.log(localStorage.getItem("simpleCarCostLoggedIn"))
+    //console.log(localStorage.getItem("simpleCarCostUsername"))
+
+    if (localStorage.getItem("simpleCarCostLoggedIn") == "true" && localStorage.getItem("simpleCarCostUsername") != null) {
+      console.log("onLoad page effect ran")
+      const loggedInUsername = localStorage.getItem("simpleCarCostUsername")!
+      console.log(loggedInUsername)
+      dispatch({ type: "login", value: { username: loggedInUsername } })
+      console.log("block ran")
+    }
+  }, [])
 
   function ourReducer(draft: typeof initialState, action: GlobalActionTypes): void {
     switch (action.type) {
@@ -44,7 +56,7 @@ export const GlobalContextProvider: React.FC = props => {
         draft.theme = "dark"
         return
       default:
-        throw new Error("Bad action")
+        throw new Error("Bad action of some sort")
     }
   }
 

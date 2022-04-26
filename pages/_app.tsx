@@ -4,8 +4,12 @@ import Layout from "../components/Layout"
 // Styles
 import { GlobalStyles } from "../styles/globalstyles"
 
-// Context Files
+// Context Files moved to layout to avoid running on server
+// if window !=== undefined check for localStorage...
+// throws "Text content did not match" Error Warning
 import { GlobalContextProvider } from "../store/GlobalContext"
+
+// affect nested of flex container / wrapper so revisit
 
 export const SITENAME: string = "Simple Car Cost"
 

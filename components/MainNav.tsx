@@ -15,16 +15,15 @@ const MainNav = () => {
   const appDispatch = useContext(GlobalDispatchContext)
   const appState = useContext(GlobalStateContext)
 
+  // log user out on click
   async function logoutHandler() {
     const response = await fetch("/api/logout")
     const data = await response.json()
     appDispatch({ type: "logout" })
-    if (window !== undefined) {
-      localStorage.removeItem("simpleCarCostUsername")
-      localStorage.removeItem("simpleCarCostLoggedIn")
-    }
     console.log(data)
     router.replace("/")
+    localStorage.removeItem("simpleCarCostLoggedIn")
+    localStorage.removeItem("simpleCarCostUsername")
   }
 
   return (

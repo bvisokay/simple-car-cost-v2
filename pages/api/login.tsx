@@ -11,13 +11,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     console.log("/api/login endpoint hit with a POST request")
     let user = new User(req.body)
-    const { _id, username } = user.data
-    console.log(_id)
 
     try {
       // Check db for match by calling user.login()
       const result = await user.login()
-      console.log(result)
       // if there is a take the info returned create token
       if (result && result.message === "success") {
         // define and sign token
@@ -42,7 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         res.setHeader("Set-Cookie", serialized)
         res.status(200).json({
           data: {
-            username
+            username: result.data.username
           }
         })
       }
