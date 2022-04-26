@@ -1,3 +1,4 @@
+import { FaCircleNotch } from "react-icons/fa"
 import validator from "validator"
 import { hashPassword, verifyPassword } from "../lib/auth"
 import { addUserDocument, connectToDatabase } from "../lib/db"
@@ -85,11 +86,11 @@ export default class User {
             if (emailExists) {
               this.errors.push("That email is already being used.")
             }
+            client.close()
           } catch (e) {
             console.log("There was an error seeing if that email already exists.")
           }
         }
-
         resolve({ message: "success" })
       } catch (e) {
         reject(e)
@@ -154,6 +155,7 @@ export default class User {
         const isValid = await verifyPassword(this.data.password, attemptedUserDoc.password)
         if (isValid) {
           this.data = attemptedUserDoc
+          // close the client
           client.close()
           // send a success response if matched
           return {
@@ -161,6 +163,7 @@ export default class User {
             data: this.data
           }
         } else {
+          // close the client
           client.close()
           // send a failed response if no match
           this.errors.push("user does not exist")
@@ -186,12 +189,14 @@ export default class User {
         .collection("users")
         .findOne({ [key]: value })
       if (result) {
+        client.close()
         return true
       } else {
+        client.close()
         return false
       }
     } catch (err) {
-      throw err
+      throw `There was an error: ${err}`
     }
   } // end doesUserValue Exist
 } // close User class
