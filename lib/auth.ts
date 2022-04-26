@@ -14,7 +14,7 @@ export async function verifyPassword(password: string, hashedPassword: string) {
 export async function getJWTPayload(context: any) {
   const { cookies } = context.req
   const jwt = cookies.SimpleCarCostToken
-  let user: any = null
+  let user: any = ""
   if (jwt === undefined) {
     user = ""
     return user

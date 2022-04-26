@@ -252,12 +252,19 @@ const register: React.FC = () => {
           })
           const data = await response.json()
           console.log(`data.username returned from pinging /api/register: ${data.data.username}`)
-          // update global state with login dispatch action
-          appDispatch({ type: "login", value: data.data })
-          // push to new page
-          router.replace("/profile")
-          // update global state with flash Message welcome
-          appDispatch({ type: "flashMessage", value: "Congrats! Welcome to your new account" })
+          if (data) {
+            // update global state with login dispatch action
+            appDispatch({ type: "login", value: data.data })
+            // set username in local storage if on the client
+            if (window !== undefined) {
+              localStorage.setItem("simpleCarCostUsername", data.data.username)
+              localStorage.setItem("simpleCarCostLoggedIn", "true")
+            }
+            // push to new page
+            router.replace("/profile")
+            // update global state with flash Message welcome
+            appDispatch({ type: "flashMessage", value: "Congrats! Welcome to your new account" })
+          }
         } catch (e) {
           console.log(`There was a problem or the request was cancelled: ${e}`)
         }

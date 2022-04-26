@@ -6,21 +6,19 @@ export const GlobalDispatchContext = createContext((() => {}) as React.Dispatch<
 export const GlobalStateContext = createContext({
   // helps get good autocompletion
   loggedIn: false,
-  user: { username: "", _id: "" },
+  user: { username: "" },
   flashMessages: [] as any,
   theme: ""
 })
 
-type GlobalActionTypes = { type: "login"; value: any } | { type: "logout" } | { type: "updateUser"; value: any } | { type: "flashMessage"; value: string } | { type: "setLightTheme" } | { type: "setDarkTheme" }
+type GlobalActionTypes = { type: "login"; value: any } | { type: "logout" } | { type: "flashMessage"; value: string } | { type: "setLightTheme" } | { type: "setDarkTheme" }
 
 export const GlobalContextProvider: React.FC = props => {
   const initialState = {
-    loggedIn: false,
+    loggedIn: Boolean(`${typeof window != "undefined" ? localStorage.getItem("simpleCarCostLoggedIn") : false}`),
     flashMessages: [] as any,
     user: {
-      username: "",
-      _id: ""
-      //token: localStorage.getItem("simpleCarCostToken"),
+      username: `${typeof window != "undefined" ? localStorage.getItem("simpleCarCostUsername") : ""}`
       //username: localStorage.getItem("simpleCarCostUsername")
     },
     theme: "dark"
@@ -34,9 +32,7 @@ export const GlobalContextProvider: React.FC = props => {
         return
       case "logout":
         draft.loggedIn = false
-        return
-      case "updateUser":
-        draft.user.username = action.value.user?.username
+        draft.user.username = ""
         return
       case "flashMessage":
         draft.flashMessages.push(action.value)

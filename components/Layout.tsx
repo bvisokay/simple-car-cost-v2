@@ -1,6 +1,6 @@
-import { useEffect, useContext } from "react"
+//import { useContext } from "react"
 import styled from "styled-components"
-import { GlobalDispatchContext } from "../store/GlobalContext"
+//import { GlobalDispatchContext } from "../store/GlobalContext"
 
 // comps
 import Header from "./Header"
@@ -30,20 +30,7 @@ const Container = styled.div`
 `
 
 const Layout: React.FC = props => {
-  const appDispatch = useContext(GlobalDispatchContext)
-
-  useEffect(() => {
-    // cannot call async function inside of a useEffect
-    // try and iife
-    ;(async () => {
-      console.log("fetchUser Ran")
-      const response = await fetch("/api/getUser")
-      const appUser = await response.json()
-      //console.log(appUser)
-      appDispatch({ type: "updateUser", value: appUser })
-    })()
-    //teardown needed
-  }, [])
+  //const appDispatch = useContext(GlobalDispatchContext)
 
   return (
     <LayoutContainer>

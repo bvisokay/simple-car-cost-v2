@@ -37,9 +37,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         res.setHeader("Set-Cookie", serialized)
         res.status(200).json({
           data: {
-            usertoken: null,
-            username: username,
-            _id: _id
+            username
           }
         })
       }

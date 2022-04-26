@@ -37,11 +37,17 @@ const Login: React.FC = () => {
         }
       })
       const data = await response.json()
-      console.log(data)
-      if (data.data) {
+      console.log(`data.username returned from pinging /api/login: ${data.data.username}`)
+      if (data) {
         appDispatch({ type: "login", value: data.data })
+        // set username in local storage if on the client
+        if (window !== undefined) {
+          localStorage.setItem("simpleCarCostUsername", data.data.username)
+          localStorage.setItem("simpleCarCostLoggedIn", "true")
+        }
         // push to new page
         router.replace("/profile")
+        // show message to the user
         appDispatch({ type: "flashMessage", value: "You have successfully logged in." })
       } else {
         console.log("Incorrect username / password.")
