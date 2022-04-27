@@ -14,11 +14,11 @@ export default function middleware(req) {
     }
 
     try {
-      verify(jwt, process.env.JWTSECRET)
-      // see the token payload on the server
-      //console.log(`user from middleware: ${user.username}`)
-      // not sure how to send data from token payload to the client
-      return NextResponse.next()
+      const jwtPayload = verify(jwt, process.env.JWTSECRET)
+      console.log(`middleware ran, jwtPayload.username: ${jwtPayload.username}`)
+      let response = NextResponse.next()
+      response.cookie("Hello", jwtPayload.username)
+      return response
     } catch (e) {
       const url = req.nextUrl.clone()
       url.pathname = "/login"

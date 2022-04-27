@@ -53,4 +53,30 @@ export async function getJWTPayload(context: any) {
       user
     }
   }
+}
+*/
+
+// BE CAREFUL IMPORTING
+
+/* export async function getServerSideProps(context: any) {
+  const { cookies } = context.req
+  const jwt = cookies.SimpleCarCostToken
+  let user: string
+  if (jwt === undefined) {
+    user = ""
+  }
+  try {
+    const jwtPayload: any = verify(jwt, process.env.JWTSECRET!)
+    if (jwtPayload) {
+      user = jwtPayload.username
+    }
+  } catch (e) {
+    user = ""
+  }
+
+  return {
+    props: {
+      user
+    }
+  }
 } */
