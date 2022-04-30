@@ -86,9 +86,6 @@ const Header: React.FC = () => {
         </LogoContainer>
 
         <MainNav />
-        {/* <p>{appState.loggedIn ? "Logged In" : "Logged Out"}</p> */}
-        {/*  <LogInOutBtns /> */}
-        {/* <GiHamburgerMenu size={24} /> */}
       </HeaderWrapper>
     </HeaderContainer>
   )

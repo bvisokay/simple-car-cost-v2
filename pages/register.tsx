@@ -4,23 +4,24 @@ import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles
 import Link from "next/link"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { useRouter } from "next/router"
+import { signIn } from "next-auth/client"
 
-// Should be a page guard if logged in you cannot visit?
-
+// NOTES
+// Page should be guarded if logged in
 // 3 fields, username, email, password
 // client side validation
 // server side validation
 // simple validation
-// prevent duplicate fileds in db (see if username or email is already taken front and back end)
-// store user in DB if necessary
+// prevents duplicate fields in db...
+// ..(checks if username or email is already taken front and back end validation)
+// store user in DB if applicable
 // redirect to the profile page on successfuly login
 
 const register: React.FC = () => {
+  // Assignments
   const appDispatch = useContext(GlobalDispatchContext)
-
   const router = useRouter()
 
-  // Initial State for Reducer
   const initialState = {
     username: {
       value: "",
@@ -43,6 +44,7 @@ const register: React.FC = () => {
     },
     submitCount: 0
   }
+  const [state, dispatch] = useImmerReducer(ourReducer, initialState)
 
   // Reducer Function
   function ourReducer(draft: any, action: any) {
@@ -60,7 +62,7 @@ const register: React.FC = () => {
         }
         return
       case "usernameAfterDelay":
-        console.log("usernameAfterDelay ran")
+        //console.log("usernameAfterDelay ran")
         if (draft.username.value.length < 3) {
           draft.username.hasErrors = true
           draft.username.message = "Username must be at least 3 characters."
@@ -84,7 +86,7 @@ const register: React.FC = () => {
         draft.email.value = action.value
         return
       case "emailAfterDelay":
-        console.log("emailAfterDelay ran")
+        //console.log("emailAfterDelay ran")
         if (!/^\S+@\S+$/.test(draft.email.value)) {
           draft.email.hasErrors = true
           draft.email.message = "You must provide a valid email address."
@@ -94,7 +96,7 @@ const register: React.FC = () => {
         }
         return
       case "emailUniqueResults":
-        console.log("emailUniqueResults ran")
+        //console.log("emailUniqueResults ran")
         if (!action.value) {
           draft.email.hasErrors = false
           draft.email.isUnique = true
@@ -134,9 +136,6 @@ const register: React.FC = () => {
         return
     }
   }
-
-  // useImmerReducer
-  const [state, dispatch] = useImmerReducer(ourReducer, initialState)
 
   // username validation after delay
   useEffect(() => {
@@ -180,7 +179,7 @@ const register: React.FC = () => {
             }
           })
           const data = await response.json()
-          console.log(`data from usernameUnique api: ${data.message}`)
+          //console.log(`data from usernameUnique api: ${data.message}`)
           dispatch({ type: "usernameUniqueResults", value: data.message })
         } catch (e) {
           console.log(`There was a problem or the request was cancelled: ${e}`)
@@ -212,7 +211,7 @@ const register: React.FC = () => {
             }
           })
           const data = await response.json()
-          console.log(`data from emailUnique api: ${data.message}`)
+          //console.log(`data from emailUnique api: ${data.message}`)
           dispatch({ type: "emailUniqueResults", value: data.message })
         } catch (e) {
           console.log(`There was a problem or the request was cancelled: ${e}`)
@@ -226,6 +225,7 @@ const register: React.FC = () => {
     }
   }, [state.email.checkCount])
 
+  // why a useEffect?
   // useEffect to watch sendCount to submit request
   // don't run when the page first loads
   // inside useEffect define and call async function to /api/register
@@ -233,12 +233,12 @@ const register: React.FC = () => {
   // ensure error handling
   useEffect(() => {
     if (state.submitCount) {
-      //console.log("state.submitCount Triggered useEffect")
       const controller = new AbortController()
       const signal = controller.signal
       async function fetchResults() {
+        // register try/catch
         try {
-          const response = await fetch("/api/register", {
+          const response = await fetch("/api/auth/register", {
             signal,
             method: "POST",
             body: JSON.stringify({
@@ -251,20 +251,26 @@ const register: React.FC = () => {
             }
           })
           const data = await response.json()
-          console.log(`data.username returned from pinging /api/register: ${data.data.username}`)
-          if (data) {
-            //set LocalStorage values
-            localStorage.setItem("simpleCarCostLoggedIn", "true")
-            localStorage.setItem("simpleCarCostUsername", data.data.username)
-            // update global state with login dispatch action
-            appDispatch({ type: "login", value: data.data })
-            // push to new page
-            router.replace("/profile")
-            // update global state with flash Message welcome
-            appDispatch({ type: "flashMessage", value: "Congrats! Welcome to your new account" })
+          if (data.message != "success") {
+            //appDispatch({ type: "flashMessage", value: "Could not register" })
+            appDispatch({ type: "flashMessage", value: data.errors })
+            console.warn(data.errors)
+            throw { message: "Could not register", errors: data.errors }
           }
-        } catch (e) {
-          console.log(`There was a problem or the request was cancelled: ${e}`)
+          console.log("Created User: " + data.data.username)
+          // now sign the user in - note: signIn will always resolve even with error
+          const result = await signIn("credentials", { redirect: false, username: state.username.value, password: state.password.value })
+          if (result!.error) {
+            appDispatch({ type: "flashMessage", value: "Problem with registration" })
+            console.warn(`There was a problem signing in: ${result!.error}`)
+            throw { message: "Could not sign in", errors: result!.error }
+          }
+          router.replace("/dashboard")
+          appDispatch({ type: "flashMessage", value: "Welcome!" })
+        } catch (err: any) {
+          appDispatch({ type: "flashMessage", value: `${err?.errors}` })
+          console.log(`There was a problem or the request was cancelled: ${err}`)
+          return { errors: err }
         }
       }
       fetchResults()
@@ -285,6 +291,7 @@ const register: React.FC = () => {
     dispatch({ type: "submitForm" })
   }
 
+  // jsx
   return (
     <SectionVeryNarrow>
       <SectionTitle>register for a free account</SectionTitle>
@@ -302,7 +309,7 @@ const register: React.FC = () => {
         </FormControl>
         <FormControl>
           <label htmlFor="password">Password</label>
-          <input type="text" name="password" value={state.password.value} onChange={e => dispatch({ type: "passwordImmediately", value: e.target.value })} aria-label="password" autoComplete="off" placeholder="Create a password" />
+          <input type="password" name="password" value={state.password.value} onChange={e => dispatch({ type: "passwordImmediately", value: e.target.value })} aria-label="password" autoComplete="off" placeholder="Create a password" />
           {state.password.hasErrors && <div className="liveValidateMessage">{state.password.message}</div>}
         </FormControl>
         <BtnWide color={"var(--green)"}>Sign Up</BtnWide>

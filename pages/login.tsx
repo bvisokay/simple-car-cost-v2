@@ -1,8 +1,9 @@
-import { useContext, useState } from "react"
+import { useState, useContext } from "react"
 import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles/GlobalComponents"
 import Link from "next/link"
-import { GlobalDispatchContext } from "../store/GlobalContext"
 import { useRouter } from "next/router"
+import { signIn } from "next-auth/client"
+import { GlobalDispatchContext } from "../store/GlobalContext"
 
 // Should be a page guard if logged in you cannot visit?
 // add to middleware function
@@ -21,38 +22,48 @@ const Login: React.FC = () => {
   const router = useRouter()
 
   // useEffect to watch sendCount to submit request
-  // dont run when the page first loads
+  // don't run when the page first loads
   // inside useEffect define and call async fucntion to /api/register
   // if response is success then redirect
   // ensure error handling
 
   async function loginHandler(e: React.FormEvent) {
     e.preventDefault()
+
+    // need client side validation
+    // alphanumeric only for username
+    // Not too long
+    // Not too short
+    // Bring in useImmmerReducer
+
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: {
-          "Content-Type": "application/json"
-        }
+      //
+      //
+      const result = await signIn("credentials", {
+        redirect: false,
+        username: username?.toLowerCase(),
+        password
       })
-      const data = await response.json()
-      //console.log(`data.username returned from pinging /api/login: ${data.data.username}`)
-      if (data) {
-        localStorage.setItem("simpleCarCostLoggedIn", "true")
-        localStorage.setItem("simpleCarCostUsername", data.data.username)
-        // update global state
-        appDispatch({ type: "login", value: data.data })
-        // push to new page
-        router.replace("/profile")
-        // show message to the user
-        appDispatch({ type: "flashMessage", value: "You have successfully logged in." })
-      } else {
-        console.log("Incorrect username / password.")
-        appDispatch({ type: "flashMessage", value: "Invalid username / password." })
+      //
+      //
+      console.log("result froms signIn", result)
+
+      // no user found or bad username/password
+      // what if we send non-alphanumeric
+      if (result!.error) {
+        appDispatch({ type: "flashMessage", value: result!.error })
+        return
       }
-    } catch (e) {
-      console.log("There was a problem.")
+
+      // push to new page
+      router.replace("/dashboard")
+
+      // show message to the user
+      appDispatch({ type: "flashMessage", value: "You have successfully logged in." })
+
+      //
+    } catch (err) {
+      console.log("err", err)
     }
   }
 
@@ -67,7 +78,7 @@ const Login: React.FC = () => {
         </FormControl>
         <FormControl>
           <label htmlFor="password">Password</label>
-          <input type="text" value={password} onChange={e => setPassword(e.target.value)} aria-label="password" autoComplete="off" placeholder="Password" />
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} aria-label="password" autoComplete="off" placeholder="Password" />
         </FormControl>
         <BtnWide color={"var(--green)"}>Sign In</BtnWide>
       </form>

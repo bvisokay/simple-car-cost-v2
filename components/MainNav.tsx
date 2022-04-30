@@ -1,9 +1,8 @@
 import styled from "styled-components"
 import { Btn } from "../styles/GlobalComponents"
 import Link from "next/link"
-import { useContext } from "react"
-import { GlobalDispatchContext, GlobalStateContext } from "../store/GlobalContext"
 import { useRouter } from "next/router"
+import { useSession, signOut } from "next-auth/client"
 
 const MainNavContainer = styled.div`
   display: flex;
@@ -11,24 +10,23 @@ const MainNavContainer = styled.div`
 `
 
 const MainNav = () => {
+  //const [session, loading] = useSession()
+  const [session] = useSession()
   const router = useRouter()
-  const appDispatch = useContext(GlobalDispatchContext)
-  const appState = useContext(GlobalStateContext)
+
+  console.log("session", session)
 
   // log user out on click
-  async function logoutHandler() {
-    const response = await fetch("/api/logout")
-    const data = await response.json()
-    appDispatch({ type: "logout" })
-    console.log(data)
-    router.replace("/")
-    localStorage.removeItem("simpleCarCostLoggedIn")
-    localStorage.removeItem("simpleCarCostUsername")
+  function logoutHandler() {
+    // was .replace but sending back to /profile?
+    signOut()
+    router.push("/")
   }
 
   return (
     <MainNavContainer>
-      {!appState.loggedIn && (
+      {/* Was !session and !loading */}
+      {!session && (
         <>
           <Link href="/login">
             <Btn>Log In</Btn>
@@ -39,10 +37,19 @@ const MainNav = () => {
         </>
       )}
 
-      {appState.loggedIn && (
+      {session && (
         <>
-          <Btn onClick={() => logoutHandler()} color={"var(--indigo)"}>
-            Logout
+          <Link href="/dashboard">
+            <Btn color={"var(--indigo)"}>Dashboard</Btn>
+          </Link>
+          <Link href="/create-item">
+            <Btn color={"var(--cyan)"}>Add Car</Btn>
+          </Link>
+          <Link href="/user/list">
+            <Btn color={"var(--teal)"}>My List</Btn>
+          </Link>
+          <Btn onClick={() => logoutHandler()} color={"var(--secondary)"}>
+            Log Out
           </Btn>
         </>
       )}

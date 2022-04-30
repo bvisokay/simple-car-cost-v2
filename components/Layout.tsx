@@ -20,7 +20,7 @@ const LayoutContainer = styled.div`
 const Container = styled.div`
   flex: 1;
   padding: 1rem;
-  //border: 1px solid #999;
+  border: 1px solid #999;
   width: 100%;
   max-width: var(--wrapper-width);
   margin: 0 auto;
