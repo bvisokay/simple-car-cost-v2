@@ -1,5 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { getSession } from "next-auth/client"
+import Link from "next/link"
 //comps
 import { Wrapper, Section } from "../styles/GlobalComponents"
 
@@ -11,6 +12,10 @@ const DashboardPage = (props: any) => {
         <p>Add a new item</p>
         <p>View your list</p>
         <p>Update your settings</p>
+        <Link href="/change-password">
+          <a>Update your password</a>
+        </Link>
+
         <p>Learning Center</p>
       </Section>
     </Wrapper>

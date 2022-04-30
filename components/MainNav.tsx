@@ -14,7 +14,7 @@ const MainNav = () => {
   const [session] = useSession()
   const router = useRouter()
 
-  console.log("session", session)
+  //console.log("session", session)
 
   // log user out on click
   function logoutHandler() {

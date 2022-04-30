@@ -1,12 +1,12 @@
+import { GetServerSideProps, GetServerSidePropsContext } from "next"
+import Link from "next/link"
 import React, { useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
-import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles/GlobalComponents"
-import Link from "next/link"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/client"
 import { getSession } from "next-auth/client"
-import { GetServerSideProps, GetServerSidePropsContext } from "next"
+import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles/GlobalComponents"
 
 // NOTES
 // Page should be guarded if logged in

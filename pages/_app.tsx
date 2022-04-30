@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app"
+import { Provider } from "next-auth/client"
 import Layout from "../components/Layout"
 
 // Styles
@@ -15,12 +16,14 @@ export const SITENAME: string = "Simple Car Cost"
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <GlobalContextProvider>
-      <GlobalStyles />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </GlobalContextProvider>
+    <Provider session={pageProps.session}>
+      <GlobalContextProvider>
+        <GlobalStyles />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </GlobalContextProvider>
+    </Provider>
   )
 }
 export default MyApp
