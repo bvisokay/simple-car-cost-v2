@@ -5,6 +5,8 @@ import Link from "next/link"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/client"
+import { getSession } from "next-auth/client"
+import { GetServerSideProps, GetServerSidePropsContext } from "next"
 
 // NOTES
 // Page should be guarded if logged in
@@ -322,3 +324,20 @@ const register: React.FC = () => {
 }
 
 export default register
+
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  const session = await getSession({ req: context.req })
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
+}

@@ -3,19 +3,13 @@ import { useImmerReducer } from "use-immer"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/client"
+import { getSession } from "next-auth/client"
 import { GlobalDispatchContext } from "../store/GlobalContext"
+import { GetServerSideProps, GetServerSidePropsContext } from "next"
 
 import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles/GlobalComponents"
 
-// Should be a page guard if logged in you cannot visit?
-// add to middleware function
-// also don't want to be able to access if you are logged in
-
-// 2 fields, username password
-// client side validation
-// server side validation
-// see if the username does not exist
-// redirect to the profile page on successfuly login
+// need to protect
 
 const Login: React.FC = () => {
   const appDispatch = useContext(GlobalDispatchContext)
@@ -154,3 +148,20 @@ const Login: React.FC = () => {
 }
 
 export default Login
+
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  const session = await getSession({ req: context.req })
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
+}
