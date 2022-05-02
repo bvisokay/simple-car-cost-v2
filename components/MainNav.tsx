@@ -45,7 +45,7 @@ const MainNav = () => {
           <Link href="/create-item">
             <Btn color={"var(--cyan)"}>Add Car</Btn>
           </Link>
-          <Link href="/user/list">
+          <Link href="/list">
             <Btn color={"var(--teal)"}>My List</Btn>
           </Link>
           <Btn onClick={() => logoutHandler()} color={"var(--secondary)"}>

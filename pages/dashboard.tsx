@@ -9,7 +9,10 @@ const DashboardPage = (props: any) => {
     <Wrapper>
       <Section>
         <h2>Welcome {props.session.user.name}</h2>
-        <p>Add a new item</p>
+        <br />
+        <Link href="/create-item">
+          <a>Add a new item</a>
+        </Link>
         <p>View your list</p>
         <p>Update your settings</p>
         <Link href="/change-password">

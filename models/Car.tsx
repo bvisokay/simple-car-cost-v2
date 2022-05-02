@@ -1,4 +1,14 @@
-export default class TestDriveCar {
+// imprt {ObjectId} from "mongodb"
+
+type CarInput = {
+  description: string
+  price: string
+  miles: string
+  link?: string
+}
+
+// export default class Car implements CarTypeInterface
+export default class Car {
   //define for TypeScript
   description: string
   price: number
@@ -8,11 +18,11 @@ export default class TestDriveCar {
   annual_miles: number
   rem_months: number
   cost_per_rem_mos: number
-  createdDate: Date
-  uniqueId: number
+  readonly createdDate: Date
+  readonly uniqueId: number
   errors: string[]
 
-  constructor(data: any) {
+  constructor(data: CarInput) {
     this.description = data.description.trim()
     this.price = parseFloat(data.price)
     this.miles = parseFloat(data.miles)
@@ -27,40 +37,43 @@ export default class TestDriveCar {
     this.errors = []
   }
 
-  cleanup() {
+  cleanup(this: Car) {
     // i think this is wehere all of the trim and parseInt() should happen?
     if (typeof this.description != "string") {
       this.description = ""
       console.log("description was not a string")
     }
-    if (typeof this.price != "string") {
-      console.log("price was not a string")
+    if (typeof this.price != "number") {
+      console.log("price was not a number")
     }
-    if (typeof this.miles != "string") {
-      console.log("miles was not a string")
+    if (typeof this.miles != "number") {
+      console.log("miles was not a number")
     }
     if (typeof this.link != "string") {
       this.link = ""
       console.log("link was not a string")
     }
+
+    /*
+    if (this.link.startsWith("http://") || this.link.startsWith("https://")) {
+      console.log("Link Looks Good")
+    } else {
+        this.link = ""
+    }
+    */
   }
 
-  validate() {
-    // bring in more vali from the client side logic
+  validate(this: Car) {
     // if a field is left blank
     if (this.description == "") {
       this.errors.push("You must provide a description")
     }
-    if (this.price <= 0) {
+    if (this.price == 0) {
       this.errors.push("You must provide a price greater than 0")
     }
     if (this.miles == 0) {
       this.errors.push("You must provide miles greater than 0")
     }
-  }
-
-  create() {
-    //return the document, cleaned up
   }
 
   register() {
