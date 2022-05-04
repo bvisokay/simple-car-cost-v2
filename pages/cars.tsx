@@ -4,14 +4,16 @@ import { useState } from "react"
 import { Wrapper, Section } from "../styles/GlobalComponents"
 import Car from "../models/Car"
 
-const List = (props: any) => {
+// experiment with React Table
+
+const Cars = (props: any) => {
   console.log(props)
   const [cars] = useState(props.carData)
 
   return (
     <Wrapper>
       <Section>
-        <h2>{props.session.user.name}'s List</h2>
+        <h2>{props.session.user.name}'s Cars</h2>
         <p>Add Car</p>
         <p>Learn More</p>
         <p>Sort &amp; Filter Icon</p>
@@ -87,4 +89,4 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   }
 }
 
-export default List
+export default Cars

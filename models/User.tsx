@@ -117,7 +117,7 @@ export default class User {
     if (!this.errors.length) {
       //
 
-      //hash user password
+      // hash user password
       const hashedPassword = await hashPassword(this.data.password)
       this.data.password = hashedPassword
 

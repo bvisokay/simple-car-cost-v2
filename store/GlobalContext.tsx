@@ -8,7 +8,7 @@ export const GlobalStateContext = createContext({
   theme: ""
 })
 
-type GlobalActionTypes = { type: "flashMessage"; value: string } | { type: "setLightTheme" } | { type: "setDarkTheme" }
+type GlobalActionTypes = { type: "flashMessage"; value: string | string[] } | { type: "setLightTheme" } | { type: "setDarkTheme" }
 
 export const GlobalContextProvider: React.FC = props => {
   const initialState = {

@@ -1,4 +1,5 @@
-// imprt {ObjectId} from "mongodb"
+import { connectToDatabase } from "../lib/db"
+import { ObjectId } from "mongodb"
 
 type CarInput = {
   description: string
@@ -7,6 +8,9 @@ type CarInput = {
   link?: string
 }
 
+//const DEFAULT_USEFUL_MILES = 150000
+//const DEFAULT_MONTHLY_MILES = 1250
+
 // export default class Car implements CarTypeInterface
 export default class Car {
   //define for TypeScript
@@ -14,10 +18,8 @@ export default class Car {
   price: number
   miles: number
   link?: string
-  useful_miles: number
-  annual_miles: number
-  rem_months: number
-  cost_per_rem_mos: number
+  //rem_months: number
+  //cost_per_rem_mos: number
   readonly createdDate: Date
   readonly uniqueId: number
   errors: string[]
@@ -27,10 +29,8 @@ export default class Car {
     this.price = parseFloat(data.price)
     this.miles = parseFloat(data.miles)
     this.link = data.link
-    this.useful_miles = 150000
-    this.annual_miles = 15000
-    this.rem_months = Math.round((this.useful_miles - this.miles) / (this.annual_miles / 12))
-    this.cost_per_rem_mos = parseFloat((this.price / ((this.useful_miles - this.miles) / (this.annual_miles / 12))).toFixed(2))
+    //this.rem_months = Math.round((DEFAULT_USEFUL_MILES - this.miles) / DEFAULT_MONTHLY_MILES)
+    //this.cost_per_rem_mos = parseFloat((this.price / ((DEFAULT_USEFUL_MILES - this.miles) / DEFAULT_MONTHLY_MILES)).toFixed(2))
     this.createdDate = new Date()
     // scrap unique Id for autoGen mongoDb
     this.uniqueId = Math.round(Math.random() * 10000)
@@ -79,4 +79,73 @@ export default class Car {
   register() {
     this.validate()
   }
-}
+
+  static async findByAuthor(username: string) {
+    console.log("findByAuthor ran with " + username + " passed in")
+    // quick clean up
+    if (typeof username != "string") {
+      console.log(typeof username)
+      return { error: "invalid request" }
+    }
+
+    try {
+      // connect to DB
+      let client = await connectToDatabase()
+      if (!client) {
+        throw { error: "Could not connect to data" }
+      }
+
+      const usersCollection = client.db().collection("users")
+
+      let userDoc = await usersCollection.findOne({ username: username })
+
+      if (!userDoc) {
+        throw "no user found"
+      }
+
+      interface cleanedUserDocTypes {
+        user_id: string
+        useful_miles: number
+        monthly_miles: number
+      }
+
+      // clean up the userDoc (no password)
+      const userData: cleanedUserDocTypes = {
+        user_id: userDoc._id.toString(),
+        useful_miles: userDoc.useful_miles,
+        monthly_miles: userDoc.monthly_miles
+      }
+      console.log(userData)
+
+      const carsCollection = client.db().collection("cars")
+
+      const cars = await carsCollection.find({ authorId: new ObjectId(userDoc._id) }).toArray()
+
+      const carData = cars.map(carItem => {
+        return {
+          carId: carItem._id.toString(),
+          authorId: carItem.authorId.toString(),
+          description: carItem.description,
+          price: carItem.price,
+          miles: carItem.miles,
+          link: carItem.link,
+          createdDate: carItem.createdDate.toString()
+        }
+      })
+
+      //console.log(carData)
+
+      client.close()
+
+      if (carData.length) {
+        client.close()
+        return { carData: carData, userData: userData }
+      } else {
+        client.close()
+        return "no items found"
+      }
+    } catch (err) {
+      throw { error: err }
+    }
+  } // End findByAuthor
+} // End Car Class

@@ -110,7 +110,7 @@ const CreateItemPage = () => {
       const signal = controller.signal
       async function sendRequest() {
         try {
-          appDispatch({ type: "flashMessage", value: "Sent Request to API" })
+          //appDispatch({ type: "flashMessage", value: "Sent Request to API" })
           const response = await fetch("/api/create-item", {
             signal,
             method: "POST",

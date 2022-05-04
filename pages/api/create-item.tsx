@@ -76,10 +76,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         price: car.price,
         miles: car.miles,
         link: car.link,
-        useful_miles: car.useful_miles,
-        annual_miles: car.annual_miles,
-        rem_months: car.rem_months,
-        cost_per_rem_mos: car.cost_per_rem_mos,
+        //rem_months: car.rem_months,
+        //cost_per_rem_mos: car.cost_per_rem_mos,
         createdDate: car.createdDate
       }
 

@@ -254,10 +254,10 @@ const register: React.FC = () => {
           })
           const data = await response.json()
           if (data.message != "success") {
-            //appDispatch({ type: "flashMessage", value: "Could not register" })
-            appDispatch({ type: "flashMessage", value: data.errors })
+            appDispatch({ type: "flashMessage", value: "Could not register" })
+            //appDispatch({ type: "flashMessage", value: [data.errors] })
             console.warn(data.errors)
-            throw { message: "Could not register", errors: data.errors }
+            throw { message: "Could not register", errors: [data.errors] }
           }
           console.log("Created User: " + data.data.username)
           // now sign the user in - note: signIn will always resolve even with error
@@ -270,7 +270,8 @@ const register: React.FC = () => {
           router.replace("/dashboard")
           appDispatch({ type: "flashMessage", value: "Welcome!" })
         } catch (err: any) {
-          appDispatch({ type: "flashMessage", value: `${err?.errors}` })
+          //appDispatch({ type: "flashMessage", value: `${err?.errors}` })
+          appDispatch({ type: "flashMessage", value: `something went wrong` })
           console.log(`There was a problem or the request was cancelled: ${err}`)
           return { errors: err }
         }
