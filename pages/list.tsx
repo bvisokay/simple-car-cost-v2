@@ -17,7 +17,8 @@ const ListPageHeading = styled.div`
 const List = (props: any) => {
   console.log(props)
   const [cars] = useState(props.carData)
-  //const [cars] = useState([])
+  const [usefulMiles] = useState(props.userData.useful_miles)
+  const [monthlyMiles] = useState(props.userData.monthly_miles)
 
   return (
     <Wrapper>
@@ -51,6 +52,8 @@ const List = (props: any) => {
         <ul>
           {cars.length ? (
             cars.map((item: any) => {
+              item.rem_months = (usefulMiles - item.miles) / monthlyMiles
+              item.cprm = item.price / ((usefulMiles - item.miles) / monthlyMiles)
               return <CarListItemCard key={item.carId} item={item} />
             })
           ) : (

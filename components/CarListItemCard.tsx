@@ -5,7 +5,7 @@ import { HiOutlineExternalLink, HiOutlineClock } from "react-icons/hi"
 
 const Card = styled.li`
   width: 100%;
-  margin: 1rem auto;
+  margin: 1.5rem auto;
   border: 2px solid var(--transparent);
   border-radius: 4px;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
@@ -18,10 +18,10 @@ const Card = styled.li`
   .header {
     background-color: var(--primary);
     color: #fff;
-    padding: 1rem;
+    padding: 0.75rem;
     display: flex;
     align-items: center;
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     justify-content: space-between;
     border: 2px solid var(--transparent);
     border-top-left-radius: 4px;
@@ -30,7 +30,7 @@ const Card = styled.li`
 
     svg {
       color: #fff;
-      font-size: 1.75rem;
+      font-size: 1.6rem;
       top: 2px;
     }
 
@@ -51,19 +51,18 @@ const Card = styled.li`
   }
 
   .body {
-    padding: 0.5rem 0.5rem;
+    padding: 0.25rem 0.25rem;
 
     .specs-grid {
-      padding: 1rem 0.5rem;
+      padding: 0.5rem 0.25rem;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 0.75rem;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+      gap: 0.1rem;
       //border: 1px solid hotpink;
 
       .box {
         //border: 1px solid var(--primary);
-        //border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -76,7 +75,7 @@ const Card = styled.li`
 
           span {
             font-family: var(--font-secondary);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             letter-spacing: 1px;
           }
         }
@@ -88,26 +87,49 @@ const Card = styled.li`
     position: relative;
     top: 0.4rem;
     margin-right: 0.5rem;
-    font-size: 1.75rem;
+    font-size: 1.6rem;
   }
 
   p {
     padding: 0;
     margin: 0.25rem 0 0.5rem 0;
     color: var(--gray);
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-family: var(--font-primary);
   }
 
-  .link {
-    padding: 0.5rem 1rem;
-    text-align: right;
+  .footer {
+    //border: 1px solid purple;
+    padding: 0.25rem 1rem;
+    display: flex;
+    align-items: center;
     font-size: 0.8rem;
     color: var(--primary);
+    justify-content: space-between;
+
+    p {
+      font-size: 0.6rem;
+      padding: 0;
+      margin: 0;
+    }
+
+    a {
+      font-size: 0.9rem;
+      padding: 0;
+      margin: 0;
+      color: var(--primary);
+
+      :hover {
+        text-decoration: none;
+        color: var(--indigo);
+      }
+    }
 
     svg {
-      font-size: 1.2rem;
+      font-size: 1rem;
       top: 3px;
+      padding: 0;
+      margin: 0 0 0 0.25rem;
     }
   }
 `
@@ -149,7 +171,7 @@ const CarListItemCard = (props: any) => {
               <HiOutlineClock />
               <span>Rem. Mos.</span>
             </div>
-            <p>{props.item.price.toLocaleString()}</p>
+            <p>{Math.round(props.item.rem_months)}</p>
           </div>
 
           <div className="box">
@@ -164,12 +186,23 @@ const CarListItemCard = (props: any) => {
               <MdOutlinePriceChange />
               <span>CPRM</span>
             </div>
-            <p>${props.item.price.toLocaleString()}</p>
+            <p>${Math.round(props.item.cprm.toLocaleString())}</p>
           </div>
         </div>
-        <div className="link">
-          <span>Visit Link</span>
-          <HiOutlineExternalLink />
+        <div className="footer">
+          <p>
+            Car added: {new Date(props.item.createdDate).getMonth() + 1}/{new Date(props.item.createdDate).getDate()}/{new Date(props.item.createdDate).getFullYear()}
+          </p>
+
+          <a href="#">
+            Visit Link
+            <HiOutlineExternalLink />
+          </a>
+
+          {/* <div>
+            <span>Visit Link</span>
+            <HiOutlineExternalLink />
+          </div> */}
         </div>
       </div>
     </Card>
