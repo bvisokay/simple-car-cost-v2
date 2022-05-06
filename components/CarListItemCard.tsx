@@ -3,6 +3,8 @@ import { MdSpeed, MdOutlinePriceChange, MdOutlineDelete, MdOutlineEdit } from "r
 import { IoMdCash } from "react-icons/io"
 import { HiOutlineExternalLink, HiOutlineClock } from "react-icons/hi"
 
+import { breakpoints } from "../styles/breakpoints"
+
 const Card = styled.li`
   width: 100%;
   margin: 1.5rem auto;
@@ -21,17 +23,25 @@ const Card = styled.li`
     padding: 0.75rem;
     display: flex;
     align-items: center;
-    font-size: 1.25rem;
+    font-size: 1rem;
     justify-content: space-between;
     border: 2px solid var(--transparent);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     margin: 0;
 
+    @media ${breakpoints.sm} {
+      font-size: 1.25rem;
+    }
+
     svg {
       color: #fff;
-      font-size: 1.6rem;
+      font-size: 1.2rem;
       top: 2px;
+
+      @media ${breakpoints.sm} {
+        font-size: 1.6rem;
+      }
     }
 
     button {
@@ -58,7 +68,7 @@ const Card = styled.li`
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
       grid-template-rows: 1fr;
-      gap: 0.1rem;
+      gap: 0.05rem;
       //border: 1px solid hotpink;
 
       .box {
@@ -72,11 +82,17 @@ const Card = styled.li`
         .box-header {
           //padding-bottom: 5px;
           //border-bottom: 2px solid var(--primary);
+          text-align: center;
 
           span {
             font-family: var(--font-secondary);
-            font-size: 1.2rem;
-            letter-spacing: 1px;
+            font-size: 0.9rem;
+            letter-spacing: 0.25px;
+
+            @media ${breakpoints.sm} {
+              font-size: 1.2rem;
+              letter-spacing: 1px;
+            }
           }
         }
       }
@@ -85,17 +101,27 @@ const Card = styled.li`
 
   svg {
     position: relative;
-    top: 0.4rem;
-    margin-right: 0.5rem;
-    font-size: 1.6rem;
+    top: 0.1rem;
+    margin-right: 0.1rem;
+    font-size: 0.9rem;
+
+    @media ${breakpoints.sm} {
+      font-size: 1.6rem;
+      top: 0.4rem;
+      margin-right: 0.5rem;
+    }
   }
 
   p {
     padding: 0;
     margin: 0.25rem 0 0.5rem 0;
     color: var(--gray);
-    font-size: 1.15rem;
+    font-size: 0.9rem;
     font-family: var(--font-primary);
+
+    @media ${breakpoints.sm} {
+      font-size: 1.15rem;
+    }
   }
 
   .footer {
@@ -114,7 +140,7 @@ const Card = styled.li`
     }
 
     a {
-      font-size: 0.9rem;
+      font-size: 0.75rem;
       padding: 0;
       margin: 0;
       color: var(--primary);
@@ -123,13 +149,21 @@ const Card = styled.li`
         text-decoration: none;
         color: var(--indigo);
       }
+
+      @media ${breakpoints.sm} {
+        font-size: 0.9rem;
+      }
     }
 
     svg {
-      font-size: 1rem;
-      top: 3px;
+      font-size: 0.8rem;
+      top: 2px;
       padding: 0;
-      margin: 0 0 0 0.25rem;
+      margin: 0 0 0 0.1rem;
+
+      @media ${breakpoints.sm} {
+        font-size: 1rem;
+      }
     }
   }
 `
