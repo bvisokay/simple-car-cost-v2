@@ -46,7 +46,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background-color: white;
+    background-color: whitesmoke;
     background-size: cover;
     background-repeat: no-repeat;
     margin: 0;

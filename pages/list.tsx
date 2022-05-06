@@ -3,19 +3,35 @@ import { getSession } from "next-auth/client"
 import { useState } from "react"
 import { Wrapper, Section } from "../styles/GlobalComponents"
 import Car from "../models/Car"
+import CarListItemCard from "../components/CarListItemCard"
+import Link from "next/link"
+import styled from "styled-components"
+
+const ListPageHeading = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 
 const List = (props: any) => {
   console.log(props)
   const [cars] = useState(props.carData)
+  //const [cars] = useState([])
 
   return (
     <Wrapper>
       <Section>
-        <h2>{props.session.user.name}'s List</h2>
-        <p>Add Car</p>
-        <p>Learn More</p>
-        <p>Sort &amp; Filter Icon</p>
+        <ListPageHeading>
+          <h2>{props.session.user.name}'s List</h2>
+          <p>Add Car</p>
+          <p>Learn More</p>
+          <p>Sort &amp; Filter Icon</p>
+        </ListPageHeading>
         <hr />
+        <br />
+        {cars.length == 1 && <p>You have 1 car in your list</p>}
+        {cars.length > 1 && <p>You have {cars.length} cars in your list</p>}
         <br />
         {/* <FormControl>
           <select
@@ -31,18 +47,23 @@ const List = (props: any) => {
             <option value="cprmASC">Lowest Cost Per Rem Mo</option>
           </select>
         </FormControl>
-        <hr /> */}
+          <hr /> */}
         <ul>
-          {cars.map((item: any, index: any) => {
-            return <li key={index}>{item.description}</li>
-          })}
-        </ul>
-        <ul>
-          {cars.length
-            ? cars.map((item: any, index: any) => {
-                return <li key={index}>{item.description}</li>
-              })
-            : "No Items Found"}
+          {cars.length ? (
+            cars.map((item: any) => {
+              return <CarListItemCard key={item.carId} item={item} />
+            })
+          ) : (
+            <>
+              <p>
+                No Items Found.{" "}
+                <Link href="/create-item">
+                  <a>Add Car</a>
+                </Link>{" "}
+                to get Started.
+              </p>
+            </>
+          )}
         </ul>
       </Section>
     </Wrapper>
