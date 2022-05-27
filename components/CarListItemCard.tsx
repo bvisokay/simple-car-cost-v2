@@ -8,12 +8,9 @@ import { breakpoints } from "../styles/breakpoints"
 const Card = styled.li`
   width: 100%;
   margin: 1.5rem auto;
-  border: 2px solid var(--transparent);
   border-radius: 4px;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
   background-color: #fff;
-  font-family: var(--font-secondary);
-  font-weight: 600;
   color: var(--primary);
   max-width: 500px;
 
@@ -34,7 +31,13 @@ const Card = styled.li`
       font-size: 1.25rem;
     }
 
+    h3 {
+      //border: 1px solid red;
+      padding: 2px 0 0 0;
+    }
+
     svg {
+      top: 0.4rem;
       color: #fff;
       font-size: 1.2rem;
       top: 2px;
@@ -64,12 +67,12 @@ const Card = styled.li`
     padding: 0.25rem 0.25rem;
 
     .specs-grid {
-      padding: 0.5rem 0.25rem;
+      padding: 1.25rem 0.25rem;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
       grid-template-rows: 1fr;
       gap: 0.05rem;
-      //border: 1px solid hotpink;
+      //border: 1px dashed salmon;
 
       .box {
         //border: 1px solid var(--primary);
@@ -80,47 +83,49 @@ const Card = styled.li`
         flex-direction: column;
 
         .box-header {
-          //padding-bottom: 5px;
-          //border-bottom: 2px solid var(--primary);
+          width: 100%;
+          height: 100%;
+          //border: 2px solid var(--primary);
           text-align: center;
+          text-transform: uppercase;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: space-between;
 
-          span {
-            font-family: var(--font-secondary);
+          .title {
+            //border: 1px solid red;
+            margin: 0.5rem 0 0.5rem 0;
+            padding: 0;
             font-size: 0.9rem;
-            letter-spacing: 0.25px;
+            font-family: var(--font-primary);
+            width: 100%;
+            font-weight: 600;
+
+            @media ${breakpoints.md} {
+              font-size: 1rem;
+            }
+          }
+
+          svg {
+            font-size: 1rem;
+            //border: 2px solid purple;
 
             @media ${breakpoints.sm} {
-              font-size: 1.2rem;
-              letter-spacing: 1px;
+              font-size: 2rem;
+              //border: 2px solid hotpink;
             }
           }
         }
+
+        p {
+          color: var(--gray);
+          font-size: 0.6rem;
+          @media ${breakpoints.md} {
+            font-size: 0.9rem;
+          }
+        }
       }
-    }
-  }
-
-  svg {
-    position: relative;
-    top: 0.1rem;
-    margin-right: 0.1rem;
-    font-size: 0.9rem;
-
-    @media ${breakpoints.sm} {
-      font-size: 1.6rem;
-      top: 0.4rem;
-      margin-right: 0.5rem;
-    }
-  }
-
-  p {
-    padding: 0;
-    margin: 0.25rem 0 0.5rem 0;
-    color: var(--gray);
-    font-size: 0.9rem;
-    font-family: var(--font-primary);
-
-    @media ${breakpoints.sm} {
-      font-size: 1.15rem;
     }
   }
 
@@ -137,10 +142,11 @@ const Card = styled.li`
       font-size: 0.6rem;
       padding: 0;
       margin: 0;
+      color: var(--gray);
     }
 
     a {
-      font-size: 0.75rem;
+      font-size: 0.6rem;
       padding: 0;
       margin: 0;
       color: var(--primary);
@@ -156,10 +162,11 @@ const Card = styled.li`
     }
 
     svg {
+      //border: 1px solid red;
       font-size: 0.8rem;
-      top: 2px;
-      padding: 0;
-      margin: 0 0 0 0.1rem;
+      position: relative;
+      top: 3px;
+      margin-left: 2px;
 
       @media ${breakpoints.sm} {
         font-size: 1rem;
@@ -194,38 +201,38 @@ const CarListItemCard = (props: any) => {
         <div className="specs-grid">
           <div className="box">
             <div className="box-header">
+              <div className="title">Price</div>
               <IoMdCash />
-              <span> Price</span>
             </div>
             <p>${props.item.price.toLocaleString()}</p>
           </div>
 
           <div className="box">
             <div className="box-header">
+              <div className="title">Rem. Mo.</div>
               <HiOutlineClock />
-              <span>Rem. Mos.</span>
             </div>
             <p>{Math.round(props.item.rem_months)}</p>
           </div>
 
           <div className="box">
             <div className="box-header">
+              <div className="title">Miles</div>
               <MdSpeed />
-              <span>Miles</span>
             </div>
             <p>{props.item.miles.toLocaleString()}</p>
           </div>
           <div className="box">
             <div className="box-header">
+              <div className="title">CPRM</div>
               <MdOutlinePriceChange />
-              <span>CPRM</span>
             </div>
             <p>${Math.round(props.item.cprm.toLocaleString())}</p>
           </div>
         </div>
         <div className="footer">
           <p>
-            Car added: {new Date(props.item.createdDate).getMonth() + 1}/{new Date(props.item.createdDate).getDate()}/{new Date(props.item.createdDate).getFullYear()}
+            Car Added: {new Date(props.item.createdDate).getMonth() + 1}/{new Date(props.item.createdDate).getDate()}/{new Date(props.item.createdDate).getFullYear()}
           </p>
 
           <a href="#">
