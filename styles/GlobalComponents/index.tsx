@@ -57,7 +57,7 @@ export const SectionTitle = styled.h2<ColorProps>`
   margin: 0.5rem 0;
   color: ${props => (props.color ? `${props.color}` : "var(--dark)")};
   text-align: center;
-  font-family: var(--font-family-monospace);
+  font-family: var(--font-primary);
   letter-spacing: -1.5px;
   text-transform: uppercase;
   padding: 1.25rem 0;
@@ -87,7 +87,7 @@ export const Btn = styled.button<ColorProps>`
   font-size: 0.875rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   line-height: 1.5;
-  font-family: var(--font-family-sans-serif);
+  font-family: var(--font-primary);
 
   @media ${breakpoints.md} {
     font-size: 1rem;
@@ -119,7 +119,7 @@ export const BtnWide = styled.button<ColorProps>`
   font-size: 0.875rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   line-height: 1.5;
-  font-family: var(--font-family-sans-serif);
+  font-family: var(--font-primary);
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
