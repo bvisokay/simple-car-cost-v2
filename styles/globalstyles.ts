@@ -31,7 +31,7 @@ export const GlobalStyles = createGlobalStyle`
   --wrapper-width-narrow: 600px;
   --wrapper-width-very-narrow: 400px;
   --font-primary: monospace, sans-serif;
-  --font-secondary: 'Bebas Neue', cursive;
+  --font-secondary: font-family: 'Oswald', sans-serif;
   --font-family-sans-serif: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
   --font-family-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
