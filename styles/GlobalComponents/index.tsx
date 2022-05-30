@@ -29,7 +29,7 @@ export const Display = styled.h2`
 `
 
 export const Section = styled.div`
-  margin: 4rem auto;
+  margin: 1rem auto;
 `
 
 export const SectionNarrow = styled.section`
@@ -84,13 +84,13 @@ export const Btn = styled.button<ColorProps>`
   margin: 0.2rem;
   padding: 0.25rem 0.5rem;
   color: #fff;
-  font-size: 0.875rem;
+  font-size: 0.785rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   line-height: 1.5;
   font-family: var(--font-primary);
 
   @media ${breakpoints.md} {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
 
   :disabled {
