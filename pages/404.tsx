@@ -1,13 +1,25 @@
 import Link from "next/link"
-import { WrapperNarrow } from "../styles/GlobalComponents"
+import { Display, WrapperNarrow } from "../styles/GlobalComponents"
+import styled from "styled-components"
+
+const FlexParent = styled.div`
+  display: flex;
+  height: 400px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  //border: 2px solid purple;
+`
 
 const NotFoundPage = () => {
   return (
     <WrapperNarrow>
-      <h2>Page Not Found</h2>
-      <div>
-        Head back to the <Link href="/">homepage</Link> for a fresh start.
-      </div>
+      <FlexParent>
+        <Display>Not Found</Display>
+        <div>
+          Head back to the <Link href="/">homepage</Link> for a fresh start.
+        </div>
+      </FlexParent>
     </WrapperNarrow>
   )
 }
