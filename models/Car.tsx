@@ -121,28 +121,28 @@ export default class Car {
 
       const cars = await carsCollection.find({ authorId: new ObjectId(userDoc._id) }).toArray()
 
-      const carData = cars.map(carItem => {
+      const carDataArr = cars.map(carItem => {
         return {
           carId: carItem._id.toString(),
           authorId: carItem.authorId.toString(),
-          description: carItem.description,
-          price: carItem.price,
-          miles: carItem.miles,
-          link: carItem.link,
+          description: carItem.description.toString(),
+          price: carItem.price.toString(),
+          miles: carItem.miles.toString(),
+          link: carItem.link.toString(),
           createdDate: carItem.createdDate.toString()
         }
       })
 
-      //console.log(carData)
+      console.log(carDataArr)
 
       client.close()
 
-      if (carData.length) {
+      if (carDataArr.length) {
         client.close()
-        return { carData: carData, userData: userData }
+        return { carData: carDataArr, userData: userData }
       } else {
         client.close()
-        return "no items found"
+        return { carData: carDataArr, userData: userData }
       }
     } catch (err) {
       throw { error: err }

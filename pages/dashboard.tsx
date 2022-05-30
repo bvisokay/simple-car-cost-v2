@@ -8,7 +8,7 @@ const DashboardPage = (props: any) => {
   return (
     <Wrapper>
       <Section>
-        <h2>Welcome {props.session.user.name}</h2>
+        <h2>Welcome {props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}</h2>
         <hr />
         <br />
         <Link href="/create-item">

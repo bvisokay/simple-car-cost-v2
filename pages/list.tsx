@@ -24,13 +24,12 @@ const List = (props: any) => {
     <Wrapper>
       <Section>
         <ListPageHeading>
-          <h2>{props.session.user.name}'s List</h2>
+          <h2>{props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}'s List</h2>
           <p>Add Car</p>
           <p>Learn More</p>
           <p>Sort &amp; Filter Icon</p>
         </ListPageHeading>
         <hr />
-        <br />
         {cars.length == 1 && <p>You have 1 car in your list</p>}
         {cars.length > 1 && <p>You have {cars.length} cars in your list</p>}
         <br />
@@ -93,7 +92,8 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     carData: []
   } */
 
-  let data: any = {}
+  let data
+
   try {
     data = await Car.findByAuthor(username)
     console.log(data)
