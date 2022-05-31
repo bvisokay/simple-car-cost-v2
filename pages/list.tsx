@@ -1,37 +1,40 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { getSession } from "next-auth/client"
 import { useState } from "react"
+import { breakpoints } from "../styles/breakpoints"
 import { Wrapper, Section } from "../styles/GlobalComponents"
 import Car from "../models/Car"
-import CarListItemCard from "../components/CarListItemCard"
+import CarListItemCard from "../components/CarListItemCard/CarListItemCard"
 import Link from "next/link"
 import styled from "styled-components"
 
 const ListPageHeading = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
+  @media ${breakpoints.md} {
+    flex-direction: row;
+  }
 `
 
 const List = (props: any) => {
   console.log(props)
   const [cars] = useState(props.carData)
-  const [usefulMiles] = useState(props.userData.useful_miles)
-  const [monthlyMiles] = useState(props.userData.monthly_miles)
 
   return (
     <Wrapper>
       <Section>
         <ListPageHeading>
           <h2>{props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}'s List</h2>
-          <p>Add Car</p>
-          <p>Learn More</p>
+          {cars.length == 1 && <p>You have 1 car in your list</p>}
+          {cars.length > 1 && <p>You have {cars.length} cars in your list</p>}
           <p>Sort &amp; Filter Icon</p>
+          <p>Clear All</p>
         </ListPageHeading>
         <hr />
-        {cars.length == 1 && <p>You have 1 car in your list</p>}
-        {cars.length > 1 && <p>You have {cars.length} cars in your list</p>}
         <br />
         {/* <FormControl>
           <select
@@ -51,8 +54,6 @@ const List = (props: any) => {
         <ul>
           {cars.length ? (
             cars.map((item: any) => {
-              item.rem_months = (usefulMiles - item.miles) / monthlyMiles
-              item.cprm = item.price / ((usefulMiles - item.miles) / monthlyMiles)
               return <CarListItemCard key={item.carId} item={item} />
             })
           ) : (
@@ -96,7 +97,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 
   try {
     data = await Car.findByAuthor(username)
-    console.log(data)
+    //console.log(data)
   } catch (err) {
     console.log(err)
   }

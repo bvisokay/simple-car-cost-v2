@@ -1,9 +1,5 @@
 import styled from "styled-components"
-import { MdSpeed, MdOutlinePriceChange, MdOutlineDelete, MdOutlineEdit } from "react-icons/md"
-import { IoMdCash } from "react-icons/io"
-import { HiOutlineExternalLink, HiOutlineClock } from "react-icons/hi"
-
-import { breakpoints } from "../styles/breakpoints"
+import { breakpoints } from "../../styles/breakpoints"
 
 const Card = styled.li`
   width: 100%;
@@ -175,78 +171,4 @@ const Card = styled.li`
   }
 `
 
-const CarListItemCard = (props: any) => {
-  return (
-    <Card>
-      <div className="header">
-        <h3>{props.item.description}</h3>
-        <div>
-          <button>
-            <MdOutlineEdit
-              onClick={() => {
-                alert("Edit")
-              }}
-            />
-          </button>
-          <button>
-            <MdOutlineDelete
-              onClick={() => {
-                alert("Delete")
-              }}
-            />
-          </button>
-        </div>
-      </div>
-      <div className="body">
-        <div className="specs-grid">
-          <div className="box">
-            <div className="box-header">
-              <div className="title">Price</div>
-              <IoMdCash />
-            </div>
-            <p>${props.item.price.toLocaleString()}</p>
-          </div>
-
-          <div className="box">
-            <div className="box-header">
-              <div className="title">Rem. Mo.</div>
-              <HiOutlineClock />
-            </div>
-            <p>{Math.round(props.item.rem_months)}</p>
-          </div>
-
-          <div className="box">
-            <div className="box-header">
-              <div className="title">Miles</div>
-              <MdSpeed />
-            </div>
-            <p>{props.item.miles.toLocaleString()}</p>
-          </div>
-          <div className="box">
-            <div className="box-header">
-              <div className="title">CPRM</div>
-              <MdOutlinePriceChange />
-            </div>
-            <p>${Math.round(props.item.cprm.toLocaleString())}</p>
-          </div>
-        </div>
-        <div className="footer">
-          <p>
-            Car Added: {new Date(props.item.createdDate).getMonth() + 1}/{new Date(props.item.createdDate).getDate()}/{new Date(props.item.createdDate).getFullYear()}
-          </p>
-
-          <a href="#">
-            Visit Link
-            <HiOutlineExternalLink />
-          </a>
-
-          {/* <div>
-            <span>Visit Link</span>
-            <HiOutlineExternalLink />
-          </div> */}
-        </div>
-      </div>
-    </Card>
-  )
-}
-export default CarListItemCard
+export default Card

@@ -1,6 +1,17 @@
 import validator from "validator"
 import { hashPassword } from "../lib/auth"
 import { addUserDocument, connectToDatabase } from "../lib/db"
+import { ObjectId } from "mongodb"
+
+interface EditableCar {
+  _id: string | undefined
+  authorId: string | undefined
+  description: string | undefined
+  price: number | undefined
+  miles: number | undefined
+  link: string | undefined
+  createdDate: Date | undefined
+}
 
 export default class User {
   data: any
@@ -166,4 +177,44 @@ export default class User {
       return { errors: err }
     }
   } // end doesUserValue Exist
+
+  // doesUserMatchAuthor
+  static async doesUserMatchAuthor(username: string | undefined, carId: string | string[] | undefined): Promise<{}> {
+    if (typeof username !== "string" || typeof carId !== "string") {
+      return { error: "Something Went Wrong" }
+    }
+    //console.log(`passed in carId: ${carId}`)
+    // Lookup userId given username
+    try {
+      let client = await connectToDatabase()
+      const idResult = await client.db().collection("users").findOne({ username: username })
+      const userId = idResult?._id.toString()
+      //console.log(`userId: ${userId}`)
+      const carDocument = await client
+        .db()
+        .collection("cars")
+        .findOne({ _id: new ObjectId(carId) })
+      //console.log(carDocument)
+      const authorId = carDocument?.authorId.toString()
+      //console.log(authorId)
+      client.close()
+      if (userId === authorId) {
+        // clean up car document
+        const editableCar: EditableCar = {
+          _id: carDocument?._id.toString(),
+          authorId: carDocument?.authorId.toString(),
+          description: carDocument?.description,
+          price: carDocument?.price,
+          miles: carDocument?.miles,
+          link: carDocument?.link,
+          createdDate: carDocument?.createdDate.toString()
+        }
+        return { editableCar }
+      }
+      client.close()
+      return { error: "user and author do not match" }
+    } catch {
+      return { error: "Something Else Went Wrong" }
+    }
+  } // end doesUserMatchAuthor
 } // close User class

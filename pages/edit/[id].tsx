@@ -1,11 +1,15 @@
-import { runServerSidePageGuard } from "../lib/auth"
+import { getSession } from "next-auth/client"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
-import { Wrapper, Section, FormControl, BtnWide } from "../styles/GlobalComponents"
+import { Wrapper, Section, FormControl, BtnWide } from "../../styles/GlobalComponents"
 import React, { useContext, useEffect } from "react"
-import { useImmerReducer } from "use-immer"
-import { GlobalDispatchContext } from "../store/GlobalContext"
+import User from "../../models/User"
 import Link from "next/link"
+import { useImmerReducer } from "use-immer"
+import { GlobalDispatchContext } from "../../store/GlobalContext"
 import styled from "styled-components"
+import { useRouter } from "next/router"
+
+/* description, price, miles, link */
 
 const NavBack = styled.div`
   margin: 1rem auto 2rem auto;
@@ -14,26 +18,36 @@ const NavBack = styled.div`
   }
 `
 
-/* description, price, miles, link */
+const EditItemPage = (props: any) => {
+  console.log(props)
 
-const CreateItemPage = () => {
-  type CreateItemActionTypes = { type: "descriptionCheck"; value: string } | { type: "priceCheck"; value: string } | { type: "milesCheck"; value: string } | { type: "linkCheck"; value: string } | { type: "submitForm"; value?: string } | { type: "clearFields"; value?: string }
+  const router = useRouter()
 
-  //const router = useRouter()
+  type EditItemActionTypes = { type: "changeCheck" } | { type: "descriptionCheck"; value: string } | { type: "priceCheck"; value: string } | { type: "milesCheck"; value: string } | { type: "linkCheck"; value: string } | { type: "submitForm"; value?: string } | { type: "clearFields"; value?: string }
 
   const appDispatch = useContext(GlobalDispatchContext)
 
   const initialState = {
-    description: { value: "", hasErrors: false, message: "" },
-    price: { value: "", hasErrors: false, message: "" },
-    miles: { value: "", hasErrors: false, message: "" },
-    link: { value: "", hasErrors: false, message: "" },
+    description: { value: props.description, hasErrors: false, message: "" },
+    price: { value: props.price, hasErrors: false, message: "" },
+    miles: { value: props.miles, hasErrors: false, message: "" },
+    link: { value: props.link, hasErrors: false, message: "" },
+    changeCheckPassed: false,
     submitCount: 0
   }
 
   //reducer
-  function createItemReducer(draft: typeof initialState, action: CreateItemActionTypes) {
+  function EditItemReducer(draft: typeof initialState, action: EditItemActionTypes) {
     switch (action.type) {
+      case "changeCheck":
+        //console.log("changeCheck ran")
+        if (draft.description.value === props.description && draft.price.value === props.price && draft.miles.value === props.miles && draft.link.value === props.link) {
+          draft.changeCheckPassed = false
+          appDispatch({ type: "flashMessage", value: "The values must not be the same" })
+        } else {
+          draft.changeCheckPassed = true
+        }
+        return
       case "descriptionCheck":
         draft.description.hasErrors = false
         draft.description.value = action.value
@@ -95,10 +109,10 @@ const CreateItemPage = () => {
         }
         return
       case "submitForm":
-        if (!draft.description.hasErrors && !draft.price.hasErrors && !draft.miles.hasErrors && !draft.link.hasErrors) {
+        if (!draft.description.hasErrors && !draft.price.hasErrors && !draft.miles.hasErrors && !draft.link.hasErrors && draft.changeCheckPassed === true) {
           draft.submitCount++
         } else {
-          alert("Errors")
+          appDispatch({ type: "flashMessage", value: "Error Submitting Updates" })
         }
         return
       case "clearFields":
@@ -110,7 +124,7 @@ const CreateItemPage = () => {
     }
   }
 
-  const [state, dispatch] = useImmerReducer(createItemReducer, initialState)
+  const [state, dispatch] = useImmerReducer(EditItemReducer, initialState)
 
   useEffect(() => {
     if (state.submitCount) {
@@ -118,14 +132,15 @@ const CreateItemPage = () => {
       const signal = controller.signal
       async function sendRequest() {
         try {
-          //appDispatch({ type: "flashMessage", value: "Sent Request to API" })
-          const response = await fetch("/api/create-item", {
+          appDispatch({ type: "flashMessage", value: "Sent Request to API" })
+          const response = await fetch("/api/update-item", {
             signal,
-            method: "POST",
+            method: "PATCH",
             headers: {
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
+              carId: props._id,
               description: state.description.value,
               price: state.price.value,
               miles: state.miles.value,
@@ -139,15 +154,15 @@ const CreateItemPage = () => {
             return
           }
           if (data.message === "success") {
-            appDispatch({ type: "flashMessage", value: "Car successfully added to your list" })
-            //router.push("/list")
+            appDispatch({ type: "flashMessage", value: "Car successfully updated" })
+            router.push("/list")
             // clear the form in case we revisit this page immediately?
-            dispatch({ type: "clearFields" })
-            console.log(data.data)
+            //dispatch({ type: "clearFields" })
+            //console.log(data.data)
             return
           }
         } catch (err) {
-          appDispatch({ type: "flashMessage", value: "Could not add car: Ref#: 239" })
+          appDispatch({ type: "flashMessage", value: "Could not update car: Ref#: 111" })
           console.error(err)
         }
       }
@@ -156,22 +171,26 @@ const CreateItemPage = () => {
     }
   }, [state.submitCount])
 
-  const createItemHandler = (e: React.FormEvent) => {
+  const editItemHandler = (e: React.FormEvent) => {
     e.preventDefault()
-
     // run all the checks and submitForm
     dispatch({ type: "descriptionCheck", value: state.description.value })
     dispatch({ type: "priceCheck", value: state.price.value })
     dispatch({ type: "milesCheck", value: state.miles.value })
     dispatch({ type: "linkCheck", value: state.link.value })
+    dispatch({ type: "changeCheck" })
     dispatch({ type: "submitForm" })
   }
 
   return (
     <Wrapper>
       <Section>
-        <form onSubmit={createItemHandler}>
-          <h2>Add New Car</h2>
+        <form onSubmit={editItemHandler}>
+          <NavBack>
+            <Link href="/list">&laquo; Back to List</Link>
+          </NavBack>
+          <h2>Edit Car</h2>
+          {/* <p>{state.changeCheckPassed ? "Yes" : "No"}</p> */}
 
           <FormControl>
             <label htmlFor="description">Description</label>
@@ -239,18 +258,35 @@ const CreateItemPage = () => {
             />
             {state.link.hasErrors && <div className="liveValidateMessage">{state.link.message}</div>}
           </FormControl>
-          <BtnWide color={"var(--green)"}>Add Car</BtnWide>
+          <BtnWide color={"var(--green)"}>Submit Changes</BtnWide>
         </form>
-        <NavBack>
-          <Link href="/list">&laquo; Back to List</Link>
-        </NavBack>
       </Section>
     </Wrapper>
   )
 }
-export default CreateItemPage
+export default EditItemPage
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const session = await runServerSidePageGuard(context)
-  return session
+  const session = await getSession({ req: context.req })
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false
+      }
+    }
+  }
+  const username = session!.user!.name!.toString()
+  const carId = context.query.id
+  const result: any = await User.doesUserMatchAuthor(username, carId)
+  if (result.editableCar) {
+    return {
+      props: result.editableCar
+    }
+  } else {
+    return {
+      props: {}
+    }
+  }
+  // need to not only make sure that the usr is logged in but the user is the author
 }

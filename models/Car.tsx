@@ -18,8 +18,6 @@ export default class Car {
   price: number
   miles: number
   link?: string
-  //rem_months: number
-  //cost_per_rem_mos: number
   readonly createdDate: Date
   readonly uniqueId: number
   errors: string[]
@@ -29,8 +27,6 @@ export default class Car {
     this.price = parseFloat(data.price)
     this.miles = parseFloat(data.miles)
     this.link = data.link
-    //this.rem_months = Math.round((DEFAULT_USEFUL_MILES - this.miles) / DEFAULT_MONTHLY_MILES)
-    //this.cost_per_rem_mos = parseFloat((this.price / ((DEFAULT_USEFUL_MILES - this.miles) / DEFAULT_MONTHLY_MILES)).toFixed(2))
     this.createdDate = new Date()
     // scrap unique Id for autoGen mongoDb
     this.uniqueId = Math.round(Math.random() * 10000)
@@ -121,15 +117,18 @@ export default class Car {
 
       const cars = await carsCollection.find({ authorId: new ObjectId(userDoc._id) }).toArray()
 
-      const carDataArr = cars.map(carItem => {
+      // Send to client
+      const carDataArr: any = cars.map(carItem => {
         return {
           carId: carItem._id.toString(),
-          authorId: carItem.authorId.toString(),
+          //authorId: carItem.authorId.toString(),
           description: carItem.description.toString(),
-          price: carItem.price.toString(),
-          miles: carItem.miles.toString(),
+          price: carItem.price,
+          miles: carItem.miles,
           link: carItem.link.toString(),
-          createdDate: carItem.createdDate.toString()
+          createdDate: carItem.createdDate.toString(),
+          rem_months: Math.round((userData.useful_miles - carItem.miles) / userData.monthly_miles),
+          cprm: parseFloat((carItem.price / ((userData.useful_miles - carItem.miles) / userData.monthly_miles)).toFixed(2))
         }
       })
 
