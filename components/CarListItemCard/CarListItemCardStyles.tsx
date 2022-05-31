@@ -30,6 +30,8 @@ const Card = styled.li`
     h3 {
       //border: 1px solid red;
       padding: 2px 0 0 0;
+      word-wrap: break-word;
+      max-width: 80%;
     }
 
     svg {

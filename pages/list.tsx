@@ -46,7 +46,7 @@ const List = (props: any) => {
         const data = await response.json()
         if (data.error) {
           appDispatch({ type: "flashMessage", value: data.error })
-          console.warn(`from client: ${data.error}`)
+          //console.warn(`from client: ${data.error}`)
           return
         }
         if (data.message === "success") {
@@ -57,12 +57,12 @@ const List = (props: any) => {
             })
           )
 
-          console.log(data.data)
+          //console.log(data.data)
           return
         }
       } catch (err) {
         appDispatch({ type: "flashMessage", value: "Could not remove car" })
-        console.error(err)
+        //console.error(err)
       }
     }
     sendDeleteRequest()
@@ -76,8 +76,8 @@ const List = (props: any) => {
           <h2>{props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}'s List</h2>
           {cars.length == 1 && <p>You have 1 car in your list</p>}
           {cars.length > 1 && <p>You have {cars.length} cars in your list</p>}
-          <p>Sort &amp; Filter Icon</p>
-          <p>Clear All</p>
+          {/* <p>Sort &amp; Filter Icon</p> */}
+          {/* <p>Clear All</p> */}
         </ListPageHeading>
         <hr />
         <br />
@@ -144,7 +144,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     data = await Car.findByAuthor(username)
     //console.log(data)
   } catch (err) {
-    console.log(err)
+    //console.log(err)
   }
 
   // send session and vehicle data as props

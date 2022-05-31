@@ -36,11 +36,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log(car.errors)
 
     if (car.errors.length) {
-      console.log(`error thrown in /api/create-item ${car.errors}`)
+      //console.log(`error thrown in /api/create-item ${car.errors}`)
       res.status(422).json({ message: car.errors })
       throw car.errors
     } else {
-      console.log("No car.errors")
+      //console.log("No car.errors")
     }
 
     try {
@@ -104,7 +104,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       // return the new car details back as a respons with a success message
       res.status(200).json({ message: "success", data: carItem, errors: null })
     } catch (err) {
-      console.log(`There was a problem: ${err}`)
+      //console.log(`There was a problem: ${err}`)
     }
   }
 }

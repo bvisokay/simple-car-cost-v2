@@ -135,7 +135,7 @@ const CreateItemPage = () => {
           const data = await response.json()
           if (data.error) {
             appDispatch({ type: "flashMessage", value: data.error })
-            console.warn(`from client: ${data.error}`)
+            //console.warn(`from client: ${data.error}`)
             return
           }
           if (data.message === "success") {
@@ -143,12 +143,12 @@ const CreateItemPage = () => {
             //router.push("/list")
             // clear the form in case we revisit this page immediately?
             dispatch({ type: "clearFields" })
-            console.log(data.data)
+            //console.log(data.data)
             return
           }
         } catch (err) {
           appDispatch({ type: "flashMessage", value: "Could not add car: Ref#: 239" })
-          console.error(err)
+          //console.error(err)
         }
       }
       sendRequest()

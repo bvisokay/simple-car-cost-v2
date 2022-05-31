@@ -178,6 +178,29 @@ export default class User {
     }
   } // end doesUserValue Exist
 
+  // getSettings
+  static async getSettings(username: string | undefined | null) {
+    if (typeof username !== "string") {
+      return { status: "failed", data: null, error: "improper data" }
+    }
+    try {
+      let client = await connectToDatabase()
+      let result = await client
+        .db()
+        .collection("users")
+        .findOne({ username: username }, { projection: { _id: 1, useful_miles: 1, monthly_miles: 1 } })
+      if (result) {
+        client.close()
+        return { status: "success", data: { result }, error: null }
+      } else {
+        client.close()
+        return { status: "failed", data: null, error: "Could not get existing" }
+      }
+    } catch (err) {
+      return { status: "failed", data: null, error: `Could not get existing: ${err}` }
+    }
+  } // end getSettings
+
   // doesUserMatchAuthor
   static async doesUserMatchAuthor(username: string | undefined, carId: string | string[] | undefined): Promise<{}> {
     if (typeof username !== "string" || typeof carId !== "string") {

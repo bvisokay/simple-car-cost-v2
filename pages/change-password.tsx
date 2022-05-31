@@ -164,7 +164,7 @@ const ChangePassword: React.FC = () => {
           <input type="password" value={state.newPassword.value} onChange={e => dispatch({ type: "newPasswordChecks", value: e.target.value })} aria-label="newPassword" autoComplete="off" placeholder="New Password" />
           {state.showErrors && state.newPassword.hasErrors && <div className="liveValidateMessage">{state.newPassword.message}</div>}
         </FormControl>
-        <BtnWide color={"var(--green)"}>Sign In</BtnWide>
+        <BtnWide color={"var(--green)"}>Update</BtnWide>
       </form>
     </SectionVeryNarrow>
   )

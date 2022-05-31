@@ -37,17 +37,17 @@ export default class Car {
     // i think this is wehere all of the trim and parseInt() should happen?
     if (typeof this.description != "string") {
       this.description = ""
-      console.log("description was not a string")
+      //console.log("description was not a string")
     }
     if (typeof this.price != "number") {
-      console.log("price was not a number")
+      //console.log("price was not a number")
     }
     if (typeof this.miles != "number") {
-      console.log("miles was not a number")
+      //console.log("miles was not a number")
     }
     if (typeof this.link != "string") {
       this.link = ""
-      console.log("link was not a string")
+      //console.log("link was not a string")
     }
 
     /*
@@ -77,10 +77,10 @@ export default class Car {
   }
 
   static async findByAuthor(username: string) {
-    console.log("findByAuthor ran with " + username + " passed in")
+    //console.log("findByAuthor ran with " + username + " passed in")
     // quick clean up
     if (typeof username != "string") {
-      console.log(typeof username)
+      //console.log(typeof username)
       return { error: "invalid request" }
     }
 
@@ -111,7 +111,7 @@ export default class Car {
         useful_miles: userDoc.useful_miles,
         monthly_miles: userDoc.monthly_miles
       }
-      console.log(userData)
+      //console.log(userData)
 
       const carsCollection = client.db().collection("cars")
 
@@ -132,7 +132,7 @@ export default class Car {
         }
       })
 
-      console.log(carDataArr)
+      //console.log(carDataArr)
 
       client.close()
 
