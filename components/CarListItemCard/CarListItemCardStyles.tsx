@@ -87,11 +87,11 @@ const Card = styled.li`
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: space-between;
+          justify-content: flex-end;
 
           .title {
             //border: 1px solid red;
-            margin: 0.5rem 0 0.5rem 0;
+            margin: 0.25rem 0 0.5rem 0;
             padding: 0;
             font-size: 0.9rem;
             font-family: var(--font-primary);

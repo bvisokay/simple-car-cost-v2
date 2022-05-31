@@ -98,7 +98,7 @@ const CreateItemPage = () => {
         if (!draft.description.hasErrors && !draft.price.hasErrors && !draft.miles.hasErrors && !draft.link.hasErrors) {
           draft.submitCount++
         } else {
-          alert("Errors")
+          appDispatch({ type: "flashMessage", value: "Could Not Add Car" })
         }
         return
       case "clearFields":
@@ -139,7 +139,7 @@ const CreateItemPage = () => {
             return
           }
           if (data.message === "success") {
-            appDispatch({ type: "flashMessage", value: "Car successfully added to your list" })
+            appDispatch({ type: "flashMessage", value: "Car Added" })
             //router.push("/list")
             // clear the form in case we revisit this page immediately?
             dispatch({ type: "clearFields" })

@@ -1,12 +1,13 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { getSession } from "next-auth/client"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { breakpoints } from "../styles/breakpoints"
 import { Wrapper, Section } from "../styles/GlobalComponents"
 import Car from "../models/Car"
 import CarListItemCard from "../components/CarListItemCard/CarListItemCard"
 import Link from "next/link"
 import styled from "styled-components"
+import { GlobalDispatchContext } from "../store/GlobalContext"
 
 const ListPageHeading = styled.div`
   width: 100%;
@@ -21,8 +22,52 @@ const ListPageHeading = styled.div`
 `
 
 const List = (props: any) => {
-  console.log(props)
-  const [cars] = useState(props.carData)
+  //console.log(props)
+  const [cars, setCars] = useState(props.carData)
+
+  const appDispatch = useContext(GlobalDispatchContext)
+
+  const deleteItem = async (carId: string) => {
+    const controller = new AbortController()
+    const signal = controller.signal
+    async function sendDeleteRequest() {
+      try {
+        //appDispatch({ type: "flashMessage", value: "Sent Request to API" })
+        const response = await fetch("/api/delete-item", {
+          signal,
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            carId: carId
+          })
+        })
+        const data = await response.json()
+        if (data.error) {
+          appDispatch({ type: "flashMessage", value: data.error })
+          console.warn(`from client: ${data.error}`)
+          return
+        }
+        if (data.message === "success") {
+          appDispatch({ type: "flashMessage", value: "Car removed" })
+          setCars(
+            cars.filter((car: any) => {
+              return car.carId !== carId
+            })
+          )
+
+          console.log(data.data)
+          return
+        }
+      } catch (err) {
+        appDispatch({ type: "flashMessage", value: "Could not remove car" })
+        console.error(err)
+      }
+    }
+    sendDeleteRequest()
+    return () => controller.abort()
+  }
 
   return (
     <Wrapper>
@@ -54,7 +99,7 @@ const List = (props: any) => {
         <ul>
           {cars.length ? (
             cars.map((item: any) => {
-              return <CarListItemCard key={item.carId} item={item} />
+              return <CarListItemCard key={item.carId} item={item} deleteItem={deleteItem} />
             })
           ) : (
             <>

@@ -24,7 +24,7 @@ const CarListItemCard = (props: any) => {
           <button>
             <MdOutlineDelete
               onClick={() => {
-                alert("Delete")
+                props.deleteItem(props.item.carId)
               }}
             />
           </button>
