@@ -104,11 +104,11 @@ const List = (props: any) => {
           ) : (
             <>
               <p>
-                No Items Found.{" "}
+                No items found.{" "}
                 <Link href="/create-item">
-                  <a>Add Car</a>
+                  <a>Add a car</a>
                 </Link>{" "}
-                to get Started.
+                to get started.
               </p>
             </>
           )}

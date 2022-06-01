@@ -16,7 +16,7 @@ interface EditableCar {
 export default class User {
   data: any
   useful_miles: number
-  monthly_miles: number
+  annual_miles: number
   created_date: Date
   errors: string[]
 
@@ -24,7 +24,7 @@ export default class User {
     // data is username, email, password
     this.data = data
     this.useful_miles = 150000
-    this.monthly_miles = 1250
+    this.annual_miles = 15000
     this.created_date = new Date()
     this.errors = []
   }
@@ -48,7 +48,7 @@ export default class User {
       email: this.data.email.trim().toLowerCase(),
       password: this.data.password,
       useful_miles: this.useful_miles,
-      monthly_miles: this.monthly_miles,
+      annual_miles: this.annual_miles,
       created_date: this.created_date
     }
   } // end cleanup
@@ -188,7 +188,7 @@ export default class User {
       let result = await client
         .db()
         .collection("users")
-        .findOne({ username: username }, { projection: { _id: 1, useful_miles: 1, monthly_miles: 1 } })
+        .findOne({ username: username }, { projection: { _id: 1, useful_miles: 1, annual_miles: 1 } })
       if (result) {
         client.close()
         return { status: "success", data: { result }, error: null }

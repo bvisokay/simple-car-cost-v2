@@ -19,7 +19,7 @@ const NavBack = styled.div`
 `
 
 const EditItemPage = (props: any) => {
-  console.log(props)
+  //console.log(props)
 
   const router = useRouter()
 
@@ -95,9 +95,9 @@ const EditItemPage = (props: any) => {
           draft.miles.hasErrors = true
           draft.miles.message = "Enter a lower miles value"
         }
-        if (parseInt(draft.miles.value) < 1) {
+        if (parseInt(draft.miles.value) < 0) {
           draft.miles.hasErrors = true
-          draft.miles.message = "Enter a higher miles value"
+          draft.miles.message = "Miles can not be negative"
         }
         return
       case "linkCheck":
@@ -132,7 +132,7 @@ const EditItemPage = (props: any) => {
       const signal = controller.signal
       async function sendRequest() {
         try {
-          appDispatch({ type: "flashMessage", value: "Sent Request to API" })
+          //appDispatch({ type: "flashMessage", value: "Sent Request to API" })
           const response = await fetch("/api/update-item", {
             signal,
             method: "PATCH",
@@ -156,8 +156,6 @@ const EditItemPage = (props: any) => {
           if (data.message === "success") {
             appDispatch({ type: "flashMessage", value: "Car successfully updated" })
             router.push("/list")
-            // clear the form in case we revisit this page immediately?
-            //dispatch({ type: "clearFields" })
             //console.log(data.data)
             return
           }
@@ -187,7 +185,7 @@ const EditItemPage = (props: any) => {
       <Section>
         <form onSubmit={editItemHandler}>
           <NavBack>
-            <Link href="/list">&laquo; Back to List</Link>
+            <Link href="/list">&laquo; Back to list</Link>
           </NavBack>
           <h2>Edit Car</h2>
           {/* <p>{state.changeCheckPassed ? "Yes" : "No"}</p> */}
@@ -228,7 +226,7 @@ const EditItemPage = (props: any) => {
           <FormControl>
             <label htmlFor="miles">Miles</label>
             <input
-              min={1}
+              min={0}
               id="miles"
               type="number"
               autoComplete="off"
@@ -258,7 +256,7 @@ const EditItemPage = (props: any) => {
             />
             {state.link.hasErrors && <div className="liveValidateMessage">{state.link.message}</div>}
           </FormControl>
-          <BtnWide color={"var(--green)"}>Submit Changes</BtnWide>
+          <BtnWide bgColor={"var(--green)"}>Submit Changes</BtnWide>
         </form>
       </Section>
     </Wrapper>

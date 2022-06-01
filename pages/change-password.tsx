@@ -5,7 +5,7 @@ import { runServerSidePageGuard } from "../lib/auth"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 
-import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles/GlobalComponents"
+import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
 
 const ChangePassword: React.FC = () => {
   const appDispatch = useContext(GlobalDispatchContext)
@@ -151,7 +151,7 @@ const ChangePassword: React.FC = () => {
 
   return (
     <SectionVeryNarrow>
-      <SectionTitle>Update Password</SectionTitle>
+      <h2>Update Password</h2>
 
       <form onSubmit={updatePasswordSubmitHandler}>
         <FormControl>
@@ -164,7 +164,9 @@ const ChangePassword: React.FC = () => {
           <input type="password" value={state.newPassword.value} onChange={e => dispatch({ type: "newPasswordChecks", value: e.target.value })} aria-label="newPassword" autoComplete="off" placeholder="New Password" />
           {state.showErrors && state.newPassword.hasErrors && <div className="liveValidateMessage">{state.newPassword.message}</div>}
         </FormControl>
-        <BtnWide color={"var(--green)"}>Update</BtnWide>
+        <BtnWide bgColor={"var(--green)"} color={"var(--green)"}>
+          Update
+        </BtnWide>
       </form>
     </SectionVeryNarrow>
   )

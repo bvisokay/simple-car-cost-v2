@@ -36,9 +36,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     throw { error: "Invalid useful miles" }
   }
 
-  const monthlyMiles = Math.round(annualMiles / 12)
-
-  //console.log(username, usefulMiles, monthlyMiles)
+  //console.log(username, usefulMiles, annualMiles)
 
   try {
     const client: MongoClient = await connectToDatabase()
@@ -48,7 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     const usersCollection = client.db().collection("users")
-    await usersCollection.updateOne({ username: username }, { $set: { monthly_miles: monthlyMiles, useful_miles: usefulMiles } })
+    await usersCollection.updateOne({ username: username }, { $set: { annual_miles: annualMiles, useful_miles: usefulMiles } })
     client.close()
     res.status(200).json({ message: "success", error: null })
   } catch (err) {

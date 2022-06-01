@@ -4,10 +4,10 @@ import { SITENAME } from "./_app"
 
 // comps
 import CarImage from "../components/CarImage"
-import TestDrive from "../components/TestDrive"
+//import TestDrive from "../components/TestDrive"
 
 // styled comps
-import { WrapperNarrow, Display, LeadMuted } from "../styles/GlobalComponents"
+import { WrapperNarrow, Display, LeadMuted, Btn } from "../styles/GlobalComponents"
 
 export default function Home() {
   return (
@@ -20,13 +20,20 @@ export default function Home() {
       <WrapperNarrow>
         <Display>A Simple Way to Compare Vehicle Prices</Display>
         <LeadMuted>
-          The typical vehicle listing is missing some very important information. Summarize a vehicle's price into a simple "cost per remaining month" value based on how much driving you do and other basic assumptions.{" "}
+          The typical vehicle listing is missing some very important information. Summarize a vehicle's price into a simple "cost per remaining month" based on how much driving you do and other basic assumptions.
+          <br />
+          <br />
+          <Link href="/register">
+            <Btn bgColor={"var(--cyan)"}>Get Started</Btn>
+          </Link>
           <Link href="/overview">
-            <a>Learn more...</a>
+            <Btn bgColor={"var(--indigo)"}>Learn More</Btn>
           </Link>
         </LeadMuted>
+
         <CarImage />
-        <TestDrive />
+
+        {/* <TestDrive /> */}
       </WrapperNarrow>
     </>
   )

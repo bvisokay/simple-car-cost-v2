@@ -43,7 +43,10 @@ export default class Car {
       //console.log("price was not a number")
     }
     if (typeof this.miles != "number") {
-      //console.log("miles was not a number")
+      this.miles = 0
+    }
+    if (this.miles === 0) {
+      this.miles = 0
     }
     if (typeof this.link != "string") {
       this.link = ""
@@ -64,11 +67,11 @@ export default class Car {
     if (this.description == "") {
       this.errors.push("You must provide a description")
     }
-    if (this.price == 0) {
+    if (this.price === 0) {
       this.errors.push("You must provide a price greater than 0")
     }
-    if (this.miles == 0) {
-      this.errors.push("You must provide miles greater than 0")
+    if (this.miles < 0) {
+      this.miles = 0
     }
   }
 
@@ -109,7 +112,7 @@ export default class Car {
       const userData: cleanedUserDocTypes = {
         user_id: userDoc._id.toString(),
         useful_miles: userDoc.useful_miles,
-        monthly_miles: userDoc.monthly_miles
+        monthly_miles: userDoc.annual_miles / 12
       }
       //console.log(userData)
 

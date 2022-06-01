@@ -70,7 +70,22 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 400;
   }
 
+  h2 {
+    font-weight: 600;
+    font-size: 1.5rem;
+
+    @media ${breakpoints.xs} {
+      font-size: 1.875rem;
+    }
+    @media ${breakpoints.md} {
+      font-size: 2rem;
+    }
+  }
+
   p {
+    font-weight: 100;
+    color: var(--gray);
+    line-height: 1.25;
     font-size: 1rem;
     @media ${breakpoints.sm} {
       font-size: 1rem;

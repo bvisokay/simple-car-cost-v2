@@ -81,9 +81,9 @@ const CreateItemPage = () => {
           draft.miles.hasErrors = true
           draft.miles.message = "Enter a lower miles value"
         }
-        if (parseInt(draft.miles.value) < 1) {
+        if (parseInt(draft.miles.value) < 0) {
           draft.miles.hasErrors = true
-          draft.miles.message = "Enter a higher miles value"
+          draft.miles.message = "Miles cannot be negative"
         }
         return
       case "linkCheck":
@@ -171,7 +171,7 @@ const CreateItemPage = () => {
     <Wrapper>
       <Section>
         <form onSubmit={createItemHandler}>
-          <h2>Add New Car</h2>
+          <h2>Add Car</h2>
 
           <FormControl>
             <label htmlFor="description">Description</label>
@@ -209,7 +209,7 @@ const CreateItemPage = () => {
           <FormControl>
             <label htmlFor="miles">Miles</label>
             <input
-              min={1}
+              min={0}
               id="miles"
               type="number"
               autoComplete="off"
@@ -239,10 +239,10 @@ const CreateItemPage = () => {
             />
             {state.link.hasErrors && <div className="liveValidateMessage">{state.link.message}</div>}
           </FormControl>
-          <BtnWide color={"var(--green)"}>Add Car</BtnWide>
+          <BtnWide>Add Car</BtnWide>
         </form>
         <NavBack>
-          <Link href="/list">&laquo; Back to List</Link>
+          <Link href="/list">&laquo; Go to list</Link>
         </NavBack>
       </Section>
     </Wrapper>

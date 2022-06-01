@@ -4,6 +4,8 @@ import { breakpoints } from "../breakpoints"
 /* Used for Btn and SectionTitle */
 type ColorProps = {
   color?: string
+  bgColor?: string
+  hoverColor?: string
 }
 
 export const Wrapper = styled.div`
@@ -21,6 +23,8 @@ export const Display = styled.h2`
   font-size: 2rem;
   padding: 1.25rem 0;
   text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
 
   @media ${breakpoints.md} {
     padding-top: 2rem;
@@ -71,14 +75,14 @@ export const LeadMuted = styled.p`
   margin: 1.25rem auto;
 
   @media ${breakpoints.md} {
-    max-width: 500px;
+    max-width: 600px;
   }
 `
 
 export const Btn = styled.button<ColorProps>`
   cursor: pointer;
-  background-color: ${props => (props.color ? `${props.color}` : "var(--primary)")};
-  border: 1px solid ${props => (props.color ? `${props.color}` : "var(--primary)")};
+  background-color: ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+  border: 2px solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
   border-radius: 0.2rem;
   margin: 0.2rem;
@@ -101,20 +105,25 @@ export const Btn = styled.button<ColorProps>`
   }
 
   :focus {
-    outline: 2px solid ${props => (props.color ? `${props.color}` : "var(--primary)")};
-    box-shadow: 0 0 0 0.1rem ${props => (props.color ? `${props.color}` : "var(--primary)")};
+    outline: 2px solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+    box-shadow: 0 0 0 0.1rem ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+  }
+
+  :hover {
+    background-color: transparent;
+    color: ${props => (props.hoverColor ? `${props.hoverColor}` : props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   }
 `
 
 export const BtnWide = styled.button<ColorProps>`
   width: 100%;
   cursor: pointer;
-  background-color: ${props => (props.color ? `${props.color}` : "var(--primary)")};
-  border: 1px solid ${props => (props.color ? `${props.color}` : "var(--primary)")};
+  background-color: ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+  border: 2px solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
   border-radius: 0.5rem;
   margin: 1rem 0;
-  padding: 0.5rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   color: #fff;
   font-size: 0.875rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -135,9 +144,14 @@ export const BtnWide = styled.button<ColorProps>`
     color: #555;
   }
 
+  :focus {
+    outline: 2px solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+    box-shadow: 0 0 0 0.1rem ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+  }
+
   :hover {
-    background-color: ${props => (props.color === "var(--green)" ? "var(--teal)" : "var(--primary)")};
-    border: 1px solid ${props => (props.color === "var(--green)" ? "var(--teal)" : "var(--primary)")};
+    background-color: transparent;
+    color: ${props => (props.hoverColor ? `${props.hoverColor}` : props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   }
 `
 

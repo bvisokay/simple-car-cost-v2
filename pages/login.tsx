@@ -7,7 +7,7 @@ import { getSession } from "next-auth/client"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 
-import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles/GlobalComponents"
+import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
 
 // need to protect
 
@@ -125,7 +125,7 @@ const Login: React.FC = () => {
 
   return (
     <SectionVeryNarrow>
-      <SectionTitle>Sign In</SectionTitle>
+      <h2>Sign In</h2>
 
       <form onSubmit={loginSubmitHandler}>
         <FormControl>
@@ -138,7 +138,7 @@ const Login: React.FC = () => {
           <input type="password" value={state.password.value} onChange={e => dispatch({ type: "passwordChecks", value: e.target.value })} aria-label="password" autoComplete="off" placeholder="Password" />
           {state.showErrors && state.password.hasErrors && <div className="liveValidateMessage">{state.password.message}</div>}
         </FormControl>
-        <BtnWide color={"var(--green)"}>Sign In</BtnWide>
+        <BtnWide>Sign In</BtnWide>
       </form>
       <p>
         Don't have an account? <Link href="/register">Sign up</Link>

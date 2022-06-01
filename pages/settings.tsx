@@ -5,7 +5,22 @@ import { getSession } from "next-auth/client"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import User from "../models/User"
-import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles/GlobalComponents"
+import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
+import styled from "styled-components"
+
+const WarningBox = styled.div`
+  border: 1px solid orange;
+  border-radius: 8px;
+  background-color: #fff3cd;
+  padding: 0rem 1rem;
+  margin: 1rem 0 1.5rem 0;
+
+  p {
+    padding: 0;
+    color: #856404;
+    font-size: 0.85rem;
+  }
+`
 
 const ChangeSettings = (props: any) => {
   console.log(props)
@@ -60,7 +75,7 @@ const ChangeSettings = (props: any) => {
         return
       case "sameCheck":
         draft.same = false
-        if (draft.usefulMiles.value === props.data.useful_miles && draft.annualMiles.value === props.data.annual_miles) {
+        if (draft.annualMiles.value === props.data.annual_miles && draft.usefulMiles.value === props.data.useful_miles) {
           draft.same = true
           appDispatch({ type: "flashMessage", value: "Nothing to update at this time" })
         }
@@ -75,6 +90,7 @@ const ChangeSettings = (props: any) => {
           console.log(`SubmitForm conditionals failed: {
               draft.usefulMiles.hasErrors: ${draft.usefulMiles.hasErrors}
               draft.annualMiles.hasErrors: ${draft.annualMiles.hasErrors}
+              draft.same: ${draft.same}
             }`)
         }
         return
@@ -123,14 +139,8 @@ const ChangeSettings = (props: any) => {
 
           //
         } catch (err: any) {
-          if (err.error) {
-            appDispatch({ type: "flashMessage", value: "Settings are not able to be updated at this time." })
-            console.warn("err", err)
-          } else {
-            console.warn("err", err)
-            appDispatch({ type: "flashMessage", value: "Could not update settings" })
-          }
-
+          appDispatch({ type: "flashMessage", value: "Could not update settings" })
+          console.warn("err", err)
           // clear the form
           //dispatch({ type: "clearFields" })
         }
@@ -151,8 +161,11 @@ const ChangeSettings = (props: any) => {
 
   return (
     <SectionVeryNarrow>
-      <SectionTitle>Update Settings</SectionTitle>
-      <p>Caution: Updated settings will apply to all existing cars in your list.</p>
+      {/* <SectionTitle>Update Settings</SectionTitle> */}
+      <h2>Update Settings</h2>
+      <WarningBox>
+        <p>Caution: Updated settings will apply to all existing cars in your list.</p>
+      </WarningBox>
 
       <form onSubmit={updateSettingsSubmitHandler}>
         <FormControl>
@@ -165,7 +178,7 @@ const ChangeSettings = (props: any) => {
           <input type="number" value={state.usefulMiles.value} onChange={e => dispatch({ type: "usefulMilesChecks", value: e.target.value })} aria-label="usefulMiles" autoComplete="off" placeholder="Default: 150000" />
           {state.showErrors && state.usefulMiles.hasErrors && <div className="liveValidateMessage">{state.usefulMiles.message}</div>}
         </FormControl>
-        <BtnWide color={"var(--green)"}>Update</BtnWide>
+        <BtnWide bgColor={"var(--green)"}>Save Updates</BtnWide>
       </form>
     </SectionVeryNarrow>
   )
@@ -174,6 +187,7 @@ const ChangeSettings = (props: any) => {
 export default ChangeSettings
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  console.log("gssp ran")
   const session = await getSession({ req: context.req })
 
   if (!session) {
@@ -193,7 +207,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 
   const data = {
     useful_miles: results!.data!.result.useful_miles,
-    annual_miles: results!.data!.result.monthly_miles * 12
+    annual_miles: results!.data!.result.annual_miles
   }
 
   return {

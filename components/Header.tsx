@@ -18,8 +18,8 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
   color: white;
   font-family: var(--font-secondary);
+  max-width: var(--wrapper-width);
   padding: 1rem;
-  max-width: var(--wrapper-width-narrow);
   margin: 0 auto;
 
   @media ${breakpoints.sm} {
@@ -28,44 +28,72 @@ const HeaderWrapper = styled.div`
   @media ${breakpoints.md} {
     flex-direction: row;
     justify-content: space-between;
-    padding: 1rem 0;
-  }
-
-  a {
-    color: white;
-    margin: 0;
-    padding: 0;
-    //border: 1px solid violet;
-  }
-
-  a:hover {
-    text-decoration: none;
-    cursor: pointer;
-  }
-`
-
-const LogoText = styled.div`
-  font-size: 1.25rem;
-  padding: 0.5rem 0;
-
-  @media ${breakpoints.xs} {
-    font-size: 1.75rem;
-  }
-`
-
-const IconContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-right: 0.5rem;
-
-  :hover {
-    cursor: pointer;
+    padding: 1rem;
   }
 `
 
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  //border: 2px solid gray;
+  width: 100%;
+  color: white;
+
+  @media ${breakpoints.sm} {
+    width: auto;
+    //color: var(--primary);
+  }
+
+  a {
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-secondary);
+    font-size: 1.5rem;
+    font-weight: 700;
+
+    @media ${breakpoints.xs} {
+      font-size: 2rem;
+      //color: var(--primary);
+    }
+
+    :hover {
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    :visited {
+      color: white;
+    }
+  }
+
+  a.logo-icon {
+    //border: 1px solid crimson;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.5rem;
+  }
+
+  svg {
+    font-size: 2rem;
+
+    @media ${breakpoints.xs} {
+      font-size: 2.5rem;
+      //color: var(--primary);
+    }
+
+    @media ${breakpoints.md} {
+      font-size: 2.75rem;
+      //color: var(--primary);
+    }
+
+    :hover {
+      cursor: pointer;
+    }
+  }
 `
 
 const Header: React.FC = () => {
@@ -74,14 +102,12 @@ const Header: React.FC = () => {
       <HeaderWrapper>
         <LogoContainer>
           <Link href="/">
-            <IconContainer>
-              <FaCar size={35} />
-            </IconContainer>
+            <a className="logo-icon">
+              <FaCar />
+            </a>
           </Link>
           <Link href="/">
-            <LogoText>
-              <a>SimpleCarCost</a>
-            </LogoText>
+            <a>SimpleCarCost</a>
           </Link>
         </LogoContainer>
 

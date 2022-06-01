@@ -34,12 +34,6 @@ const FooterContainer = styled.div`
     color: var(--gray);
     font-size: 0.8rem;
   }
-
-  a.photo-creds {
-    color: var(--gray);
-    text-decoration: underline;
-    font-size: 0.8rem;
-  }
 `
 
 export default function Footer() {
@@ -58,13 +52,8 @@ export default function Footer() {
             </Link>
           </li>
         </ul> */}
-        <p className="white">
-          Photo Credit:{" "}
-          <a className="photo-creds" href="https://www.vecteezy.com/vector-art/550435-stylized-convertible-sports-car">
-            Brian Goff
-          </a>
-        </p>
-        <p className="white">
+
+        <p>
           Copyright &copy; {new Date().getFullYear()} {SITENAME} | All Rights Reserved
         </p>
       </Wrapper>

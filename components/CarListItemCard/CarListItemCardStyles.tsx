@@ -117,6 +117,7 @@ const Card = styled.li`
         }
 
         p {
+          //border: 1px solid red;
           color: var(--gray);
           font-size: 0.6rem;
           @media ${breakpoints.md} {

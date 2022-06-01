@@ -21,7 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       .collection("users")
       .findOne({ username: username }, { projection: { _id: 1 } })
     const userId = idResult?._id.toString()
-    console.log(`userId: ${userId}`)
+    //console.log(`userId: ${userId}`)
 
     // See if the session user's id matches the "item-being-edited" authorId sent in
     const tgtCarDoc = await client
@@ -33,7 +33,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     const editableItemAuthorId = tgtCarDoc?.authorId.toString()
 
-    console.log(editableItemAuthorId)
+    //console.log(editableItemAuthorId)
 
     if (editableItemAuthorId !== userId) {
       throw { error: "You do not have permission to perform that action" }

@@ -6,7 +6,7 @@ import { GlobalDispatchContext } from "../store/GlobalContext"
 import { useRouter } from "next/router"
 import { signIn } from "next-auth/client"
 import { getSession } from "next-auth/client"
-import { BtnWide, SectionVeryNarrow, FormControl, SectionTitle } from "../styles/GlobalComponents"
+import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
 
 // NOTES
 // Page should be guarded if logged in
@@ -297,8 +297,7 @@ const register: React.FC = () => {
   // jsx
   return (
     <SectionVeryNarrow>
-      <SectionTitle>register for a free account</SectionTitle>
-
+      <h2>Register for a Free Account</h2>
       <form onSubmit={handleSubmit}>
         <FormControl>
           <label htmlFor="username">Username</label>
@@ -315,7 +314,7 @@ const register: React.FC = () => {
           <input type="password" name="password" value={state.password.value} onChange={e => dispatch({ type: "passwordImmediately", value: e.target.value })} aria-label="password" autoComplete="off" placeholder="Create a password" />
           {state.password.hasErrors && <div className="liveValidateMessage">{state.password.message}</div>}
         </FormControl>
-        <BtnWide color={"var(--green)"}>Sign Up</BtnWide>
+        <BtnWide bgColor={"var(--teal)"}>Sign Up</BtnWide>
       </form>
       <p>
         Already have an account? <Link href="/login">Log In</Link>
