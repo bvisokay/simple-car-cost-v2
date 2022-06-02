@@ -71,6 +71,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h2 {
+    transform-origin: top left;
     font-weight: 600;
     font-size: 1.5rem;
 

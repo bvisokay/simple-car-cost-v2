@@ -1,4 +1,4 @@
-# Simmple Car Cost V2
+# Simple Car Cost V2
 
 A simple way to compare vehicles prices
 

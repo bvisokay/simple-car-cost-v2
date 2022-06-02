@@ -3,6 +3,7 @@ import { Btn } from "../styles/GlobalComponents"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSession, signOut } from "next-auth/client"
+import { motion } from "framer-motion"
 
 import { IoSettings } from "react-icons/io5"
 
@@ -79,9 +80,16 @@ const MainNav = () => {
             Log Out
           </Btn>
           <Link href="/settings">
-            <a>
+            <motion.a
+              whileHover={{
+                scale: 1.15,
+                transition: {
+                  duration: 0.2
+                }
+              }}
+            >
               <IoSettings />
-            </a>
+            </motion.a>
           </Link>
         </>
       )}

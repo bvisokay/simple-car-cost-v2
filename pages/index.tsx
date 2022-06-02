@@ -1,7 +1,6 @@
 import Link from "next/link"
+import { motion } from "framer-motion"
 import Head from "next/head"
-import { SITENAME } from "./_app"
-
 // comps
 import CarImage from "../components/CarImage"
 //import TestDrive from "../components/TestDrive"
@@ -13,9 +12,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>{SITENAME}</title>
-        <meta name="description" content="A simple way to compare a car's cost" />
-        <link rel="icon" href="/favicon.ico" />
+        <title>A Simple Way to Compare Vehicle Prices | Simple Car Cost</title>
       </Head>
       <WrapperNarrow>
         <Display>A Simple Way to Compare Vehicle Prices</Display>
@@ -30,8 +27,25 @@ export default function Home() {
             <Btn bgColor={"var(--indigo)"}>Learn More</Btn>
           </Link>
         </LeadMuted>
-
-        <CarImage />
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {
+              scale: 0.8,
+              opacity: 0
+            },
+            visible: {
+              scale: 1,
+              opacity: 1,
+              transition: {
+                delay: 0.4
+              }
+            }
+          }}
+        >
+          <CarImage />
+        </motion.div>
 
         {/* <TestDrive /> */}
       </WrapperNarrow>
