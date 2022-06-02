@@ -1,6 +1,8 @@
 import Document, { DocumentContext, Html, Head, Main, NextScript } from "next/document"
 import { ServerStyleSheet } from "styled-components"
 
+const isProd = process.env.NODE_ENV === "production"
+
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet()
@@ -34,10 +36,12 @@ export default class MyDocument extends Document {
         <link rel="icon" href="/favicon.ico" />
         <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600&display=swap" rel="stylesheet" />
         <Head>
-          <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
+          {isProd && (
+            <>
+              <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
@@ -45,8 +49,10 @@ export default class MyDocument extends Document {
               page_path: window.location.pathname,
             });
           `
-            }}
-          />
+                }}
+              />
+            </>
+          )}
         </Head>
         <body>
           <Main />

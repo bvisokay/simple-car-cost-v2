@@ -18,15 +18,18 @@ import { GA_TRACKING_ID } from "../lib/analytics"
 // affect nested of flex container / wrapper so revisit
 
 export const SITENAME: string = "Simple Car Cost"
+const isProd = process.env.NODE_ENV === "production"
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   const router = useRouter()
 
   useEffect(() => {
     const handleRouteChange = (url: URL) => {
-      window.gtag("config", GA_TRACKING_ID, {
-        page_path: url
-      })
+      if (isProd) {
+        window.gtag("config", GA_TRACKING_ID, {
+          page_path: url
+        })
+      }
     }
     router.events.on("routeChangeComplete", handleRouteChange)
     return () => {
