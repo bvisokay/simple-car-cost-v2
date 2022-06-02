@@ -1,6 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { runServerSidePageGuard } from "../lib/auth"
 import Link from "next/link"
+import Head from "next/head"
 //comps
 import { Wrapper, Section } from "../styles/GlobalComponents"
 import { breakpoints } from "../styles/breakpoints"
@@ -72,56 +73,62 @@ const DashboardItem = styled.div`
 
 const DashboardPage = (props: any) => {
   return (
-    <Wrapper>
-      <Section>
-        <h2>Welcome {props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}</h2>
-        <hr />
-        <DashboardItem>
-          <Link href="/create-item">
-            <a className="dashboard-icon">
-              <IoMdAddCircle />
-            </a>
-          </Link>
-          <Link href="/create-item">Add Car</Link>
-        </DashboardItem>
+    <>
+      <Head>
+        <title>Dashboard | Simple Car Cost</title>
+      </Head>
 
-        <DashboardItem>
-          <Link href="/list">
-            <a className="dashboard-icon">
-              <IoIosList />
-            </a>
-          </Link>
-          <Link href="/list">View your list</Link>
-        </DashboardItem>
+      <Wrapper>
+        <Section>
+          <h2>Welcome {props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}</h2>
+          <hr />
+          <DashboardItem>
+            <Link href="/create-item">
+              <a className="dashboard-icon">
+                <IoMdAddCircle />
+              </a>
+            </Link>
+            <Link href="/create-item">Add Car</Link>
+          </DashboardItem>
 
-        <DashboardItem>
-          <Link href="/settings">
-            <a className="dashboard-icon">
-              <IoIosCog />
-            </a>
-          </Link>
-          <Link href="/settings">Update your settings</Link>
-        </DashboardItem>
+          <DashboardItem>
+            <Link href="/list">
+              <a className="dashboard-icon">
+                <IoIosList />
+              </a>
+            </Link>
+            <Link href="/list">View your list</Link>
+          </DashboardItem>
 
-        <DashboardItem>
-          <Link href="/change-password">
-            <a className="dashboard-icon">
-              <IoIosRefreshCircle />
-            </a>
-          </Link>
-          <Link href="/change-password">Update your password</Link>
-        </DashboardItem>
+          <DashboardItem>
+            <Link href="/settings">
+              <a className="dashboard-icon">
+                <IoIosCog />
+              </a>
+            </Link>
+            <Link href="/settings">Update your settings</Link>
+          </DashboardItem>
 
-        <DashboardItem>
-          <Link href="/overview">
-            <a className="dashboard-icon">
-              <IoIosBulb />
-            </a>
-          </Link>
-          <Link href="/overview">Learn More</Link>
-        </DashboardItem>
-      </Section>
-    </Wrapper>
+          <DashboardItem>
+            <Link href="/change-password">
+              <a className="dashboard-icon">
+                <IoIosRefreshCircle />
+              </a>
+            </Link>
+            <Link href="/change-password">Update your password</Link>
+          </DashboardItem>
+
+          <DashboardItem>
+            <Link href="/overview">
+              <a className="dashboard-icon">
+                <IoIosBulb />
+              </a>
+            </Link>
+            <Link href="/overview">Learn More</Link>
+          </DashboardItem>
+        </Section>
+      </Wrapper>
+    </>
   )
 }
 

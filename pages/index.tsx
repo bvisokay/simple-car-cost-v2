@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>A Simple Way to Compare Vehicle Prices | Simple Car Cost</title>
+        <title>Home | Simple Car Cost</title>
       </Head>
       <WrapperNarrow>
         <Display>A Simple Way to Compare Vehicle Prices</Display>
