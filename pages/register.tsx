@@ -8,18 +8,7 @@ import { signIn } from "next-auth/client"
 import { getSession } from "next-auth/client"
 import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
 
-// NOTES
-// Page should be guarded if logged in
-// 3 fields, username, email, password
-// client side validation
-// server side validation
-// simple validation
-// prevents duplicate fields in db...
-// ..(checks if username or email is already taken front and back end validation)
-// store user in DB if applicable
-// redirect to the profile page on successfuly login
-
-const register: React.FC = () => {
+const Register: React.FC = () => {
   // Assignments
   const appDispatch = useContext(GlobalDispatchContext)
   const router = useRouter()
@@ -308,7 +297,7 @@ const register: React.FC = () => {
   )
 }
 
-export default register
+export default Register
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const session = await getSession({ req: context.req })
