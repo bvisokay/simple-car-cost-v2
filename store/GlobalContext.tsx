@@ -1,7 +1,9 @@
 import React, { createContext } from "react"
 import { useImmerReducer } from "use-immer"
 
-export const GlobalDispatchContext = createContext((() => {}) as React.Dispatch<GlobalActionTypes>)
+export const GlobalDispatchContext = createContext({})
+
+// as React.Dispatch<GlobalActionTypes></GlobalActionTypes>
 
 export const GlobalStateContext = createContext({
   flashMessages: [] as any,

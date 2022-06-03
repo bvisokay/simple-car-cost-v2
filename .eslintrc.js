@@ -10,6 +10,17 @@ module.exports = {
     sourceType: "module"
   },
   rules: {
+    "prefer-const": "off",
+    "no-inner-declarations": "off",
+    "no-empty": "off",
+    "no-useless-catch": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-key": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "react/jsx-no-target-blank": "off",
+    "react/jsx-no-comment-textnodes": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "testing-library/render-result-naming-convention": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
@@ -20,21 +31,10 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-unsafe-call": "off",
-    "react/no-unescaped-entities": "off",
     "@typescript-eslint/require-await": "off",
-    "react/jsx-key": "off",
-    "no-inner-declarations": "off",
-    "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/restrict-plus-operands": "off",
     "@typescript-eslint/no-misused-promises": "off",
-    "react-hooks/rules-of-hooks": "off",
-    "no-empty": "off",
-    "no-useless-catch": "off",
-    "react/jsx-no-comment-textnodes": "off",
-    "testing-library/render-result-naming-convention": "off",
-    "react/jsx-no-target-blank": "off",
     "@typescript-eslint/no-unsafe-return": "off",
-    "@typescript-eslint/no-inferrable-types": "off",
-    "prefer-const": "off"
+    "@typescript-eslint/no-inferrable-types": "off"
   }
 }
