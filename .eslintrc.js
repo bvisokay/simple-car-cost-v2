@@ -13,7 +13,7 @@ module.exports = {
     //"prefer-const": "off",
     //"no-inner-declarations": "off",
     //"no-empty": "off",
-    "no-useless-catch": "off",
+    //"no-useless-catch": "off",
     "react/no-unescaped-entities": "off",
     "react/jsx-key": "off",
     "react-hooks/rules-of-hooks": "off",
