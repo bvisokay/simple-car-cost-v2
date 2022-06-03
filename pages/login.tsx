@@ -144,7 +144,7 @@ const Login: React.FC = () => {
         <BtnWide>Sign In</BtnWide>
       </form>
       <p>
-        Don't have an account? <Link href="/register">Sign up</Link>
+        Don&apos;t have an account? <Link href="/register">Sign up</Link>
       </p>
     </SectionVeryNarrow>
   )

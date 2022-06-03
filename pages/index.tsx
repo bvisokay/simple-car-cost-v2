@@ -17,7 +17,7 @@ export default function Home() {
       <WrapperNarrow>
         <Display>A Simple Way to Compare Vehicle Prices</Display>
         <LeadMuted>
-          The typical vehicle listing is missing some very important information. Summarize a vehicle's price into a simple "cost per remaining month" based on how much driving you do and other basic assumptions.
+          The typical vehicle listing is missing some very important information. Summarize a vehicle&apos;s price into a simple &ldquo;cost per remaining month&rdquo; based on how much driving you do and other basic assumptions.
           <br />
           <br />
           <Link href="/register">

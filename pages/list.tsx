@@ -73,7 +73,7 @@ const List = (props: any) => {
     <Wrapper>
       <Section>
         <ListPageHeading>
-          <h2>{props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}'s List</h2>
+          <h2>{props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}&apos;s List</h2>
           {cars.length == 1 && <p>You have 1 car in your list</p>}
           {cars.length > 1 && <p>You have {cars.length} cars in your list</p>}
           {/* <p>Sort &amp; Filter Icon</p> */}
