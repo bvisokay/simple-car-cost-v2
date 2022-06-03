@@ -2,6 +2,11 @@
 
 # custom
 0_ReadMe.txt
+__tests__/test_ReadMe.txt
+/components/test/Hello.tsx
+/components/test/Hello.test.tsx
+/components/test/Sum.tsx
+/components/test/Sum.test.tsx
 
 # dependencies
 /node_modules
