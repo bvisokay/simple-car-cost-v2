@@ -101,51 +101,48 @@ const ChangeSettings = (props: any) => {
     }
   }
 
-  // useEffect to watch sendCount to attempt update only after validation passes
-  // don't run when the page first loads
+  async function fetchSettingsResults(signal: AbortSignal) {
+    try {
+      const response = await fetch("/api/update-settings", {
+        signal: signal,
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          annualMiles: state.annualMiles.value,
+          usefulMiles: state.usefulMiles.value
+        })
+      })
+
+      const data = await response.json()
+
+      if (data.error) {
+        appDispatch({ type: "flashMessage", value: data.error })
+        console.warn(`from client: ${data.error}`)
+        return
+      }
+
+      if (data.message === "success") {
+        console.log(data)
+        appDispatch({ type: "flashMessage", value: "Settings updated" })
+        router.push("/dashboard")
+      }
+
+      //
+    } catch (err: any) {
+      appDispatch({ type: "flashMessage", value: "Could not update settings" })
+      console.warn("err", err)
+      // clear the form
+      //dispatch({ type: "clearFields" })
+    }
+  }
+
   useEffect(() => {
     if (state.submitCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      async function fetchResults() {
-        try {
-          //
-          //
-          const response = await fetch("/api/update-settings", {
-            method: "PATCH",
-            signal,
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              annualMiles: state.annualMiles.value,
-              usefulMiles: state.usefulMiles.value
-            })
-          })
-
-          const data = await response.json()
-
-          if (data.error) {
-            appDispatch({ type: "flashMessage", value: data.error })
-            console.warn(`from client: ${data.error}`)
-            return
-          }
-
-          if (data.message === "success") {
-            console.log(data)
-            appDispatch({ type: "flashMessage", value: "Settings updated" })
-            router.push("/dashboard")
-          }
-
-          //
-        } catch (err: any) {
-          appDispatch({ type: "flashMessage", value: "Could not update settings" })
-          console.warn("err", err)
-          // clear the form
-          //dispatch({ type: "clearFields" })
-        }
-      }
-      fetchResults()
+      fetchSettingsResults(signal)
       return () => controller.abort()
     } // end if
   }, [state.submitCount])

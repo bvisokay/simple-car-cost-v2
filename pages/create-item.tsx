@@ -112,46 +112,48 @@ const CreateItemPage = () => {
 
   const [state, dispatch] = useImmerReducer(createItemReducer, initialState)
 
+  async function sendRequest(signal: AbortSignal) {
+    try {
+      //appDispatch({ type: "flashMessage", value: "Sent Request to API" })
+      const response = await fetch("/api/create-item", {
+        signal: signal,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          description: state.description.value,
+          price: state.price.value,
+          miles: state.miles.value,
+          link: state.link.value
+        })
+      })
+      const data = await response.json()
+      if (data.error) {
+        appDispatch({ type: "flashMessage", value: data.error })
+        //console.warn(`from client: ${data.error}`)
+        return
+      }
+      if (data.message === "success") {
+        appDispatch({ type: "flashMessage", value: "Car Added" })
+        //router.push("/list")
+        // clear the form in case we revisit this page immediately?
+        dispatch({ type: "clearFields" })
+        //console.log(data.data)
+        return
+      }
+    } catch (err) {
+      appDispatch({ type: "flashMessage", value: "Could not add car: Ref#: 239" })
+      //console.error(err)
+    }
+  }
+
   useEffect(() => {
     if (state.submitCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      async function sendRequest() {
-        try {
-          //appDispatch({ type: "flashMessage", value: "Sent Request to API" })
-          const response = await fetch("/api/create-item", {
-            signal,
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              description: state.description.value,
-              price: state.price.value,
-              miles: state.miles.value,
-              link: state.link.value
-            })
-          })
-          const data = await response.json()
-          if (data.error) {
-            appDispatch({ type: "flashMessage", value: data.error })
-            //console.warn(`from client: ${data.error}`)
-            return
-          }
-          if (data.message === "success") {
-            appDispatch({ type: "flashMessage", value: "Car Added" })
-            //router.push("/list")
-            // clear the form in case we revisit this page immediately?
-            dispatch({ type: "clearFields" })
-            //console.log(data.data)
-            return
-          }
-        } catch (err) {
-          appDispatch({ type: "flashMessage", value: "Could not add car: Ref#: 239" })
-          //console.error(err)
-        }
-      }
-      sendRequest()
+
+      sendRequest(signal)
       return () => controller.abort()
     }
   }, [state.submitCount])

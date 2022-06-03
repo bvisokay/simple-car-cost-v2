@@ -126,45 +126,46 @@ const EditItemPage = (props: any) => {
 
   const [state, dispatch] = useImmerReducer(EditItemReducer, initialState)
 
+  async function sendRequest(signal: AbortSignal) {
+    try {
+      //appDispatch({ type: "flashMessage", value: "Sent Request to API" })
+      const response = await fetch("/api/update-item", {
+        signal: signal,
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          carId: props._id,
+          description: state.description.value,
+          price: state.price.value,
+          miles: state.miles.value,
+          link: state.link.value
+        })
+      })
+      const data = await response.json()
+      if (data.error) {
+        appDispatch({ type: "flashMessage", value: data.error })
+        console.warn(`from client: ${data.error}`)
+        return
+      }
+      if (data.message === "success") {
+        appDispatch({ type: "flashMessage", value: "Car successfully updated" })
+        router.push("/list")
+        //console.log(data.data)
+        return
+      }
+    } catch (err) {
+      appDispatch({ type: "flashMessage", value: "Could not update car: Ref#: 111" })
+      console.error(err)
+    }
+  }
+
   useEffect(() => {
     if (state.submitCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      async function sendRequest() {
-        try {
-          //appDispatch({ type: "flashMessage", value: "Sent Request to API" })
-          const response = await fetch("/api/update-item", {
-            signal,
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              carId: props._id,
-              description: state.description.value,
-              price: state.price.value,
-              miles: state.miles.value,
-              link: state.link.value
-            })
-          })
-          const data = await response.json()
-          if (data.error) {
-            appDispatch({ type: "flashMessage", value: data.error })
-            console.warn(`from client: ${data.error}`)
-            return
-          }
-          if (data.message === "success") {
-            appDispatch({ type: "flashMessage", value: "Car successfully updated" })
-            router.push("/list")
-            //console.log(data.data)
-            return
-          }
-        } catch (err) {
-          appDispatch({ type: "flashMessage", value: "Could not update car: Ref#: 111" })
-          console.error(err)
-        }
-      }
-      sendRequest()
+      sendRequest(signal)
       return () => controller.abort()
     }
   }, [state.submitCount])

@@ -80,39 +80,42 @@ const Login: React.FC = () => {
     }
   }
 
+  async function fetchResults(signal: AbortSignal) {
+    try {
+      const result = await signIn("credentials", {
+        signal: signal,
+        redirect: false,
+        username: state.username.value?.toLowerCase(),
+        password: state.password.value
+      })
+
+      console.log("result froms signIn", result)
+      // no user found or bad username/password
+      // what if we send non-alphanumeric
+      if (result!.error) {
+        appDispatch({ type: "flashMessage", value: result!.error })
+        return
+      }
+      // push to new page
+      router.replace("/dashboard")
+      // show message to the user
+      appDispatch({ type: "flashMessage", value: "Welcome Back" })
+
+      //
+    } catch (err) {
+      console.log("err", err)
+    }
+  }
+
   // useEffect to watch sendCount to attempt signIn only after validation passes
   // don't run when the page first loads
   useEffect(() => {
     if (state.submitCount) {
-      async function fetchResults() {
-        try {
-          //
-          //
-          const result = await signIn("credentials", {
-            redirect: false,
-            username: state.username.value?.toLowerCase(),
-            password: state.password.value
-          })
-
-          console.log("result froms signIn", result)
-          // no user found or bad username/password
-          // what if we send non-alphanumeric
-          if (result!.error) {
-            appDispatch({ type: "flashMessage", value: result!.error })
-            return
-          }
-          // push to new page
-          router.replace("/dashboard")
-          // show message to the user
-          appDispatch({ type: "flashMessage", value: "Welcome Back" })
-
-          //
-        } catch (err) {
-          console.log("err", err)
-        }
-      }
-      fetchResults()
-    } // end if
+      const controller = new AbortController()
+      const signal = controller.signal
+      fetchResults(signal)
+      return () => controller.abort()
+    }
   }, [state.submitCount])
 
   async function loginSubmitHandler(e: React.FormEvent) {

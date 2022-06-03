@@ -197,10 +197,26 @@ const TestDrive: React.FC = () => {
     }
   }, [state.description.hasErrors, state.price.hasErrors, state.miles.hasErrors])
 
+  // define request to send inside useEffect
+  async function fetchNewValidatedTdItem(newUnvalidatedTdItem: any, signal: AbortSignal) {
+    const response = await fetch("/api/create-td-car", {
+      signal: signal,
+      method: "POST",
+      body: JSON.stringify(newUnvalidatedTdItem),
+      headers: { "Content-Type": "application/json" }
+    })
+    const newValidatedTdItem: any = await response.json()
+    console.log(newValidatedTdItem)
+    dispatch({ type: "addNewValidatedItem", value: newValidatedTdItem })
+    // Store Any New Vehicles in local storage as well
+    dispatch({ type: "clearFields" })
+  }
+
   // useEffect to submitForm Request if no validation errors
   useEffect(() => {
-    // don't want this to run when the page first loads
     if (state.submitCount) {
+      const controller = new AbortController()
+      const signal = controller.signal
       dispatch({ type: "saveRequestStarted" })
       //format new item to store and display
       const newUnvalidatedTdItem = {
@@ -210,22 +226,8 @@ const TestDrive: React.FC = () => {
         link: state.link.value.toString()
       }
       // need the async request in useEffect trick
-
-      async function fetchNewValidatedTdItem(newUnvalidatedTdItem: any) {
-        const response = await fetch("/api/create-td-car", {
-          method: "POST",
-          body: JSON.stringify(newUnvalidatedTdItem),
-          headers: { "Content-Type": "application/json" }
-        })
-        const newValidatedTdItem: any = await response.json()
-        console.log(newValidatedTdItem)
-        dispatch({ type: "addNewValidatedItem", value: newValidatedTdItem })
-        // Store Any New Vehicles in local storage as well
-        dispatch({ type: "clearFields" })
-      }
-      fetchNewValidatedTdItem(newUnvalidatedTdItem)
-
-      // need cleanup function in case page changed mid-request
+      fetchNewValidatedTdItem(newUnvalidatedTdItem, signal)
+      return () => controller.abort()
     }
   }, [state.submitCount])
 

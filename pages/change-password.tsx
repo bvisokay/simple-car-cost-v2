@@ -85,57 +85,56 @@ const ChangePassword: React.FC = () => {
     }
   }
 
+  async function fetchResults(signal: AbortSignal) {
+    try {
+      const response = await fetch("/api/change-password", {
+        signal: signal,
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          oldPW: state.oldPassword.value,
+          newPW: state.newPassword.value
+        })
+      })
+
+      const data = await response.json()
+
+      if (data.error) {
+        appDispatch({ type: "flashMessage", value: data.error })
+        console.warn(`from client: ${data.error}`)
+        return
+      }
+
+      if (data.message === "success") {
+        console.log(data)
+        appDispatch({ type: "flashMessage", value: "Password updated" })
+        router.push("/dashboard")
+      }
+
+      //
+    } catch (err: any) {
+      if (err.error) {
+        appDispatch({ type: "flashMessage", value: "Password is not able to be updated at this time." })
+        console.warn("err", err)
+      } else {
+        console.warn("err", err)
+        appDispatch({ type: "flashMessage", value: "Password is not able to be updated at this time." })
+      }
+
+      // clear the form
+      dispatch({ type: "clearFields" })
+    }
+  }
+
   // useEffect to watch sendCount to attempt signIn only after validation passes
   // don't run when the page first loads
   useEffect(() => {
     if (state.submitCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      async function fetchResults() {
-        try {
-          //
-          //
-          const response = await fetch("/api/change-password", {
-            method: "PATCH",
-            signal,
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              oldPW: state.oldPassword.value,
-              newPW: state.newPassword.value
-            })
-          })
-
-          const data = await response.json()
-
-          if (data.error) {
-            appDispatch({ type: "flashMessage", value: data.error })
-            console.warn(`from client: ${data.error}`)
-            return
-          }
-
-          if (data.message === "success") {
-            console.log(data)
-            appDispatch({ type: "flashMessage", value: "Password updated" })
-            router.push("/dashboard")
-          }
-
-          //
-        } catch (err: any) {
-          if (err.error) {
-            appDispatch({ type: "flashMessage", value: "Password is not able to be updated at this time." })
-            console.warn("err", err)
-          } else {
-            console.warn("err", err)
-            appDispatch({ type: "flashMessage", value: "Password is not able to be updated at this time." })
-          }
-
-          // clear the form
-          dispatch({ type: "clearFields" })
-        }
-      }
-      fetchResults()
+      fetchResults(signal)
       return () => controller.abort()
     } // end if
   }, [state.submitCount])
