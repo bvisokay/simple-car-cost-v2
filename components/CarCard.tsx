@@ -80,7 +80,7 @@ const CarCard: React.FC<CarItemProps> = props => {
           {props.item.description}
           {props.item.link !== "" && (
             <LinkIconContainer>
-              <a href={props.item.link} target="_blank">
+              <a href={props.item.link} target="_blank" rel="noreferrer">
                 <FaExternalLinkAlt size={16}></FaExternalLinkAlt>
               </a>
             </LinkIconContainer>
