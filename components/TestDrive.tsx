@@ -212,12 +212,12 @@ const TestDrive: React.FC = () => {
       // need the async request in useEffect trick
 
       async function fetchNewValidatedTdItem(newUnvalidatedTdItem: any) {
-        let response = await fetch("/api/create-td-car", {
+        const response = await fetch("/api/create-td-car", {
           method: "POST",
           body: JSON.stringify(newUnvalidatedTdItem),
           headers: { "Content-Type": "application/json" }
         })
-        let newValidatedTdItem: any = await response.json()
+        const newValidatedTdItem: any = await response.json()
         console.log(newValidatedTdItem)
         dispatch({ type: "addNewValidatedItem", value: newValidatedTdItem })
         // Store Any New Vehicles in local storage as well

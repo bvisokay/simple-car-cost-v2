@@ -25,7 +25,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     //console.log(data)
 
     // create a new instance of the car class
-    let car = new Car(data)
+    const car = new Car(data)
 
     // run the validation and cleanup methods
     // ensure strings are converted into numbers
@@ -85,7 +85,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const carsCollection = client.db().collection("cars")
 
       // add the new carItem object to the items collection
-      let result = await carsCollection.insertOne(carItem)
+      const result = await carsCollection.insertOne(carItem)
 
       // if this operation failed then throw an error
       if (!result) {

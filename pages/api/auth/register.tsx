@@ -7,7 +7,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return
   }
   if (req.method === "POST") {
-    let user = new User(req.body)
+    const user = new User(req.body)
     //console.log(req.body)
     //console.log("user.data.username:", user.data.username)
     try {

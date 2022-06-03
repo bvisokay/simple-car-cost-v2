@@ -10,7 +10,7 @@ module.exports = {
     sourceType: "module"
   },
   rules: {
-    "prefer-const": "off",
+    //"prefer-const": "off",
     "no-inner-declarations": "off",
     "no-empty": "off",
     "no-useless-catch": "off",

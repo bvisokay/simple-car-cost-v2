@@ -25,8 +25,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     throw { error: "Invalid useful miles" }
   }
 
-  let usefulMiles = parseInt(req.body.usefulMiles)
-  let annualMiles = parseInt(req.body.annualMiles)
+  const usefulMiles = parseInt(req.body.usefulMiles)
+  const annualMiles = parseInt(req.body.annualMiles)
 
   if (annualMiles < 1200 || annualMiles > 200000) {
     throw { error: "Invalid annual miles" }

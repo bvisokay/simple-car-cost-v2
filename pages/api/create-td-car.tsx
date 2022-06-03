@@ -3,7 +3,7 @@ import TestDriveCar from "../../models/TestDriveCar"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    let newTdItem = new TestDriveCar(req.body)
+    const newTdItem = new TestDriveCar(req.body)
     newTdItem.register()
     if (newTdItem.errors.length) {
       res.json(newTdItem.errors)

@@ -15,7 +15,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const username = session!.user!.name
   try {
     // use the username to get the corresponding id
-    let client = await connectToDatabase()
+    const client = await connectToDatabase()
     const idResult = await client
       .db()
       .collection("users")
