@@ -1,11 +1,12 @@
+const useful_miles = 150000
+const annual_miles = 15000
+
 export default class TestDriveCar {
   //define for TypeScript
   description: string
   price: number
   miles: number
   link?: string
-  useful_miles: number
-  annual_miles: number
   rem_months: number
   cost_per_rem_mos: number
   createdDate: Date
@@ -13,57 +14,83 @@ export default class TestDriveCar {
   errors: string[]
 
   constructor(data: any) {
-    this.description = data.description.trim()
-    this.price = parseFloat(data.price)
-    this.miles = parseFloat(data.miles)
+    this.description = data.description
+    this.price = data.price
+    this.miles = data.miles
     this.link = data.link
-    this.useful_miles = 150000
-    this.annual_miles = 15000
-    this.rem_months = Math.round((this.useful_miles - this.miles) / (this.annual_miles / 12))
-    this.cost_per_rem_mos = parseFloat((this.price / ((this.useful_miles - this.miles) / (this.annual_miles / 12))).toFixed(2))
+    this.rem_months = Math.round((useful_miles - this.miles) / (annual_miles / 12))
+    this.cost_per_rem_mos = parseFloat((this.price / ((useful_miles - this.miles) / (annual_miles / 12))).toFixed(2))
     this.createdDate = new Date()
-    // scrap unique Id for autoGen mongoDb
     this.uniqueId = Math.round(Math.random() * 10000)
     this.errors = []
   }
 
   cleanup() {
-    // i think this is wehere all of the trim and parseInt() should happen?
-    if (typeof this.description != "string") {
+    if (this.description === "") {
+      this.errors.push("You must provide a description")
+    }
+    if (typeof this.description !== "string") {
       this.description = ""
-      console.log("description was not a string")
+      this.errors.push("Invalid Description")
     }
-    if (typeof this.price != "string") {
-      console.log("price was not a string")
+    if (typeof this.price !== "number") {
+      this.errors.push("Invalid price")
+    } else {
+      this.price = Math.round((this.price + Number.EPSILON) * 100) / 100
     }
-    if (typeof this.miles != "string") {
-      console.log("miles was not a string")
+
+    if (typeof this.miles !== "number") {
+      this.errors.push("Miles must be a number")
+    } else {
+      this.miles = Math.round((this.miles + Number.EPSILON) * 100) / 100
     }
-    if (typeof this.link != "string") {
+    if (typeof this.link !== "string") {
       this.link = ""
-      console.log("link was not a string")
+      this.errors.push("Invalid link")
     }
   }
 
   validate() {
-    // bring in more vali from the client side logic
-    // if a field is left blank
-    if (this.description == "") {
-      this.errors.push("You must provide a description")
+    /* description */
+
+    if (this.description !== "" && this.description.length < 3) {
+      this.errors.push("You must provide a longer description")
     }
-    if (this.price <= 0) {
+    if (this.description !== "" && this.description.length > 60) {
+      this.errors.push("Please provide a shorter description")
+    }
+    /* price */
+    if (this.price < 0) {
       this.errors.push("You must provide a price greater than 0")
     }
-    if (this.miles == 0) {
-      this.errors.push("You must provide miles greater than 0")
+    if (this.price === 0) {
+      this.errors.push("You must provide a price")
     }
-  }
+    if (this.price < 1) {
+      this.price = 1
+    }
+    if (this.price > 250000) {
+      this.errors.push("You must provide a lower price")
+    }
+    /* miles */
+    if (this.miles < 0) {
+      this.errors.push("Incorrect miles")
+    }
+    if (this.miles < 1) {
+      this.miles = 1
+    }
+    if (this.miles > 250000) {
+      this.errors.push("Please enter a lower miles value")
+    }
 
-  create() {
-    //return the document, cleaned up
+    /* link */
+    if (this.link && this.link.length && !this.link.startsWith("https://")) {
+      this.link = `https://${this.link}`
+    }
   }
 
   register() {
+    this.cleanup()
     this.validate()
   }
 }

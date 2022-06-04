@@ -1,170 +1,193 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import Link from "next/link"
 import styled from "styled-components"
+import { GlobalDispatchContext } from "../store/GlobalContext"
 
 //comps
-import CarCard from "./CarCard"
-import { Section, SectionTitle, FormControl, BtnWide } from "../styles/GlobalComponents"
+//import TestDriveCarCard from "./TestDriveCarCard"
+import TestDriveListItemCard from "./TestDriveListItemCard/TestDriveListItemCard"
+import { FormControl, BtnWide } from "../styles/GlobalComponents"
 
 //type
 import TestDriveCar from "../models/TestDriveCar"
 
-const TestDriveListGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
+const TDSection = styled.div`
+  margin: 5rem auto 2rem auto;
+  border: 3px solid var(--primary);
+  border-radius: 6px;
+  padding: 1rem;
+  background-color: white;
+
+  h2 {
+    //border: 2px solid crimson;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
 `
 
-const initialState = {
-  testDriveItems: [],
-  description: {
-    value: "",
-    hasErrors: false,
-    message: ""
-  },
-  price: {
-    value: "",
-    hasErrors: false,
-    message: ""
-  },
-  miles: {
-    value: "",
-    hasErrors: false,
-    message: ""
-  },
-  link: {
-    value: "",
-    hasErrors: false,
-    message: ""
-  },
-  submitCount: 0,
-  isSaving: false
-}
-
-function ourReducer(draft: any, action: any) {
-  switch (action.type) {
-    case "handleExistingItems":
-      draft.testDriveItems = action.value
-      return
-    case "deleteExistingItem":
-      /* update state to remove from UI */
-      draft.testDriveItems = draft.testDriveItems.filter((x: TestDriveCar) => {
-        if (x.uniqueId !== action.value) return x
-      })
-      /* remove from local storage */
-      return
-    case "addNewValidatedItem":
-      draft.testDriveItems.push(action.value)
-      localStorage.setItem("tdCars", JSON.stringify(draft.testDriveItems))
-      return
-    case "descriptionImmediately":
-      draft.description.hasErrors = false
-      draft.description.value = action.value
-      if (draft.description.value == "") {
-        draft.description.hasErrors = true
-        draft.description.message = "Please enter a description"
-      }
-      if (draft.description.value.length > 60) {
-        draft.description.hasErrors = true
-        draft.description.message = "The description cannot exceed 60 characters."
-      }
-      return
-    case "priceImmediately":
-      draft.price.hasErrors = false
-      draft.price.value = action.value
-      if (draft.price.value == "") {
-        draft.price.hasErrors = true
-        draft.price.message = "Please enter a price"
-      }
-      if (draft.price.value > 250000) {
-        draft.price.hasErrors = true
-        draft.price.message = "Settle down there partner, enter a price under $250,000"
-      }
-      if (parseFloat(draft.price.value) < 1) {
-        draft.price.hasErrors = true
-        draft.price.message = "The price cannot be less than $1"
-      }
-      return
-
-    case "milesImmediately":
-      draft.miles.hasErrors = false
-      draft.miles.value = action.value
-      if (draft.miles.value == "") {
-        draft.miles.hasErrors = true
-        draft.miles.message = "Please enter a value for miles"
-      }
-      if (draft.miles.value > 300000) {
-        draft.miles.hasErrors = true
-        draft.miles.message = "This thing is getting up there! Please enter lower value for the miles"
-      }
-      return
-    case "removeAnyErrors":
-      draft.description.hasErrors = false
-      draft.price.hasErrors = false
-      draft.miles.hasErrors = false
-      return
-    case "linkImmediately":
-      draft.link.hasErrors = false
-      draft.link.value = action.value
-      return
-    case "submitForm":
-      if (draft.description.value.trim() == "") {
-        draft.description.hasErrors = true
-        draft.description.message = "You must enter a description."
-      }
-      if (draft.description.value.length > 60) {
-        draft.description.hasErrors = true
-        draft.description.message = "The description cannot exceed 60 characters."
-      }
-      if (draft.price.value == "") {
-        draft.price.hasErrors = true
-        draft.price.message = "You must enter a price."
-      }
-      if (draft.price.value > 250000) {
-        draft.price.hasErrors = true
-        draft.price.message = "You must enter a price."
-      }
-      if (parseFloat(draft.price.value) < 1) {
-        draft.price.hasErrors = true
-        draft.price.message = "The price cannot be less than $1"
-      }
-      if (draft.miles.value.trim() == "") {
-        draft.miles.hasErrors = true
-        draft.miles.message = "You must enter a value for the miles."
-      }
-      if (draft.miles.value < 1) {
-        draft.miles.hasErrors = true
-        draft.miles.message = "Mileage must be greater than 0."
-      }
-      if (draft.miles.value > 300000) {
-        draft.miles.hasErrors = true
-        draft.miles.message = "Enter a lower value for the miles"
-      }
-      // if no fields have an error then submit the form
-      if (!draft.description.hasErrors && !draft.price.hasErrors && !draft.miles.hasErrors && !draft.link.hasErrors) {
-        draft.submitCount++
-      }
-      return
-    case "saveRequestStarted":
-      draft.isSaving = true
-      return
-    case "saveRequestFinished":
-      draft.isSaving = false
-      return
-    case "clearFields":
-      draft.description.value = ""
-      draft.price.value = ""
-      draft.miles.value = ""
-      draft.link.value = ""
-      return
-  }
-}
+const TestDriveListGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin-top: 2rem;
+`
 
 const TestDrive: React.FC = () => {
+  const appDispatch = useContext(GlobalDispatchContext)
+
+  const initialState = {
+    testDriveItems: [],
+    description: {
+      value: "",
+      hasErrors: false,
+      message: ""
+    },
+    price: {
+      value: "",
+      hasErrors: false,
+      message: ""
+    },
+    miles: {
+      value: "",
+      hasErrors: false,
+      message: ""
+    },
+    link: {
+      value: "",
+      hasErrors: false,
+      message: ""
+    },
+    submitCount: 0,
+    isSaving: false
+  }
+
+  function ourReducer(draft: any, action: any) {
+    switch (action.type) {
+      case "handleExistingItems":
+        draft.testDriveItems = action.value
+        return
+      case "deleteExistingItem":
+        /* update state to remove from UI */
+        draft.testDriveItems = draft.testDriveItems.filter((x: TestDriveCar) => {
+          if (x.uniqueId !== action.value) return x
+        })
+        /* remove from local storage */
+        return
+      case "addNewValidatedItem":
+        draft.testDriveItems.push(action.value)
+        localStorage.setItem("tdCars", JSON.stringify(draft.testDriveItems))
+        return
+      case "descriptionImmediately":
+        draft.description.hasErrors = false
+        draft.description.value = action.value
+        if (draft.description.value == "") {
+          draft.description.hasErrors = true
+          draft.description.message = "Please enter a description"
+        }
+        if (draft.description.value.length > 60) {
+          draft.description.hasErrors = true
+          draft.description.message = "The description cannot exceed 60 characters."
+        }
+        if (draft.description.value.length < 3) {
+          draft.description.hasErrors = true
+          draft.description.message = "Please enter a longer description"
+        }
+        return
+      case "priceImmediately":
+        draft.price.hasErrors = false
+        draft.price.value = action.value
+        if (draft.price.value == "") {
+          draft.price.hasErrors = true
+          draft.price.message = "Please enter a price"
+        }
+        if (draft.price.value > 250000) {
+          draft.price.hasErrors = true
+          draft.price.message = "Enter a price under $250,000"
+        }
+        if (parseFloat(draft.price.value) < 1) {
+          draft.price.hasErrors = true
+          draft.price.message = "The price cannot be less than $1"
+        }
+        return
+
+      case "milesImmediately":
+        draft.miles.hasErrors = false
+        draft.miles.value = action.value
+        if (draft.miles.value == "") {
+          draft.miles.hasErrors = true
+          draft.miles.message = "Please enter a value for miles"
+        }
+        if (draft.miles.value > 250000) {
+          draft.miles.hasErrors = true
+          draft.miles.message = "Please enter lower value for the miles"
+        }
+        return
+      case "removeAnyErrors":
+        draft.description.hasErrors = false
+        draft.price.hasErrors = false
+        draft.miles.hasErrors = false
+        return
+      case "linkImmediately":
+        draft.link.hasErrors = false
+        draft.link.value = action.value
+        return
+      case "submitForm":
+        if (draft.description.value.trim() == "") {
+          draft.description.hasErrors = true
+          draft.description.message = "You must enter a description."
+        }
+        if (draft.description.value.length > 60) {
+          draft.description.hasErrors = true
+          draft.description.message = "The description cannot exceed 60 characters."
+        }
+        if (draft.price.value == "") {
+          draft.price.hasErrors = true
+          draft.price.message = "You must enter a price."
+        }
+        if (draft.price.value > 250000) {
+          draft.price.hasErrors = true
+          draft.price.message = "You must enter a price."
+        }
+        if (parseFloat(draft.price.value) < 1) {
+          draft.price.hasErrors = true
+          draft.price.message = "The price cannot be less than $1"
+        }
+        if (draft.miles.value.trim() == "") {
+          draft.miles.hasErrors = true
+          draft.miles.message = "You must enter a value for the miles."
+        }
+        if (draft.miles.value < 0) {
+          draft.miles.hasErrors = true
+          draft.miles.message = "Mileage must be greater than 0."
+        }
+        if (draft.miles.value > 300000) {
+          draft.miles.hasErrors = true
+          draft.miles.message = "Enter a lower value for the miles"
+        }
+        // if no fields have an error then submit the form
+        if (!draft.description.hasErrors && !draft.price.hasErrors && !draft.miles.hasErrors && !draft.link.hasErrors) {
+          draft.submitCount++
+        }
+        return
+      case "saveRequestStarted":
+        draft.isSaving = true
+        return
+      case "saveRequestFinished":
+        draft.isSaving = false
+        return
+      case "clearFields":
+        draft.description.value = ""
+        draft.price.value = ""
+        draft.miles.value = ""
+        draft.link.value = ""
+        return
+    }
+  }
+
   const [state, dispatch] = useImmerReducer(ourReducer, initialState)
 
-  async function newTestDriveCarHandler(e: React.FormEvent) {
+  function newTestDriveCarHandler(e: React.FormEvent) {
     e.preventDefault()
     dispatch({ type: "submitForm" })
   }
@@ -202,17 +225,29 @@ const TestDrive: React.FC = () => {
 
   // define request to send inside useEffect
   async function fetchNewValidatedTdItem(newUnvalidatedTdItem: any, signal: AbortSignal) {
-    const response = await fetch("/api/create-td-car", {
-      signal: signal,
-      method: "POST",
-      body: JSON.stringify(newUnvalidatedTdItem),
-      headers: { "Content-Type": "application/json" }
-    })
-    const newValidatedTdItem: any = await response.json()
-    console.log(newValidatedTdItem)
-    dispatch({ type: "addNewValidatedItem", value: newValidatedTdItem })
-    // Store Any New Vehicles in local storage as well
-    dispatch({ type: "clearFields" })
+    try {
+      const response = await fetch("/api/create-td-car", {
+        signal: signal,
+        method: "POST",
+        body: JSON.stringify(newUnvalidatedTdItem),
+        headers: { "Content-Type": "application/json" }
+      })
+      //console.log(`Response from /api/create-td-car:${response}`)
+      const data: any = await response.json()
+
+      if (data.message !== "success") {
+        dispatch({ type: "flashMessage", value: "Could not add item" })
+        throw new Error(`There was a problem: ${data.errors}`)
+      }
+
+      const newValidatedTdItem = data.data
+      console.log("newValidatedTdItem", newValidatedTdItem)
+      dispatch({ type: "addNewValidatedItem", value: newValidatedTdItem })
+      dispatch({ type: "clearFields" })
+      appDispatch({ type: "flashMessage", value: "Car added" })
+    } catch (err) {
+      throw new Error(`There was a problem creating new test drive item: ${err}`)
+    }
   }
 
   // useEffect to submitForm Request if no validation errors
@@ -235,8 +270,8 @@ const TestDrive: React.FC = () => {
   }, [state.submitCount])
 
   return (
-    <Section>
-      <SectionTitle color={"var(--dark-gray)"}>Take it for a Spin - Enter Vehicle Details</SectionTitle>
+    <TDSection>
+      <h2>Take it for a Spin - Enter Vehicle Details</h2>
       <form onSubmit={newTestDriveCarHandler}>
         <FormControl>
           <label htmlFor="description">Description (Example: {new Date().getFullYear()} Jeep Wrangler)</label>
@@ -306,16 +341,13 @@ const TestDrive: React.FC = () => {
       </p>
 
       {state.testDriveItems.length >= 1 && (
-        <>
-          <SectionTitle color={"var(--dark-gray)"}>Your List</SectionTitle>
-          <TestDriveListGrid>
-            {state.testDriveItems.map((item: any) => {
-              return <CarCard key={item.uniqueId} item={item} deleteHandler={deleteHandler} />
-            })}
-          </TestDriveListGrid>
-        </>
+        <TestDriveListGrid>
+          {state.testDriveItems.map((item: any) => {
+            return <TestDriveListItemCard key={item.uniqueId} item={item} deleteHandler={deleteHandler} />
+          })}
+        </TestDriveListGrid>
       )}
-    </Section>
+    </TDSection>
   )
 }
 export default TestDrive

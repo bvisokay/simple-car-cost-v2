@@ -32,8 +32,8 @@ module.exports = {
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/require-await": "off",
-    "@typescript-eslint/restrict-plus-operands": "off",
-    "@typescript-eslint/no-misused-promises": "off"
+    "@typescript-eslint/restrict-plus-operands": "off"
+    //"@typescript-eslint/no-misused-promises": "off"
     //"@typescript-eslint/no-unsafe-return": "off"
     //"@typescript-eslint/no-inferrable-types": "off"
   }

@@ -44,9 +44,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background-color: whitesmoke;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: linear-gradient(white, whitesmoke);
+    //background-size: cover;
+    //background-repeat: no-repeat;
     margin: 0;
     padding: 0;
   }
