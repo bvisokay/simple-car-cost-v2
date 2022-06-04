@@ -7,6 +7,9 @@ import styled from "styled-components"
 import CarCard from "./CarCard"
 import { Section, SectionTitle, FormControl, BtnWide } from "../styles/GlobalComponents"
 
+//type
+import TestDriveCar from "../models/TestDriveCar"
+
 const TestDriveListGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -46,7 +49,7 @@ function ourReducer(draft: any, action: any) {
       return
     case "deleteExistingItem":
       /* update state to remove from UI */
-      draft.testDriveItems = draft.testDriveItems.filter((x: any) => {
+      draft.testDriveItems = draft.testDriveItems.filter((x: TestDriveCar) => {
         if (x.uniqueId !== action.value) return x
       })
       /* remove from local storage */
@@ -169,7 +172,7 @@ const TestDrive: React.FC = () => {
   function deleteHandler(uniqueId: number) {
     // update local storage
     const tdCarsInStorage = JSON.parse(localStorage.getItem("tdCars") || "{}")
-    const updatedTdCarsInStorage = tdCarsInStorage.filter((car: any) => {
+    const updatedTdCarsInStorage = tdCarsInStorage.filter((car: TestDriveCar) => {
       if (car.uniqueId !== uniqueId) return car
     })
     localStorage.setItem("tdCars", JSON.stringify(updatedTdCarsInStorage))

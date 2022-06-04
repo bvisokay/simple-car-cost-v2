@@ -4,7 +4,6 @@ import { useRouter } from "next/router"
 import { runServerSidePageGuard } from "../lib/auth"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
-
 import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
 
 const ChangePassword: React.FC = () => {

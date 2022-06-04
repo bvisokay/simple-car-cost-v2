@@ -17,7 +17,7 @@ import { GA_TRACKING_ID } from "../lib/analytics"
 
 // affect nested of flex container / wrapper so revisit
 
-export const SITENAME: string = "Simple Car Cost"
+export const SITENAME = "Simple Car Cost"
 const isProd = process.env.NODE_ENV === "production"
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
