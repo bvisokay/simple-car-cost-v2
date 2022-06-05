@@ -1,6 +1,18 @@
 const useful_miles = 150000
 const annual_miles = 15000
 
+export interface TestDriveCarType {
+  description: string
+  price: number
+  miles: number
+  link?: string
+  rem_months: number
+  cost_per_rem_mos: number
+  createdDate: Date
+  uniqueId: number
+  errors: string[]
+}
+
 export default class TestDriveCar {
   //define for TypeScript
   description: string

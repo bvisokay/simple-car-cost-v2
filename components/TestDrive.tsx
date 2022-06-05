@@ -11,6 +11,8 @@ import { FormControl, BtnWide } from "../styles/GlobalComponents"
 
 //type
 import TestDriveCar from "../models/TestDriveCar"
+import TestDriveCarType from "../models/TestDriveCar"
+import { PrimaryCarFields } from "../lib/types"
 
 const TDSection = styled.div`
   margin: 5rem auto 2rem auto;
@@ -33,11 +35,39 @@ const TestDriveListGrid = styled.div`
   margin-top: 2rem;
 `
 
+type TestDriveActionTypes = { type: "handleExistingItems"; value: TestDriveCarType[] } | { type: "deleteExistingItem"; value: number } | { type: "addNewValidatedItem"; value?: string | TestDriveCarType } | { type: "descriptionImmediately"; value: string } | { type: "priceImmediately"; value: string | number } | { type: "milesImmediately"; value: string | number } | { type: "removeAnyErrors"; value?: string } | { type: "linkImmediately"; value: string } | { type: "submitForm"; value?: string } | { type: "saveRequestStarted"; value?: string } | { type: "saveRequestFinished"; value?: string } | { type: "clearFields"; value?: string }
+
 const TestDrive: React.FC = () => {
   const appDispatch = useContext(GlobalDispatchContext)
 
+  interface TestDriveInitialStateTypes {
+    testDriveItems?: any[]
+    description: {
+      value: string
+      hasErrors: boolean
+      message: string
+    }
+    price: {
+      value: string | number
+      hasErrors: boolean
+      message: string
+    }
+    miles: {
+      value: string | number
+      hasErrors: boolean
+      message: string
+    }
+    link: {
+      value: string
+      hasErrors: boolean
+      message: string
+    }
+    submitCount: number
+    isSaving: boolean
+  }
+
   const initialState = {
-    testDriveItems: [],
+    testDriveItems: [] as TestDriveCarType[],
     description: {
       value: "",
       hasErrors: false,
@@ -62,20 +92,20 @@ const TestDrive: React.FC = () => {
     isSaving: false
   }
 
-  function ourReducer(draft: any, action: any) {
+  function ourReducer(draft: TestDriveInitialStateTypes, action: TestDriveActionTypes) {
     switch (action.type) {
       case "handleExistingItems":
         draft.testDriveItems = action.value
         return
       case "deleteExistingItem":
         /* update state to remove from UI */
-        draft.testDriveItems = draft.testDriveItems.filter((x: TestDriveCar) => {
+        draft.testDriveItems = draft.testDriveItems?.filter((x: any) => {
           if (x.uniqueId !== action.value) return x
         })
         /* remove from local storage */
         return
       case "addNewValidatedItem":
-        draft.testDriveItems.push(action.value)
+        draft.testDriveItems?.push(action.value)
         localStorage.setItem("tdCars", JSON.stringify(draft.testDriveItems))
         return
       case "descriptionImmediately":
@@ -105,7 +135,7 @@ const TestDrive: React.FC = () => {
           draft.price.hasErrors = true
           draft.price.message = "Enter a price under $250,000"
         }
-        if (parseFloat(draft.price.value) < 1) {
+        if (draft.price.value < 1) {
           draft.price.hasErrors = true
           draft.price.message = "The price cannot be less than $1"
         }
@@ -130,7 +160,9 @@ const TestDrive: React.FC = () => {
         return
       case "linkImmediately":
         draft.link.hasErrors = false
-        draft.link.value = action.value
+        if (draft.link.value) {
+          draft.link.value = action.value
+        }
         return
       case "submitForm":
         if (draft.description.value.trim() == "") {
@@ -149,11 +181,11 @@ const TestDrive: React.FC = () => {
           draft.price.hasErrors = true
           draft.price.message = "You must enter a price."
         }
-        if (parseFloat(draft.price.value) < 1) {
+        if (draft.price.value < 1) {
           draft.price.hasErrors = true
           draft.price.message = "The price cannot be less than $1"
         }
-        if (draft.miles.value.trim() == "") {
+        if (typeof draft.miles.value === "string" && draft.miles.value.trim() === "") {
           draft.miles.hasErrors = true
           draft.miles.message = "You must enter a value for the miles."
         }
@@ -194,7 +226,7 @@ const TestDrive: React.FC = () => {
 
   function deleteHandler(uniqueId: number) {
     // update local storage
-    const tdCarsInStorage = JSON.parse(localStorage.getItem("tdCars") || "{}")
+    const tdCarsInStorage: [] = JSON.parse(localStorage.getItem("tdCars") || "{}")
     const updatedTdCarsInStorage = tdCarsInStorage.filter((car: TestDriveCar) => {
       if (car.uniqueId !== uniqueId) return car
     })
@@ -224,7 +256,7 @@ const TestDrive: React.FC = () => {
   }, [state.description.hasErrors, state.price.hasErrors, state.miles.hasErrors])
 
   // define request to send inside useEffect
-  async function fetchNewValidatedTdItem(newUnvalidatedTdItem: any, signal: AbortSignal) {
+  async function fetchNewValidatedTdItem(newUnvalidatedTdItem: PrimaryCarFields, signal: AbortSignal) {
     try {
       const response = await fetch("/api/create-td-car", {
         signal: signal,
@@ -236,12 +268,12 @@ const TestDrive: React.FC = () => {
       const data: any = await response.json()
 
       if (data.message !== "success") {
-        dispatch({ type: "flashMessage", value: "Could not add item" })
+        appDispatch({ type: "flashMessage", value: "Could not add item" })
         throw new Error(`There was a problem: ${data.errors}`)
       }
 
       const newValidatedTdItem = data.data
-      console.log("newValidatedTdItem", newValidatedTdItem)
+      //console.log("newValidatedTdItem", newValidatedTdItem)
       dispatch({ type: "addNewValidatedItem", value: newValidatedTdItem })
       dispatch({ type: "clearFields" })
       appDispatch({ type: "flashMessage", value: "Car added" })
