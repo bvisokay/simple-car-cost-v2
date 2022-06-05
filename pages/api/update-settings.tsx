@@ -17,14 +17,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const username = session.user?.name
 
-  if (typeof req.body.annualMiles !== "string" || req.body.annualMiles === "") {
-    throw { error: "Invalid annual miles" }
-  }
-
-  if (typeof req.body.usefulMiles !== "string" || req.body.usefulMiles === "") {
-    throw { error: "Invalid useful miles" }
-  }
-
   const usefulMiles = parseInt(req.body.usefulMiles)
   const annualMiles = parseInt(req.body.annualMiles)
 
@@ -35,8 +27,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (usefulMiles < 12000 || usefulMiles > 500000) {
     throw { error: "Invalid useful miles" }
   }
-
-  //console.log(username, usefulMiles, annualMiles)
 
   try {
     const client: MongoClient = await connectToDatabase()

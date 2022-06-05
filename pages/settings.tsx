@@ -23,7 +23,6 @@ const WarningBox = styled.div`
 `
 
 const ChangeSettings = (props: any) => {
-  console.log(props)
   const appDispatch = useContext(GlobalDispatchContext)
   const router = useRouter()
 
