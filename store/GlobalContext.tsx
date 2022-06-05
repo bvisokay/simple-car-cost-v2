@@ -1,24 +1,26 @@
 import React, { createContext } from "react"
 import { useImmerReducer } from "use-immer"
 
+type GlobalActionTypes = { type: "flashMessage"; value: string } | { type: "setLightTheme" } | { type: "setDarkTheme" }
+
+interface InitialStateType {
+  flashMessages: string[]
+  theme: string
+}
+
+const initialState = {
+  flashMessages: [] as string[],
+  theme: "dark"
+}
+
 export const GlobalDispatchContext = createContext({} as React.Dispatch<GlobalActionTypes>)
-
-export const GlobalStateContext = createContext({
-  flashMessages: [] as any,
-  theme: ""
-})
-
-type GlobalActionTypes = { type: "flashMessage"; value: string | string[] } | { type: "setLightTheme" } | { type: "setDarkTheme" }
+export const GlobalStateContext = createContext<InitialStateType>(initialState)
 
 export const GlobalContextProvider: React.FC = props => {
-  const initialState = {
-    flashMessages: [] as any,
-    theme: "dark"
-  }
-
   function ourReducer(draft: typeof initialState, action: GlobalActionTypes): void {
     switch (action.type) {
       case "flashMessage":
+        /* draft.flashMessages.push(action.value) */
         draft.flashMessages.push(action.value)
         return
       case "setLightTheme":

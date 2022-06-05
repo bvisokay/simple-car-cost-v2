@@ -6,7 +6,7 @@ const FlashMessages: React.FC = () => {
 
   return (
     <div className="floating-alerts">
-      {appState.flashMessages.map((msg: any, index: any) => {
+      {appState.flashMessages.map((msg: string, index: number) => {
         return (
           <div key={index} className="floating-alert">
             {msg}
