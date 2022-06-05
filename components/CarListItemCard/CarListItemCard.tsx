@@ -6,7 +6,21 @@ import Card from "./CarListItemCardStyles"
 
 import { useRouter } from "next/router"
 
-const CarListItemCard = (props: any) => {
+type Props = {
+  deleteItem: (carId: string) => void
+  item: {
+    carId: string
+    cprm: number
+    createdDate: string
+    description: string
+    link: string
+    miles: number
+    price: number
+    rem_months: number
+  }
+}
+
+const CarListItemCard = (props: Props) => {
   console.log(props)
 
   const router = useRouter()
@@ -58,14 +72,14 @@ const CarListItemCard = (props: any) => {
               <div className="title">Miles</div>
               <MdSpeed />
             </div>
-            <p>{props.item.miles.toLocaleString()}</p>
+            <p>{props.item.miles <= 1 ? "New" : props.item.miles.toLocaleString()}</p>
           </div>
           <div className="box">
             <div className="box-header">
               <div className="title">CPRM</div>
               <MdOutlinePriceChange />
             </div>
-            <p>{props.item.cprm > 0 ? `$${Math.round(parseInt(props.item.cprm)).toLocaleString()}` : "n/a"}</p>
+            <p>{props.item.cprm > 1 ? `$${Math.round(props.item.cprm).toLocaleString()}` : "n/a"}</p>
           </div>
         </div>
         <div className="footer">

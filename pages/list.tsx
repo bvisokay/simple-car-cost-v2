@@ -147,8 +147,7 @@ const List = ({ session, carData, userData }: Props) => {
               {session.user?.name?.slice(1)}&apos;s List
             </h2>
           )}
-          {cars?.length && cars?.length === 1 ? <p>You have 1 car in your list</p> : ""}
-          {cars?.length && cars?.length > 1 ? <p>You have {cars.length} cars in your list</p> : ""}
+
           {userData && (
             <SettingsBadge>
               <Link href="/settings">
@@ -171,7 +170,20 @@ const List = ({ session, carData, userData }: Props) => {
           {/* <p>Clear All</p> */}
         </ListPageHeading>
         <hr />
-        <br />
+        {cars?.length && cars?.length === 1 ? <p>You have 1 car in your list</p> : ""}
+        {cars?.length && cars?.length > 1 ? <p>You have {cars.length} cars in your list</p> : ""}
+        {!cars?.length && (
+          <>
+            <br />
+            <p>
+              You have no cars in your list.{" "}
+              <Link href="/create-item">
+                <a>Add a car</a>
+              </Link>{" "}
+              to get started.
+            </p>
+          </>
+        )}
         {/* <FormControl>
           <select
             name=""
@@ -187,21 +199,7 @@ const List = ({ session, carData, userData }: Props) => {
           </select>
         </FormControl>
           <hr /> */}
-        <ul>
-          {cars?.length ? (
-            cars.map(item => <CarListItemCard key={item.carId} item={item} deleteItem={deleteItem} />)
-          ) : (
-            <>
-              <p>
-                No items found.{" "}
-                <Link href="/create-item">
-                  <a>Add a car</a>
-                </Link>{" "}
-                to get started.
-              </p>
-            </>
-          )}
-        </ul>
+        <ul>{cars?.length ? cars.map(item => <CarListItemCard key={item.carId} item={item} deleteItem={deleteItem} />) : <></>}</ul>
       </Section>
     </Wrapper>
   )
