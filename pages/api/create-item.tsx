@@ -17,7 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     // get the username from the session
-    const username = session!.user!.name
+    const username = session.user?.name
     //console.log(username)
 
     // get extracted values from the body

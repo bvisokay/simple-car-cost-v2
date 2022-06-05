@@ -1,4 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
+import { Session } from "next-auth"
 import { getSession } from "next-auth/client"
 import { useState, useContext } from "react"
 import { breakpoints } from "../styles/breakpoints"
@@ -21,13 +22,36 @@ const ListPageHeading = styled.div`
   }
 `
 
-const List = (props: any) => {
-  //console.log(props)
-  const [cars, setCars] = useState(props.carData)
+interface CarInList {
+  carId: string
+  description: string
+  price: number
+  miles: number
+  link: string
+  createdDate: string
+  rem_months: number
+  cprm: number
+}
+
+type Props = {
+  session?: Session
+  carData?: CarInList[]
+  userData?: {
+    user_id: string
+    useful_miles: number
+    monthly_miles: number
+  }
+}
+
+const List = ({ session, carData, userData }: Props) => {
+  console.log(session)
+  console.log(carData)
+  console.log(userData)
+  const [cars, setCars] = useState(carData)
 
   const appDispatch = useContext(GlobalDispatchContext)
 
-  const deleteItem = async (carId: string) => {
+  const deleteItem = (carId: string) => {
     const controller = new AbortController()
     const signal = controller.signal
     async function sendDeleteRequest() {
@@ -52,7 +76,7 @@ const List = (props: any) => {
         if (data.message === "success") {
           appDispatch({ type: "flashMessage", value: "Car removed" })
           setCars(
-            cars.filter((car: any) => {
+            cars?.filter((car: CarInList) => {
               return car.carId !== carId
             })
           )
@@ -73,9 +97,14 @@ const List = (props: any) => {
     <Wrapper>
       <Section>
         <ListPageHeading>
-          <h2>{props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}&apos;s List</h2>
-          {cars.length == 1 && <p>You have 1 car in your list</p>}
-          {cars.length > 1 && <p>You have {cars.length} cars in your list</p>}
+          {session !== undefined && session !== null && (
+            <h2>
+              {session.user?.name?.charAt(0).toUpperCase()}
+              {session.user?.name?.slice(1)}&apos;s List
+            </h2>
+          )}
+          {cars?.length && cars?.length === 1 ? <p>You have 1 car in your list</p> : ""}
+          {cars?.length && cars?.length > 1 ? <p>You have {cars.length} cars in your list</p> : ""}
           {/* <p>Sort &amp; Filter Icon</p> */}
           {/* <p>Clear All</p> */}
         </ListPageHeading>
@@ -97,10 +126,8 @@ const List = (props: any) => {
         </FormControl>
           <hr /> */}
         <ul>
-          {cars.length ? (
-            cars.map((item: any) => {
-              return <CarListItemCard key={item.carId} item={item} deleteItem={deleteItem} />
-            })
+          {cars?.length ? (
+            cars.map(item => <CarListItemCard key={item.carId} item={item} deleteItem={deleteItem} />)
           ) : (
             <>
               <p>
@@ -130,13 +157,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     }
   }
 
-  const username = session!.user!.name!.toString()
-
-  // instead of calling internal API just do the db work here
-  /* interface ListDataType {
-    userData: {}
-    carData: []
-  } */
+  const username = session.user!.name!.toString()
 
   let data
 

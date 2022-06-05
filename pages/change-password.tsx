@@ -138,7 +138,7 @@ const ChangePassword: React.FC = () => {
     } // end if
   }, [state.submitCount])
 
-  async function updatePasswordSubmitHandler(e: React.FormEvent) {
+  function updatePasswordSubmitHandler(e: React.FormEvent) {
     e.preventDefault()
     //check for validation errors
     dispatch({ type: "oldPasswordChecks", value: state.oldPassword.value })

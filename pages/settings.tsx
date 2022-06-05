@@ -147,7 +147,7 @@ const ChangeSettings = (props: any) => {
     } // end if
   }, [state.submitCount])
 
-  async function updateSettingsSubmitHandler(e: React.FormEvent) {
+  function updateSettingsSubmitHandler(e: React.FormEvent) {
     e.preventDefault()
     //check for validation errors
     dispatch({ type: "annualMilesChecks", value: state.annualMiles.value })
@@ -196,15 +196,15 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     }
   }
 
-  const username: string | undefined | null = session!.user!.name
+  const username: string | undefined | null = session.user?.name
 
   const results = await User.getSettings(username)
 
   //console.log(results)
 
   const data = {
-    useful_miles: results!.data!.result.useful_miles,
-    annual_miles: results!.data!.result.annual_miles
+    useful_miles: results.data!.result.useful_miles,
+    annual_miles: results.data!.result.annual_miles
   }
 
   return {

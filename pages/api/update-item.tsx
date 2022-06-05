@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/client"
 import { connectToDatabase } from "../../lib/db"
 import { ObjectId } from "mongodb"
+import { MatchDoc, PrimaryCarFields } from "../../lib/types"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "PATCH") {
@@ -12,7 +13,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.status(401).json({ message: "Not authenticated" })
     return
   }
-  const username = session!.user!.name
+  const username = session.user?.name
   try {
     // use the username to get the corresponding id
     const client = await connectToDatabase()
@@ -24,7 +25,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     //console.log(`userId: ${userId}`)
 
     // See if the session user's id matches the "item-being-edited" authorId sent in
-    const tgtCarDoc = await client
+    const tgtCarDoc: MatchDoc | null = await client
       .db()
       .collection("cars")
       .findOne({ _id: new ObjectId(req.body.carId) }, { projection: { _id: 0, authorId: 1 } })
@@ -42,7 +43,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (editableItemAuthorId === userId) {
       // okay to edit
       // clean up req.body to get rid of any bogus fields
-      const updatedFields = {
+      const updatedFields: PrimaryCarFields = {
         description: req.body.description,
         price: parseFloat(req.body.price),
         miles: parseFloat(req.body.miles),

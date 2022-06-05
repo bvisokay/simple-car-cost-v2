@@ -15,7 +15,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return
   }
 
-  const username = session!.user!.name
+  const username = session.user?.name
 
   if (typeof req.body.annualMiles !== "string" || req.body.annualMiles === "") {
     throw { error: "Invalid annual miles" }

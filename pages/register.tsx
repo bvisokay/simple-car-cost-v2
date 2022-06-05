@@ -154,7 +154,7 @@ const Register: React.FC = () => {
 
   async function fetchDoesUsernameExistResults(signal: AbortSignal) {
     try {
-      const response: any = await fetch("/api/doesUserValueExist", {
+      const response = await fetch("/api/doesUserValueExist", {
         signal,
         method: "POST",
         body: JSON.stringify({ key: "username", value: state.username.value }),
@@ -181,7 +181,7 @@ const Register: React.FC = () => {
 
   async function fetchDoesEmailExistResults(signal: AbortSignal) {
     try {
-      const response: any = await fetch("/api/doesUserValueExist", {
+      const response = await fetch("/api/doesUserValueExist", {
         signal: signal,
         method: "POST",
         body: JSON.stringify({ key: "email", value: state.email.value }),
@@ -228,7 +228,6 @@ const Register: React.FC = () => {
         console.warn(data.errors)
         throw { message: "Could not register", errors: [data.errors] }
       }
-      console.log("Created User: " + data.data.username)
       // now sign the user in - note: signIn will always resolve even with error
       const result = await signIn("credentials", { redirect: false, username: state.username.value, password: state.password.value })
       if (result!.error) {

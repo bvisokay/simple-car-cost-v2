@@ -2,6 +2,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { runServerSidePageGuard } from "../lib/auth"
 import Link from "next/link"
 import Head from "next/head"
+import { Session } from "next-auth"
 //comps
 import { Wrapper, Section } from "../styles/GlobalComponents"
 import { breakpoints } from "../styles/breakpoints"
@@ -71,7 +72,11 @@ const DashboardItem = styled.div`
   }
 `
 
-const DashboardPage = (props: any) => {
+type Props = {
+  session?: Session
+}
+
+const DashboardPage = ({ session }: Props) => {
   return (
     <>
       <Head>
@@ -80,7 +85,7 @@ const DashboardPage = (props: any) => {
 
       <Wrapper>
         <Section>
-          <h2>Welcome {props.session.user.name.charAt(0).toUpperCase() + props.session.user.name.slice(1)}</h2>
+          <h2>Welcome {`${session?.user?.name?.charAt(0).toUpperCase()}${session?.user?.name?.slice(1)}`}</h2>
           <hr />
           <DashboardItem>
             <Link href="/create-item">

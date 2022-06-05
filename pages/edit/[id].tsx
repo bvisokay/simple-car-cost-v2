@@ -275,7 +275,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
       }
     }
   }
-  const username = session!.user!.name!.toString()
+  const username = session.user?.name?.toString()
   const carId = context.query.id
   const result: any = await User.doesUserMatchAuthor(username, carId)
   if (result.editableCar) {

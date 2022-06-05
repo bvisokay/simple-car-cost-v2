@@ -16,7 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return
   }
 
-  const username = session!.user!.name
+  const username = session.user?.name
 
   const oldPassword = req.body.oldPW
 

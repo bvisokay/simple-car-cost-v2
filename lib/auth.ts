@@ -1,5 +1,6 @@
 import { hash, compare } from "bcryptjs"
 import { GetServerSidePropsContext } from "next"
+import { Session } from "next-auth"
 import { getSession } from "next-auth/client"
 
 export async function hashPassword(password: string) {
@@ -13,7 +14,7 @@ export async function verifyPassword(password: string, hashedPassword: string) {
 }
 
 export async function runServerSidePageGuard(context: GetServerSidePropsContext) {
-  const session = await getSession({ req: context.req })
+  const session: Session | null = await getSession({ req: context.req })
 
   if (!session) {
     return {

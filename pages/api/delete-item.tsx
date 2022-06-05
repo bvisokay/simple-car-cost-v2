@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/client"
 import { connectToDatabase } from "../../lib/db"
 import { ObjectId } from "mongodb"
+import { MatchDoc } from "../../lib/types"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "DELETE") {
@@ -12,7 +13,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     res.status(401).json({ message: "Not authenticated" })
     return
   }
-  const username = session!.user!.name
+  const username = session.user?.name
   try {
     // use the username to get the corresponding id
     const client = await connectToDatabase()
@@ -24,14 +25,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     //console.log(`userId: ${userId}`)
 
     // See if the session user's id matches the "item-being-edited" authorId sent in
-    const tgtCarDoc = await client
+    const tgtCarDoc: MatchDoc | null = await client
       .db()
       .collection("cars")
       .findOne({ _id: new ObjectId(req.body.carId) }, { projection: { _id: 0, authorId: 1 } })
 
-    //console.log(tgtCarDoc)
-
-    const editableItemAuthorId = tgtCarDoc?.authorId.toString()
+    let editableItemAuthorId
+    if (tgtCarDoc !== null) {
+      editableItemAuthorId = tgtCarDoc?.authorId?.toString()
+    }
 
     //console.log(editableItemAuthorId)
 
@@ -40,9 +42,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     if (editableItemAuthorId === userId) {
-      // okay to delete
-
-      // actually update document
+      // okay to delete so update document in db
       await client
         .db()
         .collection("cars")

@@ -118,7 +118,7 @@ const Login: React.FC = () => {
     }
   }, [state.submitCount])
 
-  async function loginSubmitHandler(e: React.FormEvent) {
+  function loginSubmitHandler(e: React.FormEvent) {
     e.preventDefault()
     //check for validation errors
     dispatch({ type: "usernameChecks", value: state.username.value })
