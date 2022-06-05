@@ -4,7 +4,16 @@ import { HiOutlineExternalLink, HiOutlineClock } from "react-icons/hi"
 
 import Card from "./TestDriveListItemCardStyles"
 
-const TestDriveListItemCard = (props: any) => {
+//types
+
+import { TestDriveCarType } from "../../lib/types"
+
+type Props = {
+  deleteHandler: (carId: number) => void
+  item: TestDriveCarType
+}
+
+const TestDriveListItemCard = (props: Props) => {
   return (
     <Card>
       <div className="header">
@@ -52,7 +61,7 @@ const TestDriveListItemCard = (props: any) => {
               <div className="title">CPRM</div>
               <MdOutlinePriceChange />
             </div>
-            <p>{props.item.cost_per_rem_mos > 0 ? `$${Math.round(parseInt(props.item.cost_per_rem_mos)).toLocaleString()}` : "n/a"}</p>
+            <p>{props.item.cost_per_rem_mos > 0 ? `$${Math.round(props.item.cost_per_rem_mos).toLocaleString()}` : "n/a"}</p>
           </div>
         </div>
         <div className="footer">

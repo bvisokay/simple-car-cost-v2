@@ -12,3 +12,15 @@ export interface PrimaryCarFields {
   miles: number
   link: string
 }
+
+export interface TestDriveCarType {
+  description: string
+  price: number
+  miles: number
+  link?: string
+  rem_months: number
+  cost_per_rem_mos: number
+  createdDate: Date
+  uniqueId: number
+  errors: string[]
+}
