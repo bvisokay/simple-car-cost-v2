@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSession, signOut } from "next-auth/client"
 import { motion } from "framer-motion"
+import { breakpoints } from "../styles/breakpoints"
 
 import { IoSettings } from "react-icons/io5"
 
@@ -11,6 +12,15 @@ const MainNavContainer = styled.div`
   display: flex;
   justify-content: end;
   align-items: center;
+  margin-top: 0.25rem;
+
+  @media ${breakpoints.xs} {
+    margin-top: 0.5rem;
+  }
+
+  @media ${breakpoints.md} {
+    margin-top: 0;
+  }
 
   a {
     //border: 1px solid red;

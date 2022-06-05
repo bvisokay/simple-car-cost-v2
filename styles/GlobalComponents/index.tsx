@@ -85,13 +85,20 @@ export const Btn = styled.button<ColorProps>`
   border: 2px solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
   border-radius: 0.2rem;
-  margin: 0.2rem;
-  padding: 0.25rem 0.5rem;
+  margin: 0.15rem;
+  padding: 0.1rem 0.1rem;
+  font-size: 0.5rem;
   color: #fff;
-  font-size: 0.785rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   line-height: 1.5;
   font-family: var(--font-primary);
+
+  @media ${breakpoints.xs} {
+    margin: 0.15rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.25rem;
+  }
 
   @media ${breakpoints.md} {
     font-size: 0.875rem;
