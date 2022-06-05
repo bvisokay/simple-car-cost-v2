@@ -1,6 +1,6 @@
 # Simple Car Cost V2
 
-A simple way to compare vehicles prices
+:blue_car: A simple way to compare vehicles prices
 
 ## Overview
 
@@ -15,12 +15,13 @@ Using estimates of useful life in miles and annual amount of driving calculate a
 
 ## Changes from V1
 
-- From express with EJS templates to full stack React
-- From heroku deployment to Vercel
-- From prototype functions to ES6 classes
+:heavy_check_mark From express with EJS templates to full stack React
+:heavy_check_mark From heroku deployment to Vercel
+:heavy_check_mark From prototype functions to ES6 classes
 
 ## Technologies
 
+:computer:
 -NextJS
 -MongoDB
 -Styled Components

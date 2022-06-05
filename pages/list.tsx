@@ -9,6 +9,7 @@ import CarListItemCard from "../components/CarListItemCard/CarListItemCard"
 import Link from "next/link"
 import styled from "styled-components"
 import { GlobalDispatchContext } from "../store/GlobalContext"
+import { IoSettings } from "react-icons/io5"
 
 const ListPageHeading = styled.div`
   width: 100%;
@@ -17,9 +18,55 @@ const ListPageHeading = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  @media ${breakpoints.md} {
+  @media ${breakpoints.xs} {
     flex-direction: row;
   }
+
+  h2 {
+    font-size: 1.5rem;
+
+    @media ${breakpoints.sm} {
+      font-size: 1.875rem;
+    }
+  }
+`
+
+const SettingsBadge = styled.div`
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  letter-spacing: -0.5px;
+  font-style: italic;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.1rem 0.25rem;
+  margin-top: 0.5rem;
+  background-color: var(--primary);
+  margin-left: 0.25rem;
+
+  @media ${breakpoints.xs} {
+    margin-top: 0rem;
+  }
+
+  svg {
+    font-size: 1.5rem;
+    fill: white;
+    margin-right: 0.5rem;
+
+    :hover {
+      fill: var(--indigo);
+    }
+  }
+
+  .settings-badge__text p {
+    color: white;
+    font-size: 0.6rem;
+    line-height: 0.2rem;
+  }
+
+  /* .settings-badge__text p span {
+    color: var(--gray);
+  } */
 `
 
 interface CarInList {
@@ -44,9 +91,6 @@ type Props = {
 }
 
 const List = ({ session, carData, userData }: Props) => {
-  console.log(session)
-  console.log(carData)
-  console.log(userData)
   const [cars, setCars] = useState(carData)
 
   const appDispatch = useContext(GlobalDispatchContext)
@@ -105,6 +149,24 @@ const List = ({ session, carData, userData }: Props) => {
           )}
           {cars?.length && cars?.length === 1 ? <p>You have 1 car in your list</p> : ""}
           {cars?.length && cars?.length > 1 ? <p>You have {cars.length} cars in your list</p> : ""}
+          {userData && (
+            <SettingsBadge>
+              <Link href="/settings">
+                <a>
+                  <IoSettings />
+                </a>
+              </Link>
+              <div className="settings-badge__text">
+                <p>
+                  Annual Miles: <span>{(userData.monthly_miles * 12).toLocaleString()}</span>
+                </p>
+                <p>
+                  Useful Miles: <span>{userData.useful_miles.toLocaleString()}</span>
+                </p>
+              </div>
+            </SettingsBadge>
+          )}
+
           {/* <p>Sort &amp; Filter Icon</p> */}
           {/* <p>Clear All</p> */}
         </ListPageHeading>

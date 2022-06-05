@@ -7,6 +7,8 @@ import Card from "./CarListItemCardStyles"
 import { useRouter } from "next/router"
 
 const CarListItemCard = (props: any) => {
+  console.log(props)
+
   const router = useRouter()
 
   return (
