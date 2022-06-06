@@ -190,8 +190,8 @@ const Register: React.FC = () => {
       const data = await response.json()
       //console.log(`data from usernameUnique api: ${data.message}`)
       dispatch({ type: "usernameUniqueResults", value: data.message })
-    } catch (e) {
-      console.log(`There was a problem or the request was cancelled: ${e}`)
+    } catch (err) {
+      throw `There was a problem or the request was cancelled: ${err}`
     }
   }
 
@@ -217,8 +217,8 @@ const Register: React.FC = () => {
       const data = await response.json()
       //console.log(`data from emailUnique api: ${data.message}`)
       dispatch({ type: "emailUniqueResults", value: data.message })
-    } catch (e) {
-      console.log(`There was a problem or the request was cancelled: ${e}`)
+    } catch (err) {
+      throw `There was a problem or the request was cancelled: ${err}`
     }
   }
 
@@ -247,11 +247,12 @@ const Register: React.FC = () => {
         }
       })
       const data = await response.json()
+
       if (data.message != "success") {
         appDispatch({ type: "flashMessage", value: "Could not register" })
         //appDispatch({ type: "flashMessage", value: [data.errors] })
         console.warn(data.errors)
-        throw { message: "Could not register", errors: [data.errors] }
+        throw { message: "Could not register", errors: `${[data.errors]}` }
       }
       // now sign the user in - note: signIn will always resolve even with error
       const result = await signIn("credentials", { redirect: false, username: state.username.value, password: state.password.value })
@@ -266,7 +267,7 @@ const Register: React.FC = () => {
       //appDispatch({ type: "flashMessage", value: `${err?.errors}` })
       appDispatch({ type: "flashMessage", value: `something went wrong` })
       console.log(`There was a problem: ${err}`)
-      return { errors: err }
+      return { errors: `${err}` }
     }
   }
 

@@ -43,7 +43,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const passwordsAreEqual = await verifyPassword(oldPassword, currentPassword)
     if (!passwordsAreEqual) {
       res.status(403).json({ error: "Old Password Is Incorrect" })
-      await client.close()
+      void client.close()
       throw { error: "Old Password Is Incorrect" }
     }
 
@@ -53,7 +53,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // passing on error handling for now
 
-    await client.close()
+    void client.close()
     res.status(200).json({ message: "success", error: null })
   } catch (err) {
     console.error(err)

@@ -2,25 +2,27 @@ import validator from "validator"
 import { hashPassword } from "../lib/auth"
 import { addUserDocument, connectToDatabase } from "../lib/db"
 import { ObjectId } from "mongodb"
+import { CarDocType, UpdatedCarType } from "../lib/types"
+//import { PrimaryCarFields } from "../lib/types"
 
-interface EditableCar {
-  _id: string | undefined
-  authorId: string | undefined
-  description: string | undefined
-  price: number | undefined
-  miles: number | undefined
-  link: string | undefined
-  createdDate: Date | undefined
+interface UserRegFields {
+  username: string
+  email: string
+  password: string
+  useful_miles?: number
+  annual_miles?: number
+  created_date?: Date
+  errors?: string[]
 }
 
 export default class User {
-  data: any
+  data: UserRegFields
   useful_miles: number
   annual_miles: number
   created_date: Date
   errors: string[]
 
-  constructor(data: any) {
+  constructor(data: UserRegFields) {
     // data is username, email, password
     this.data = data
     this.useful_miles = 150000
@@ -83,36 +85,34 @@ export default class User {
       // Only if username is valid then check db to see if username already taken
       if (this.data.username.length > 2 && this.data.username.length < 31 && validator.isAlphanumeric(this.data.username)) {
         try {
-          let client = await connectToDatabase()
-          let usernameExists = await client.db().collection("users").findOne({ username: this.data.username })
+          const client = await connectToDatabase()
+          const usernameExists = await client.db().collection("users").findOne({ username: this.data.username })
           if (usernameExists) {
             this.errors.push("That username is already taken.")
           }
-          client.close()
-        } catch (e) {
+          void client.close()
+        } catch (err) {
           this.errors.push("Error checking username.")
-          return { errors: e }
+          return { message: "failure", data: null, errors: `errors: ${err}` }
         }
       }
 
       // Only if email is valid then check db to see if email is already taken
       if (validator.isEmail(this.data.email)) {
         try {
-          let client = await connectToDatabase()
-          let emailExists = await client.db().collection("users").findOne({ email: this.data.email })
+          const client = await connectToDatabase()
+          const emailExists = await client.db().collection("users").findOne({ email: this.data.email })
           if (emailExists) {
             this.errors.push("That email is already being used.")
           }
-          client.close()
-        } catch (e) {
-          console.log("There was an error seeing if that email already exists.")
+          void client.close()
+        } catch (err) {
+          return { message: "Errors checking email", data: null, errors: `errors: ${err}` }
         }
       }
-      //resolve({ message: "success" })
-      // doesn't need to resolve with a value, checking for errors
-      return { message: "validation successful", errors: null }
-    } catch (e) {
-      throw { message: `Errors with validation: ${e}`, errors: e }
+      return { message: "validation successful", data: null, errors: null }
+    } catch (err) {
+      return { message: "Errors with validation", data: null, errors: `errors: ${err}` }
     }
   }
 
@@ -136,22 +136,21 @@ export default class User {
       let client
       try {
         client = await connectToDatabase()
-      } catch (e) {
-        return { message: "connection failure", data: null, errors: e }
+      } catch (err) {
+        return { message: "connection failure", data: null, errors: `errors: ${err}` }
       }
 
       // add user to db
       try {
         await addUserDocument(client, this.data)
-        // result.acknowledged, result.insertedId
-        client.close()
+        void client.close()
         return { message: "success", data: null, errors: null }
-      } catch (e) {
-        client.close()
-        return { message: "insertion failure", data: null, errors: "insertion failure" }
+      } catch (err) {
+        void client.close()
+        return { message: "insertion failure", data: null, errors: `errors: ${err}` }
       }
     } else {
-      return { message: "womp", data: null, errors: this.errors }
+      return { message: "womp", data: null, errors: `this.errors: ${this.errors}` }
     }
   }
 
@@ -161,16 +160,16 @@ export default class User {
       return false
     }
     try {
-      let client = await connectToDatabase()
-      let result = await client
+      const client = await connectToDatabase()
+      const result = await client
         .db()
         .collection("users")
         .findOne({ [key]: value })
       if (result) {
-        client.close()
+        void client.close()
         return true
       } else {
-        client.close()
+        void client.close()
         return false
       }
     } catch (err) {
@@ -184,16 +183,16 @@ export default class User {
       return { status: "failed", data: null, error: "improper data" }
     }
     try {
-      let client = await connectToDatabase()
-      let result = await client
+      const client = await connectToDatabase()
+      const result = await client
         .db()
         .collection("users")
         .findOne({ username: username }, { projection: { _id: 1, useful_miles: 1, annual_miles: 1 } })
       if (result) {
-        client.close()
+        void client.close()
         return { status: "success", data: { result }, error: null }
       } else {
-        client.close()
+        void client.close()
         return { status: "failed", data: null, error: "Could not get existing" }
       }
     } catch (err) {
@@ -202,39 +201,44 @@ export default class User {
   } // end getSettings
 
   // doesUserMatchAuthor
-  static async doesUserMatchAuthor(username: string | undefined, carId: string | string[] | undefined): Promise<{}> {
+  static async doesUserMatchAuthor(username: string | undefined, carId: string | string[] | undefined) {
     if (typeof username !== "string" || typeof carId !== "string") {
       return { error: "Something Went Wrong" }
     }
     //console.log(`passed in carId: ${carId}`)
     // Lookup userId given username
     try {
-      let client = await connectToDatabase()
+      const client = await connectToDatabase()
       const idResult = await client.db().collection("users").findOne({ username: username })
       const userId = idResult?._id.toString()
-      //console.log(`userId: ${userId}`)
-      const carDocument = await client
+      const carDocument: CarDocType | null = (await client
         .db()
         .collection("cars")
-        .findOne({ _id: new ObjectId(carId) })
-      //console.log(carDocument)
-      const authorId = carDocument?.authorId.toString()
+        .findOne({ _id: new ObjectId(carId) })) as CarDocType
+
+      if (!carDocument) {
+        void client.close()
+        throw new Error("No doc found")
+      }
+
+      const authorId: string = carDocument.authorId.toString()
+
       //console.log(authorId)
-      client.close()
+      void client.close()
       if (userId === authorId) {
         // clean up car document
-        const editableCar: EditableCar = {
-          _id: carDocument?._id.toString(),
-          authorId: carDocument?.authorId.toString(),
-          description: carDocument?.description,
-          price: carDocument?.price,
-          miles: carDocument?.miles,
-          link: carDocument?.link,
+        const editableCar: UpdatedCarType = {
+          _id: carDocument._id.toString(),
+          authorId: authorId,
+          description: carDocument.description,
+          price: carDocument.price,
+          miles: carDocument.miles,
+          link: carDocument.link,
           createdDate: carDocument?.createdDate.toString()
         }
         return { editableCar }
       }
-      client.close()
+      void client.close()
       return { error: "user and author do not match" }
     } catch {
       return { error: "Something Else Went Wrong" }

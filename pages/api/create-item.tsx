@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Car from "../../models/Car"
 import { getSession } from "next-auth/client"
 import { connectToDatabase } from "../../lib/db"
+import { ObjectId } from "mongodb"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -70,14 +71,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       // Create a new CarItem object we want to pass to the database
       // be sure to leave out properties we don't need (this.errors)
       // add the userId to the carItem as new "author" property
-      const carItem: any = {
+
+      interface CreateCarType {
+        authorId: ObjectId
+        description: string
+        price: number
+        miles: number
+        link?: string
+        createdDate: Date
+      }
+
+      const carItem: CreateCarType = {
         authorId: userId._id,
         description: car.description,
         price: car.price,
         miles: car.miles,
         link: car.link,
-        //rem_months: car.rem_months,
-        //cost_per_rem_mos: car.cost_per_rem_mos,
         createdDate: car.createdDate
       }
 
@@ -94,15 +103,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         throw "Could not add vehicle"
       }
 
-      // if the operation is succesful,
-      // add car item id the object that was added and returned
-      carItem._id = result.insertedId.toString()
+      const createdCarItem = {
+        _id: result.insertedId.toString(),
+        ...carItem
+      }
 
       // close the database connection
       await client.close()
 
       // return the new car details back as a respons with a success message
-      res.status(200).json({ message: "success", data: carItem, errors: null })
+      res.status(200).json({ message: "success", data: createdCarItem, errors: null })
     } catch (err) {
       //console.log(`There was a problem: ${err}`)
     }

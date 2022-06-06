@@ -35,13 +35,13 @@ const TestDriveListGrid = styled.div`
   margin-top: 2rem;
 `
 
-type TestDriveActionTypes = { type: "handleExistingItems"; value: TestDriveCarType[] } | { type: "deleteExistingItem"; value: number } | { type: "addNewValidatedItem"; value?: string | TestDriveCarType } | { type: "descriptionImmediately"; value: string } | { type: "priceImmediately"; value: string | number } | { type: "milesImmediately"; value: string | number } | { type: "removeAnyErrors"; value?: string } | { type: "linkImmediately"; value: string } | { type: "submitForm"; value?: string } | { type: "saveRequestStarted"; value?: string } | { type: "saveRequestFinished"; value?: string } | { type: "clearFields"; value?: string }
+type TestDriveActionTypes = { type: "handleExistingItems"; value: TestDriveCarType[] } | { type: "deleteExistingItem"; value: number } | { type: "addNewValidatedItem"; value: TestDriveCarType } | { type: "descriptionImmediately"; value: string } | { type: "priceImmediately"; value: string | number } | { type: "milesImmediately"; value: string | number } | { type: "removeAnyErrors"; value?: string } | { type: "linkImmediately"; value: string } | { type: "submitForm"; value?: string } | { type: "saveRequestStarted"; value?: string } | { type: "saveRequestFinished"; value?: string } | { type: "clearFields"; value?: string }
 
 const TestDrive: React.FC = () => {
   const appDispatch = useContext(GlobalDispatchContext)
 
   interface TestDriveInitialStateTypes {
-    testDriveItems?: any[]
+    testDriveItems: TestDriveCarType[]
     description: {
       value: string
       hasErrors: boolean
@@ -99,13 +99,13 @@ const TestDrive: React.FC = () => {
         return
       case "deleteExistingItem":
         /* update state to remove from UI */
-        draft.testDriveItems = draft.testDriveItems?.filter((x: any) => {
+        draft.testDriveItems = draft.testDriveItems?.filter((x: TestDriveCar) => {
           if (x.uniqueId !== action.value) return x
         })
         /* remove from local storage */
         return
       case "addNewValidatedItem":
-        draft.testDriveItems?.push(action.value)
+        draft.testDriveItems.push(action.value)
         localStorage.setItem("tdCars", JSON.stringify(draft.testDriveItems))
         return
       case "descriptionImmediately":
@@ -265,7 +265,7 @@ const TestDrive: React.FC = () => {
         headers: { "Content-Type": "application/json" }
       })
       //console.log(`Response from /api/create-td-car:${response}`)
-      const data: any = await response.json()
+      const data = await response.json()
 
       if (data.message !== "success") {
         appDispatch({ type: "flashMessage", value: "Could not add item" })
@@ -374,7 +374,7 @@ const TestDrive: React.FC = () => {
 
       {state.testDriveItems.length >= 1 && (
         <TestDriveListGrid>
-          {state.testDriveItems.map((item: any) => {
+          {state.testDriveItems.map((item: TestDriveCarType) => {
             return <TestDriveListItemCard key={item.uniqueId} item={item} deleteHandler={deleteHandler} />
           })}
         </TestDriveListGrid>
