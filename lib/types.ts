@@ -13,6 +13,15 @@ export interface MatchDoc {
   [key: string]: ObjectId
 }
 
+export interface UserDocType {
+  username: string
+  email: string
+  password: string
+  useful_miles?: number
+  annual_miles?: number
+  created_date?: Date
+}
+
 export interface CarDocType extends WithId<Document> {
   authorId: ObjectId
   description: string
