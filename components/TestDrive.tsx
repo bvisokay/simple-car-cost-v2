@@ -296,7 +296,7 @@ const TestDrive: React.FC = () => {
         link: state.link.value.toString()
       }
       // need the async request in useEffect trick
-      fetchNewValidatedTdItem(newUnvalidatedTdItem, signal)
+      void fetchNewValidatedTdItem(newUnvalidatedTdItem, signal)
       return () => controller.abort()
     }
   }, [state.submitCount])

@@ -49,7 +49,9 @@ const MainNav = () => {
   // log user out on click
   function logoutHandler() {
     // was .replace but sending back to /profile?
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     signOut()
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     router.push("/")
   }
 

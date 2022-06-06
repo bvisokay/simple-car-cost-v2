@@ -174,7 +174,7 @@ const Register: React.FC = () => {
     if (state.username.checkCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      fetchDoesUsernameExistResults(signal)
+      void fetchDoesUsernameExistResults(signal)
       return () => controller.abort()
     }
   }, [state.username.checkCount])
@@ -202,7 +202,7 @@ const Register: React.FC = () => {
     if (state.email.checkCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      fetchDoesEmailExistResults(signal)
+      void fetchDoesEmailExistResults(signal)
       return () => controller.abort()
     }
   }, [state.email.checkCount])
@@ -235,7 +235,7 @@ const Register: React.FC = () => {
         console.warn(`There was a problem signing in: ${result!.error}`)
         throw { message: "Could not sign in", errors: result!.error }
       }
-      router.replace("/dashboard")
+      await router.replace("/dashboard")
       appDispatch({ type: "flashMessage", value: "Welcome!" })
     } catch (err: any) {
       //appDispatch({ type: "flashMessage", value: `${err?.errors}` })
@@ -249,7 +249,7 @@ const Register: React.FC = () => {
     if (state.submitCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      fetchRegisterResults(signal)
+      void fetchRegisterResults(signal)
       return () => controller.abort()
     }
   }, [state.submitCount])

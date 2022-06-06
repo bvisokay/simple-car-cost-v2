@@ -33,7 +33,7 @@ const CarListItemCard = (props: Props) => {
           <button>
             <MdOutlineEdit
               onClick={() => {
-                router.push(`/edit/${props.item.carId}`)
+                void router.push(`/edit/${props.item.carId}`)
               }}
             />
           </button>

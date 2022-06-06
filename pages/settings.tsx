@@ -125,7 +125,7 @@ const ChangeSettings = (props: any) => {
       if (data.message === "success") {
         console.log(data)
         appDispatch({ type: "flashMessage", value: "Settings updated" })
-        router.push("/dashboard")
+        await router.push("/dashboard")
       }
 
       //
@@ -141,7 +141,7 @@ const ChangeSettings = (props: any) => {
     if (state.submitCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      fetchSettingsResults(signal)
+      void fetchSettingsResults(signal)
       return () => controller.abort()
     } // end if
   }, [state.submitCount])
