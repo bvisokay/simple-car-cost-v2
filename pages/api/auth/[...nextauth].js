@@ -67,7 +67,7 @@ export default NextAuth({
             name: user.username
           }
         } catch (err) {
-          throw new Error(`Error Seeking Authorization: ${err}`)
+          throw { message: "Error attempting authorization", errors: err }
         }
       } // end authorize
     }) // end Providers.Credentials

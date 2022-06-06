@@ -56,8 +56,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     await client.close()
     res.status(200).json({ message: "failure", data: {}, errors: null })
-  } catch (err: unknown) {
-    throw { message: "failure", errors: `${err}` }
+  } catch (err) {
+    throw { message: "error", errors: err }
   }
 }
 

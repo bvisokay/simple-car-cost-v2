@@ -94,11 +94,7 @@ const ChangeSettings = (props: SettingsProps) => {
           draft.submitCount++
         } else {
           draft.showErrors = true
-          console.log(`SubmitForm conditionals failed: {
-              draft.usefulMiles.hasErrors: ${draft.usefulMiles.hasErrors}
-              draft.annualMiles.hasErrors: ${draft.annualMiles.hasErrors}
-              draft.same: ${draft.same}
-            }`)
+          //console.warn(`SubmitForm conditionals failed`)
         }
         return
       case "clearFields":
@@ -124,10 +120,9 @@ const ChangeSettings = (props: SettingsProps) => {
 
       const data = await response.json()
 
-      if (data.error) {
-        appDispatch({ type: "flashMessage", value: data.error })
-        console.warn(`from client: ${data.error}`)
-        return
+      if (data.message !== "success") {
+        appDispatch({ type: "flashMessage", value: "Settings not udpated" })
+        throw { message: "error" }
       }
 
       if (data.message === "success") {
@@ -137,9 +132,9 @@ const ChangeSettings = (props: SettingsProps) => {
       }
 
       //
-    } catch (err: unknown) {
+    } catch (err) {
       appDispatch({ type: "flashMessage", value: "Could not update settings" })
-      throw { message: "error", errors: `${err}` }
+      throw { message: "error", errors: err }
       // clear the form?
       //dispatch({ type: "clearFields" })
     }

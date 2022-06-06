@@ -93,7 +93,7 @@ export default class User {
           void client.close()
         } catch (err) {
           this.errors.push("Error checking username.")
-          return { message: "failure", data: null, errors: `errors: ${err}` }
+          return { message: "failure", data: null, errors: err }
         }
       }
 
@@ -107,12 +107,12 @@ export default class User {
           }
           void client.close()
         } catch (err) {
-          return { message: "Errors checking email", data: null, errors: `errors: ${err}` }
+          return { message: "Errors checking email", data: null, errors: err }
         }
       }
       return { message: "validation successful", data: null, errors: null }
     } catch (err) {
-      return { message: "Errors with validation", data: null, errors: `errors: ${err}` }
+      return { message: "Errors with validation", data: null, errors: err }
     }
   }
 
@@ -137,7 +137,7 @@ export default class User {
       try {
         client = await connectToDatabase()
       } catch (err) {
-        return { message: "connection failure", data: null, errors: `errors: ${err}` }
+        return { message: "connection failure", data: null, errors: err }
       }
 
       // add user to db
@@ -147,10 +147,10 @@ export default class User {
         return { message: "success", data: null, errors: null }
       } catch (err) {
         void client.close()
-        return { message: "insertion failure", data: null, errors: `errors: ${err}` }
+        return { message: "insertion failure", data: null, errors: err }
       }
     } else {
-      return { message: "womp", data: null, errors: `this.errors: ${this.errors}` }
+      return { message: "womp", data: null, errors: this.errors }
     }
   }
 
@@ -196,7 +196,7 @@ export default class User {
         return { status: "failed", data: null, error: "Could not get existing" }
       }
     } catch (err) {
-      return { status: "failed", data: null, error: `Could not get existing: ${err}` }
+      return { status: "failed", data: null, errors: err }
     }
   } // end getSettings
 
@@ -246,7 +246,7 @@ export default class User {
       void client.close()
       return { message: "failure", data: {}, error: "user and author do not match" }
     } catch (err) {
-      return { message: "failure", data: {}, error: `Something Else Went Wrong: ${err}` }
+      return { message: "failure", data: {}, errors: err }
     }
   } // end doesUserMatchAuthor
 } // close User class

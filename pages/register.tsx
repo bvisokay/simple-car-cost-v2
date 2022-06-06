@@ -137,17 +137,8 @@ const Register: React.FC = () => {
         }
         return
       case "submitForm":
-        //console.log("SubmitForm ran")
         if (!draft.username.hasErrors && draft.username.isUnique && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors) {
           draft.submitCount++
-        } else {
-          console.table(`SubmitForm conditionals failed: {
-            draft.username.hasErrors: ${draft.username.hasErrors}
-            draft.username.isUnique: ${draft.username.isUnique}
-            draft.email.hasErrors: ${draft.email.hasErrors}
-            draft.email.isUnique: ${draft.email.isUnique}
-            draft.password.hasErrors: ${draft.password.hasErrors}
-          }`)
         }
         return
     }
@@ -191,7 +182,7 @@ const Register: React.FC = () => {
       //console.log(`data from usernameUnique api: ${data.message}`)
       dispatch({ type: "usernameUniqueResults", value: data.message })
     } catch (err) {
-      throw `There was a problem or the request was cancelled: ${err}`
+      throw { message: "error", errors: err }
     }
   }
 
@@ -218,7 +209,7 @@ const Register: React.FC = () => {
       //console.log(`data from emailUnique api: ${data.message}`)
       dispatch({ type: "emailUniqueResults", value: data.message })
     } catch (err) {
-      throw `There was a problem or the request was cancelled: ${err}`
+      throw { message: "error", errors: err }
     }
   }
 
@@ -250,9 +241,7 @@ const Register: React.FC = () => {
 
       if (data.message != "success") {
         appDispatch({ type: "flashMessage", value: "Could not register" })
-        //appDispatch({ type: "flashMessage", value: [data.errors] })
-        console.warn(data.errors)
-        throw { message: "Could not register", errors: `${[data.errors]}` }
+        throw { message: "error" }
       }
       // now sign the user in - note: signIn will always resolve even with error
       const result = await signIn("credentials", { redirect: false, username: state.username.value, password: state.password.value })
@@ -264,10 +253,8 @@ const Register: React.FC = () => {
       await router.replace("/dashboard")
       appDispatch({ type: "flashMessage", value: "Welcome!" })
     } catch (err) {
-      //appDispatch({ type: "flashMessage", value: `${err?.errors}` })
-      appDispatch({ type: "flashMessage", value: `something went wrong` })
-      console.log(`There was a problem: ${err}`)
-      return { errors: `${err}` }
+      appDispatch({ type: "flashMessage", value: `Something went wrong` })
+      throw { message: "error", errors: err }
     }
   }
 

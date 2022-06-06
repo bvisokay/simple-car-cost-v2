@@ -71,10 +71,6 @@ const ChangePassword: React.FC = () => {
           draft.submitCount++
         } else {
           draft.showErrors = true
-          console.log(`SubmitForm conditionals failed: {
-              draft.oldPassword.hasErrors: ${draft.oldPassword.hasErrors}
-              draft.newPassword.hasErrors: ${draft.newPassword.hasErrors}
-            }`)
         }
         return
       case "clearFields":
@@ -102,15 +98,14 @@ const ChangePassword: React.FC = () => {
 
       if (data.error) {
         appDispatch({ type: "flashMessage", value: data.error })
-        console.warn(`from client: ${data.error}`)
-        return
+        throw { message: "error", errors: data.error }
       }
 
       if (data.message === "success") {
         console.log(data)
         appDispatch({ type: "flashMessage", value: "Password updated" })
         // https://nextjs.org/docs/api-reference/next/router
-        await router.push("/dashboard")
+        void router.push("/dashboard")
       }
 
       //
@@ -118,7 +113,7 @@ const ChangePassword: React.FC = () => {
       appDispatch({ type: "flashMessage", value: "Password is not able to be updated at this time." })
       // clear the form
       dispatch({ type: "clearFields" })
-      throw { message: "error", errors: `${err}` }
+      throw { message: "error", errors: err }
     }
   }
 

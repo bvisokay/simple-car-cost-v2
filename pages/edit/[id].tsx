@@ -145,12 +145,11 @@ const EditItemPage = (props: EditReadyCarType) => {
       const data = await response.json()
       if (data.error) {
         appDispatch({ type: "flashMessage", value: data.error })
-        console.warn(`from client: ${data.error}`)
-        return
+        throw { message: "error", errors: data.error }
       }
       if (data.message === "success") {
         appDispatch({ type: "flashMessage", value: "Car successfully updated" })
-        await router.push("/list")
+        void router.push("/list")
         return
       }
     } catch (err) {

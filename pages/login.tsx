@@ -71,10 +71,6 @@ const Login: React.FC = () => {
           draft.submitCount++
         } else {
           draft.showErrors = true
-          console.log(`SubmitForm conditionals failed: {
-              draft.username.hasErrors: ${draft.username.hasErrors}
-              draft.password.hasErrors: ${draft.password.hasErrors}
-            }`)
         }
         return
     }

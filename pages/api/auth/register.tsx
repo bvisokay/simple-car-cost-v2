@@ -24,8 +24,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       res.status(500).json({ message: `There was a problem registering` })
     } catch (err) {
-      res.status(500).json({ message: `There was a problem: ${err}` })
-      throw new Error(`Problem registering: ${err}`)
+      res.status(500).json({ message: `There was a problem` })
+      throw { message: `There was a problem`, errors: err }
     }
   }
 }

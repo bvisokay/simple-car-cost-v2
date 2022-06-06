@@ -12,11 +12,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         //Send message as answer to doesUserValueExist
         res.json({ message: false })
       }
-    } catch (e) {
-      res.json({ message: `There was an error attempting ${req.body.key} duplicate: ${e}` })
+    } catch (err) {
+      res.json({ message: "error", errors: err })
     }
   } else {
-    res.json("There was an error") // not POST request
+    res.json({ message: "There was an error" }) // not POST request
   }
 }
 

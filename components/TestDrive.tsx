@@ -269,7 +269,7 @@ const TestDrive: React.FC = () => {
 
       if (data.message !== "success") {
         appDispatch({ type: "flashMessage", value: "Could not add item" })
-        throw new Error(`There was a problem: ${data.errors}`)
+        throw { message: "error" }
       }
 
       const newValidatedTdItem = data.data
@@ -278,7 +278,7 @@ const TestDrive: React.FC = () => {
       dispatch({ type: "clearFields" })
       appDispatch({ type: "flashMessage", value: "Car added" })
     } catch (err) {
-      throw new Error(`There was a problem creating new test drive item: ${err}`)
+      throw { message: "error", errors: err }
     }
   }
 

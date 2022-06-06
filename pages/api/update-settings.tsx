@@ -40,7 +40,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     await client.close()
     res.status(200).json({ message: "success", error: null })
   } catch (err) {
-    throw new Error(`Error when updating settings: ${err}`)
+    throw { message: "error", errors: err }
   }
 }
 
