@@ -22,11 +22,19 @@ const WarningBox = styled.div`
   }
 `
 
-const ChangeSettings = (props: any) => {
+interface SettingsProps {
+  data: {
+    annual_miles: number | string
+    useful_miles: number | string
+  }
+}
+
+const ChangeSettings = (props: SettingsProps) => {
+  console.log("props", props)
   const appDispatch = useContext(GlobalDispatchContext)
   const router = useRouter()
 
-  type SettingsActionTypes = { type: "annualMilesChecks"; value: string } | { type: "usefulMilesChecks"; value: string } | { type: "sameCheck" } | { type: "submitForm"; value?: string } | { type: "clearFields" }
+  type SettingsActionTypes = { type: "annualMilesChecks"; value: string | number } | { type: "usefulMilesChecks"; value: string | number } | { type: "sameCheck" } | { type: "submitForm"; value?: string } | { type: "clearFields" }
 
   const initialState = {
     annualMiles: {
@@ -55,7 +63,7 @@ const ChangeSettings = (props: any) => {
           draft.annualMiles.hasErrors = true
           draft.annualMiles.message = "Enter Annual Miles"
         }
-        if (draft.annualMiles.value > 200000 || draft.annualMiles.value < 1200) {
+        if ((typeof draft.annualMiles.value === "number" && draft.annualMiles.value > 200000) || (typeof draft.annualMiles.value === "number" && draft.annualMiles.value < 1200)) {
           draft.annualMiles.hasErrors = true
           draft.annualMiles.message = "Invalid Annual Miles"
         }
@@ -67,7 +75,7 @@ const ChangeSettings = (props: any) => {
           draft.usefulMiles.hasErrors = true
           draft.usefulMiles.message = "Enter a value for useful miles"
         }
-        if (draft.usefulMiles.value > 500000 || draft.usefulMiles.value < 12000) {
+        if ((typeof draft.usefulMiles.value === "number" && draft.usefulMiles.value > 500000) || (typeof draft.usefulMiles.value === "number" && draft.usefulMiles.value < 12000)) {
           draft.usefulMiles.hasErrors = true
           draft.usefulMiles.message = "Invalid useful miles"
         }
@@ -129,10 +137,10 @@ const ChangeSettings = (props: any) => {
       }
 
       //
-    } catch (err: any) {
+    } catch (err: unknown) {
       appDispatch({ type: "flashMessage", value: "Could not update settings" })
-      console.warn("err", err)
-      // clear the form
+      throw { message: "error", errors: `${err}` }
+      // clear the form?
       //dispatch({ type: "clearFields" })
     }
   }
