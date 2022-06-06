@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import User from "../../../models/User"
-import { ResponseType } from "../../../lib/types"
+import { ResponseType, RegAttemptTypes } from "../../../lib/types"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -8,7 +8,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return
   }
   if (req.method === "POST") {
-    const user = new User(req.body)
+    const regAttemptData: RegAttemptTypes = {
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password
+    }
+
+    const user = new User(regAttemptData)
+    //const user = new User(req.body)
     try {
       const registrationResult = (await user.register()) as ResponseType
 

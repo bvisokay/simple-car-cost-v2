@@ -13,6 +13,12 @@ export interface MatchDoc {
   [key: string]: ObjectId
 }
 
+export interface RegAttemptTypes {
+  username: string
+  email: string
+  password: string
+}
+
 export interface UserDocType {
   username: string
   email: string
