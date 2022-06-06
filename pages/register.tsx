@@ -8,6 +8,31 @@ import { signIn } from "next-auth/client"
 import { getSession } from "next-auth/client"
 import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
 
+type RegisterActionTypes = { type: "usernameImmediately"; value: string } | { type: "usernameAfterDelay"; value?: string; noRequest?: boolean } | { type: "usernameUniqueResults"; value: string } | { type: "emailImmediately"; value: string } | { type: "emailAfterDelay"; value?: string; noRequest?: boolean } | { type: "emailUniqueResults"; value: string } | { type: "passwordImmediately"; value: string } | { type: "passwordAfterDelay"; value?: string } | { type: "submitForm" }
+
+interface InitialStateTypes {
+  username: {
+    value: string
+    hasErrors: boolean
+    message: string
+    isUnique: boolean
+    checkCount: number
+  }
+  email: {
+    value: string
+    hasErrors: boolean
+    message: string
+    isUnique: boolean
+    checkCount: number
+  }
+  password: {
+    value: string
+    hasErrors: boolean
+    message: string
+  }
+  submitCount: number
+}
+
 const Register: React.FC = () => {
   // Assignments
   const appDispatch = useContext(GlobalDispatchContext)
@@ -38,7 +63,7 @@ const Register: React.FC = () => {
   const [state, dispatch] = useImmerReducer(ourReducer, initialState)
 
   // Reducer Function
-  function ourReducer(draft: any, action: any) {
+  function ourReducer(draft: InitialStateTypes, action: RegisterActionTypes) {
     switch (action.type) {
       case "usernameImmediately":
         draft.username.hasErrors = false
@@ -237,10 +262,10 @@ const Register: React.FC = () => {
       }
       await router.replace("/dashboard")
       appDispatch({ type: "flashMessage", value: "Welcome!" })
-    } catch (err: any) {
+    } catch (err) {
       //appDispatch({ type: "flashMessage", value: `${err?.errors}` })
       appDispatch({ type: "flashMessage", value: `something went wrong` })
-      console.log(`There was a problem or the request was cancelled: ${err}`)
+      console.log(`There was a problem: ${err}`)
       return { errors: err }
     }
   }
