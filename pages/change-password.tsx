@@ -114,17 +114,11 @@ const ChangePassword: React.FC = () => {
       }
 
       //
-    } catch (err: any) {
-      if (err.error) {
-        appDispatch({ type: "flashMessage", value: "Password is not able to be updated at this time." })
-        console.warn("err", err)
-      } else {
-        console.warn("err", err)
-        appDispatch({ type: "flashMessage", value: "Password is not able to be updated at this time." })
-      }
-
+    } catch (err: unknown) {
+      appDispatch({ type: "flashMessage", value: "Password is not able to be updated at this time." })
       // clear the form
       dispatch({ type: "clearFields" })
+      throw { message: "error", errors: `${err}` }
     }
   }
 

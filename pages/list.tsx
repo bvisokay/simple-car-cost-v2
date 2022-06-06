@@ -223,9 +223,9 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 
   try {
     data = await Car.findByAuthor(username)
-    //console.log(data)
+    console.log(data)
   } catch (err) {
-    //console.log(err)
+    throw { message: "failure", errors: `${err}` }
   }
 
   // send session and vehicle data as props

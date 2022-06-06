@@ -39,6 +39,16 @@ export interface PrimaryCarFields {
   link: string
 }
 
+export interface EditReadyCarType {
+  _id: string
+  authorId: string
+  description: string
+  price: string
+  miles: string
+  link: string
+  createdDate: string
+}
+
 export interface TestDriveCarType {
   description: string
   price: number

@@ -225,6 +225,11 @@ export default class User {
 
       //console.log(authorId)
       void client.close()
+
+      if (userId !== authorId) {
+        return { message: "failure", error: "user and author do not match" }
+      }
+
       if (userId === authorId) {
         // clean up car document
         const editableCar: UpdatedCarType = {
@@ -236,12 +241,12 @@ export default class User {
           link: carDocument.link,
           createdDate: carDocument?.createdDate.toString()
         }
-        return { editableCar }
+        return { message: "success", data: editableCar, error: "" }
       }
       void client.close()
-      return { error: "user and author do not match" }
-    } catch {
-      return { error: "Something Else Went Wrong" }
+      return { message: "failure", data: {}, error: "user and author do not match" }
+    } catch (err) {
+      return { message: "failure", data: {}, error: `Something Else Went Wrong: ${err}` }
     }
   } // end doesUserMatchAuthor
 } // close User class

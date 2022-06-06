@@ -1,6 +1,8 @@
 import { connectToDatabase } from "../lib/db"
 import { ObjectId } from "mongodb"
 
+import { CarDocType } from "../lib/types"
+
 type CarInput = {
   description: string
   price: string
@@ -89,14 +91,14 @@ export default class Car {
 
     try {
       // connect to DB
-      let client = await connectToDatabase()
+      const client = await connectToDatabase()
       if (!client) {
         throw { error: "Could not connect to data" }
       }
 
       const usersCollection = client.db().collection("users")
 
-      let userDoc = await usersCollection.findOne({ username: username })
+      const userDoc = await usersCollection.findOne({ username: username })
 
       if (!userDoc) {
         throw "no user found"
@@ -118,13 +120,13 @@ export default class Car {
 
       const carsCollection = client.db().collection("cars")
 
-      const cars = await carsCollection.find({ authorId: new ObjectId(userDoc._id) }).toArray()
+      const cars = (await carsCollection.find({ authorId: new ObjectId(userDoc._id) }).toArray()) as CarDocType[]
 
       // Send to client
-      const carDataArr: any = cars.map(carItem => {
+      const carDataArr: object[] = cars.map(carItem => {
+        console.log(carItem)
         return {
           carId: carItem._id.toString(),
-          //authorId: carItem.authorId.toString(),
           description: carItem.description.toString(),
           price: carItem.price,
           miles: carItem.miles,
@@ -137,13 +139,13 @@ export default class Car {
 
       //console.log(carDataArr)
 
-      client.close()
+      void client.close()
 
       if (carDataArr.length) {
-        client.close()
+        void client.close()
         return { carData: carDataArr, userData: userData }
       } else {
-        client.close()
+        void client.close()
         return { carData: carDataArr, userData: userData }
       }
     } catch (err) {

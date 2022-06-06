@@ -8,8 +8,7 @@ import { useImmerReducer } from "use-immer"
 import { GlobalDispatchContext } from "../../store/GlobalContext"
 import styled from "styled-components"
 import { useRouter } from "next/router"
-
-/* description, price, miles, link */
+import { EditReadyCarType } from "../../lib/types"
 
 const NavBack = styled.div`
   margin: 1rem auto 2rem auto;
@@ -18,7 +17,7 @@ const NavBack = styled.div`
   }
 `
 
-const EditItemPage = (props: any) => {
+const EditItemPage = (props: EditReadyCarType) => {
   //console.log(props)
 
   const router = useRouter()
@@ -276,10 +275,20 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   }
   const username = session.user?.name?.toString()
   const carId = context.query.id
-  const result: any = await User.doesUserMatchAuthor(username, carId)
-  if (result.editableCar) {
+  const result = (await User.doesUserMatchAuthor(username, carId)) as { message: string; data: object; error: string }
+
+  if (result.message !== "success") {
     return {
-      props: result.editableCar
+      redirect: {
+        destination: "/",
+        permanent: false
+      }
+    }
+  }
+
+  if (result && result.message === "success") {
+    return {
+      props: result?.data
     }
   } else {
     return {
