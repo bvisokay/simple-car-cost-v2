@@ -88,8 +88,8 @@ const Login: React.FC = () => {
       console.log("result froms signIn", result)
       // no user found or bad username/password
       // what if we send non-alphanumeric
-      if (result!.error) {
-        appDispatch({ type: "flashMessage", value: result!.error })
+      if (result?.error) {
+        appDispatch({ type: "flashMessage", value: result.error })
         return
       }
       // push to new page

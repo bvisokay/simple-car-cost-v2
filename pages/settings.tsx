@@ -202,11 +202,12 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 
   const results = await User.getSettings(username)
 
-  //console.log(results)
-
-  const data = {
-    useful_miles: results.data!.result.useful_miles,
-    annual_miles: results.data!.result.annual_miles
+  let data = { useful_miles: "", annual_miles: "" }
+  if (results.data?.result.useful_miles && results.data?.result.annual_miles) {
+    data = {
+      useful_miles: results.data.result.useful_miles,
+      annual_miles: results.data.result.annual_miles
+    }
   }
 
   return {

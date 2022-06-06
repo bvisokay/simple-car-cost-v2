@@ -4,8 +4,10 @@ import { UserDocType } from "./types"
 
 export async function connectToDatabase() {
   const uri = process.env.MONGODB_URI
-  const client = await MongoClient.connect(uri!)
-
+  let client
+  if (uri) {
+    client = await MongoClient.connect(uri)
+  }
   return client
 } // end connectToDatabase
 

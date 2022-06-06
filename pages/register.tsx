@@ -245,10 +245,9 @@ const Register: React.FC = () => {
       }
       // now sign the user in - note: signIn will always resolve even with error
       const result = await signIn("credentials", { redirect: false, username: state.username.value, password: state.password.value })
-      if (result!.error) {
+      if (result?.error) {
         appDispatch({ type: "flashMessage", value: "Problem with registration" })
-        console.warn(`There was a problem signing in: ${result!.error}`)
-        throw { message: "Could not sign in", errors: result!.error }
+        throw { message: "Could not sign in" }
       }
       await router.replace("/dashboard")
       appDispatch({ type: "flashMessage", value: "Welcome!" })

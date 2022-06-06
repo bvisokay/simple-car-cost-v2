@@ -85,7 +85,7 @@ const DashboardPage = ({ session }: Props) => {
 
       <Wrapper>
         <Section>
-          <h2>Welcome {`${session!.user!.name!.charAt(0).toUpperCase()}${session!.user!.name!.slice(1)}`}</h2>
+          {session?.user?.name && <h2>Welcome {`${session.user.name.charAt(0).toUpperCase()}${session.user.name.slice(1)}`}</h2>}
           <hr />
           <DashboardItem>
             <Link href="/create-item">

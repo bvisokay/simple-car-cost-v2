@@ -217,13 +217,17 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     }
   }
 
-  const username = session.user!.name!.toString()
+  let username
+  if (session?.user?.name) {
+    username = session.user.name.toString()
+  }
 
   let data
 
   try {
-    data = await Car.findByAuthor(username)
-    console.log(data)
+    if (username) {
+      data = await Car.findByAuthor(username)
+    }
   } catch (err) {
     throw { message: "error", errors: err }
   }
