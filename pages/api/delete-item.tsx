@@ -49,12 +49,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         .deleteOne({ _id: new ObjectId(req.body.carId) })
       // return result
       //console.log(carDocument)
-      await client.close()
+      void client.close()
       res.status(200).json({ message: "success", errors: null })
       return
     }
 
-    await client.close()
+    void client.close()
     res.status(200).json({ message: "failure", data: {}, errors: null })
   } catch (err) {
     throw { message: "error", errors: err }

@@ -35,7 +35,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const user = await usersCollection.findOne({ username: username })
     if (!user) {
       res.status(404).json({ error: "User not found" })
-      await client.close()
+      void client.close()
       throw { error: "User not found" }
     }
 

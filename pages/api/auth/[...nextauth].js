@@ -39,7 +39,7 @@ export default NextAuth({
 
           if (!user) {
             // throwing new Error inside authorize rejects promise
-            await client.close()
+            void client.close()
             // message will show in flash message
             throw new Error("No user found")
             // redirects by default
@@ -49,7 +49,7 @@ export default NextAuth({
 
           if (!isValid) {
             //this.errors.push("Could not log you in")
-            await client.close()
+            void client.close()
             // message will show in flash message
             throw new Error("Incorrect username/password")
           }
@@ -62,7 +62,7 @@ export default NextAuth({
           //
           // close db before return
           //
-          await client.close()
+          void client.close()
           return {
             name: user.username
           }

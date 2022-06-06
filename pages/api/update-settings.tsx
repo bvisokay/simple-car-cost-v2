@@ -37,7 +37,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     const usersCollection = client.db().collection("users")
     await usersCollection.updateOne({ username: username }, { $set: { annual_miles: annualMiles, useful_miles: usefulMiles } })
-    await client.close()
+    void client.close()
     res.status(200).json({ message: "success", error: null })
   } catch (err) {
     throw { message: "error", errors: err }

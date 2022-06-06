@@ -93,7 +93,7 @@ const Login: React.FC = () => {
         return
       }
       // push to new page
-      await router.replace("/dashboard")
+      void router.replace("/dashboard")
       // show message to the user
       appDispatch({ type: "flashMessage", value: "Welcome Back" })
 

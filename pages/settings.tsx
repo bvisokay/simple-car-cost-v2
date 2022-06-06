@@ -128,7 +128,7 @@ const ChangeSettings = (props: SettingsProps) => {
       if (data.message === "success") {
         console.log(data)
         appDispatch({ type: "flashMessage", value: "Settings updated" })
-        await router.push("/dashboard")
+        void router.push("/dashboard")
       }
 
       //
