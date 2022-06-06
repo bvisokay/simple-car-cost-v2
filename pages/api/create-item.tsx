@@ -60,7 +60,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const userId = await usersCollection.findOne({ username: username }, { projection: { _id: 1 } })
 
       if (!userId) {
-        client.close()
+        await client.close()
         res.status(404).json({ message: "Could not find registered user" })
         throw "Could not find the user"
       }
@@ -89,7 +89,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       // if this operation failed then throw an error
       if (!result) {
-        client.close()
+        await client.close()
         res.status(422).json({ message: "Could not add vehicle" })
         throw "Could not add vehicle"
       }
@@ -99,7 +99,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       carItem._id = result.insertedId.toString()
 
       // close the database connection
-      client.close()
+      await client.close()
 
       // return the new car details back as a respons with a success message
       res.status(200).json({ message: "success", data: carItem, errors: null })

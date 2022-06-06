@@ -151,8 +151,7 @@ const EditItemPage = (props: any) => {
       }
       if (data.message === "success") {
         appDispatch({ type: "flashMessage", value: "Car successfully updated" })
-        router.push("/list")
-        //console.log(data.data)
+        await router.push("/list")
         return
       }
     } catch (err) {
@@ -165,7 +164,7 @@ const EditItemPage = (props: any) => {
     if (state.submitCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      sendRequest(signal)
+      void sendRequest(signal)
       return () => controller.abort()
     }
   }, [state.submitCount])

@@ -133,7 +133,7 @@ const List = ({ session, carData, userData }: Props) => {
         //console.error(err)
       }
     }
-    sendDeleteRequest()
+    void sendDeleteRequest()
     return () => controller.abort()
   }
 

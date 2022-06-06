@@ -81,12 +81,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         .findOneAndUpdate({ _id: new ObjectId(req.body.carId) }, { $set: { description: updatedFields.description, price: updatedFields.price, miles: updatedFields.miles, link: updatedFields.link } })
       // return result
       //console.log(carDocument)
-      client.close()
+      await client.close()
       res.status(200).json({ message: "success", data: carDocument, errors: null })
       return
     }
 
-    client.close()
+    await client.close()
     res.status(200).json({ message: "failure", data: {}, errors: null })
   } catch (err: any) {
     throw new Error(err)

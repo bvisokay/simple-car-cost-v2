@@ -153,7 +153,7 @@ const CreateItemPage = () => {
       const controller = new AbortController()
       const signal = controller.signal
 
-      sendRequest(signal)
+      void sendRequest(signal)
       return () => controller.abort()
     }
   }, [state.submitCount])

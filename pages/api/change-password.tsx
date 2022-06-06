@@ -35,7 +35,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const user = await usersCollection.findOne({ username: username })
     if (!user) {
       res.status(404).json({ error: "User not found" })
-      client.close()
+      await client.close()
       throw { error: "User not found" }
     }
 
@@ -43,7 +43,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const passwordsAreEqual = await verifyPassword(oldPassword, currentPassword)
     if (!passwordsAreEqual) {
       res.status(403).json({ error: "Old Password Is Incorrect" })
-      client.close()
+      await client.close()
       throw { error: "Old Password Is Incorrect" }
     }
 
@@ -53,7 +53,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // passing on error handling for now
 
-    client.close()
+    await client.close()
     res.status(200).json({ message: "success", error: null })
   } catch (err) {
     console.error(err)

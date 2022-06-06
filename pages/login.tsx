@@ -97,7 +97,7 @@ const Login: React.FC = () => {
         return
       }
       // push to new page
-      router.replace("/dashboard")
+      await router.replace("/dashboard")
       // show message to the user
       appDispatch({ type: "flashMessage", value: "Welcome Back" })
 
@@ -113,7 +113,7 @@ const Login: React.FC = () => {
     if (state.submitCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      fetchResults(signal)
+      void fetchResults(signal)
       return () => controller.abort()
     }
   }, [state.submitCount])

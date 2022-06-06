@@ -109,7 +109,8 @@ const ChangePassword: React.FC = () => {
       if (data.message === "success") {
         console.log(data)
         appDispatch({ type: "flashMessage", value: "Password updated" })
-        router.push("/dashboard")
+        // https://nextjs.org/docs/api-reference/next/router
+        await router.push("/dashboard")
       }
 
       //
@@ -133,7 +134,7 @@ const ChangePassword: React.FC = () => {
     if (state.submitCount) {
       const controller = new AbortController()
       const signal = controller.signal
-      fetchResults(signal)
+      void fetchResults(signal)
       return () => controller.abort()
     } // end if
   }, [state.submitCount])
