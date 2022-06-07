@@ -47,10 +47,21 @@ export interface UpdatedCarType {
   createdDate: string
 }
 
+export interface UpdateTypes extends PrimaryCarFields {
+  carId: number | string
+}
+
 export interface PrimaryCarFields {
   description: string
   price: number
   miles: number
+  link: string
+}
+
+export interface PrimaryCarFieldStrings {
+  description: string
+  price: string
+  miles: string
   link: string
 }
 

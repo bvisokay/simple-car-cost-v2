@@ -17,6 +17,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     // use the username to get the corresponding id
     const client = await connectToDatabase()
+    if (!client) {
+      throw { message: "Could not connect" }
+    }
+
     const idResult = await client
       .db()
       .collection("users")
@@ -24,11 +28,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const userId = idResult?._id.toString()
     //console.log(`userId: ${userId}`)
 
+    const carId: string = req.body.carId
+
     // See if the session user's id matches the "item-being-edited" authorId sent in
     const tgtCarDoc: MatchDoc | null = await client
       .db()
       .collection("cars")
-      .findOne({ _id: new ObjectId(req.body.carId) }, { projection: { _id: 0, authorId: 1 } })
+      .findOne({ _id: new ObjectId(carId) }, { projection: { _id: 0, authorId: 1 } })
 
     let editableItemAuthorId
     if (tgtCarDoc !== null) {
@@ -46,7 +52,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       await client
         .db()
         .collection("cars")
-        .deleteOne({ _id: new ObjectId(req.body.carId) })
+        .deleteOne({ _id: new ObjectId(carId) })
       // return result
       //console.log(carDocument)
       void client.close()

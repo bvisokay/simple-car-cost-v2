@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/client"
 import { connectToDatabase } from "../../lib/db"
 import { ObjectId } from "mongodb"
-import { MatchDoc, PrimaryCarFields } from "../../lib/types"
+import { MatchDoc, PrimaryCarFields, UpdateTypes } from "../../lib/types"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "PATCH") {
@@ -17,6 +17,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     // use the username to get the corresponding id
     const client = await connectToDatabase()
+    if (!client) {
+      throw { message: "Connection unsuccessful" }
+    }
     const idResult = await client
       .db()
       .collection("users")
@@ -24,11 +27,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const userId = idResult?._id.toString()
     //console.log(`userId: ${userId}`)
 
+    const { carId, description, price, miles, link }: UpdateTypes = req.body
+
     // See if the session user's id matches the "item-being-edited" authorId sent in
     const tgtCarDoc: MatchDoc | null = await client
       .db()
       .collection("cars")
-      .findOne({ _id: new ObjectId(req.body.carId) }, { projection: { _id: 0, authorId: 1 } })
+      .findOne({ _id: new ObjectId(carId) }, { projection: { _id: 0, authorId: 1 } })
 
     //console.log(tgtCarDoc)
 
@@ -44,10 +49,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       // okay to edit
       // clean up req.body to get rid of any bogus fields
       const updatedFields: PrimaryCarFields = {
-        description: req.body.description,
-        price: parseFloat(req.body.price),
-        miles: parseFloat(req.body.miles),
-        link: req.body.link
+        description: description,
+        price: price,
+        miles: miles,
+        link: link
       }
       // server-side validation
       if (typeof updatedFields.description !== "string") {
@@ -78,7 +83,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const carDocument = await client
         .db()
         .collection("cars")
-        .findOneAndUpdate({ _id: new ObjectId(req.body.carId) }, { $set: { description: updatedFields.description, price: updatedFields.price, miles: updatedFields.miles, link: updatedFields.link } })
+        .findOneAndUpdate({ _id: new ObjectId(carId) }, { $set: { description: updatedFields.description, price: updatedFields.price, miles: updatedFields.miles, link: updatedFields.link } })
       // return result
       //console.log(carDocument)
       void client.close()

@@ -18,12 +18,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const username = session.user?.name
 
-  const oldPassword = req.body.oldPW
+  const oldPassword: string = req.body.oldPW
 
-  const newPassword = req.body.newPW
+  const newPassword: string = req.body.newPW
 
   try {
-    const client: MongoClient = await connectToDatabase()
+    const client: MongoClient | undefined = await connectToDatabase()
     if (!client) {
       res.json({ error: "Error Connecting to Data" })
       throw { error: "Error Connecting to Data" }
@@ -39,7 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       throw { error: "User not found" }
     }
 
-    const currentPassword = user.password
+    const currentPassword: string = user.password
     const passwordsAreEqual = await verifyPassword(oldPassword, currentPassword)
     if (!passwordsAreEqual) {
       res.status(403).json({ error: "Old Password Is Incorrect" })

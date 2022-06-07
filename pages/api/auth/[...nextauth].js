@@ -45,6 +45,7 @@ export default NextAuth({
             // redirects by default
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           const isValid = await verifyPassword(credentials.password, user.password)
 
           if (!isValid) {

@@ -3,6 +3,7 @@ import Car from "../../models/Car"
 import { getSession } from "next-auth/client"
 import { connectToDatabase } from "../../lib/db"
 import { ObjectId } from "mongodb"
+import { PrimaryCarFieldStrings } from "../../lib/types"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -22,7 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     //console.log(username)
 
     // get extracted values from the body
-    const data = req.body
+    const data: PrimaryCarFieldStrings = req.body
     //console.log(data)
 
     // create a new instance of the car class

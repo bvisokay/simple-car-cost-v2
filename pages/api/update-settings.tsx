@@ -17,8 +17,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const username = session.user?.name
 
-  const usefulMiles = parseInt(req.body.usefulMiles)
-  const annualMiles = parseInt(req.body.annualMiles)
+  interface UserSettings {
+    usefulMiles: number
+    annualMiles: number
+  }
+
+  const { usefulMiles, annualMiles }: UserSettings = req.body
 
   if (annualMiles < 1200 || annualMiles > 200000) {
     throw { error: "Invalid annual miles" }
@@ -29,7 +33,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    const client: MongoClient = await connectToDatabase()
+    const client: MongoClient | undefined = await connectToDatabase()
+
     if (!client) {
       res.json({ error: "Error Connecting to Data" })
       throw { error: "Error Connecting to Data" }
