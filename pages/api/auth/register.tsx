@@ -8,10 +8,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return
   }
   if (req.method === "POST") {
+    const { username, email, password } = req.body as RegAttemptTypes
+
     const regAttemptData: RegAttemptTypes = {
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password
+      username: username,
+      email: email,
+      password: password
     }
 
     const user = new User(regAttemptData)

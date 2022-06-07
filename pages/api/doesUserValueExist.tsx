@@ -4,7 +4,7 @@ import User from "../../models/User"
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      const { key, value }: { key: string; value: string } = req.body
+      const { key, value } = req.body as { key: string; value: string }
       const result = await User.doesUserValueExist(key, value)
       if (result) {
         //Send message as answer to doesUserValueExist

@@ -6,9 +6,9 @@ import User from "../../models/User"
 import Link from "next/link"
 import { useImmerReducer } from "use-immer"
 import { GlobalDispatchContext } from "../../store/GlobalContext"
-import styled from "styled-components"
 import { useRouter } from "next/router"
-import { EditReadyCarType } from "../../lib/types"
+import { EditReadyCarType, ResponseType } from "../../lib/types"
+import styled from "styled-components"
 
 const NavBack = styled.div`
   margin: 1rem auto 2rem auto;
@@ -142,10 +142,10 @@ const EditItemPage = (props: EditReadyCarType) => {
           link: state.link.value
         })
       })
-      const data = await response.json()
-      if (data.error) {
-        appDispatch({ type: "flashMessage", value: data.error })
-        throw { message: "error", errors: data.error }
+      const data = (await response.json()) as ResponseType
+      if (data.errors) {
+        appDispatch({ type: "flashMessage", value: data.errors })
+        throw { message: "error", errors: data.errors }
       }
       if (data.message === "success") {
         appDispatch({ type: "flashMessage", value: "Car successfully updated" })

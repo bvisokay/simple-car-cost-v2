@@ -3,6 +3,7 @@ import { getSession } from "next-auth/client"
 import { connectToDatabase } from "../../lib/db"
 import { hashPassword, verifyPassword } from "../../lib/auth"
 import { MongoClient } from "mongodb"
+import { UpdatePassTypes } from "../../lib/types"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "PATCH") {
@@ -16,11 +17,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return
   }
 
-  const username = session.user?.name
+  const username = session.user?.name as string
 
-  const oldPassword: string = req.body.oldPW
+  const { oldPW, newPW }: UpdatePassTypes = req.body as UpdatePassTypes
 
-  const newPassword: string = req.body.newPW
+  //const oldPassword: string = req.body.oldPW
+  //const newPassword: string = req.body.newPW
 
   try {
     const client: MongoClient | undefined = await connectToDatabase()
@@ -29,27 +31,28 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       throw { error: "Error Connecting to Data" }
     }
 
-    // reach out to the users collection
     const usersCollection = client.db().collection("users")
-    // use to find one user by email
     const user = await usersCollection.findOne({ username: username })
+
     if (!user) {
       res.status(404).json({ error: "User not found" })
       void client.close()
       throw { error: "User not found" }
     }
 
-    const currentPassword: string = user.password
-    const passwordsAreEqual = await verifyPassword(oldPassword, currentPassword)
+    const currentPassword: string = user.password as string
+    const passwordsAreEqual = await verifyPassword(oldPW, currentPassword)
     if (!passwordsAreEqual) {
       res.status(403).json({ error: "Old Password Is Incorrect" })
       void client.close()
       throw { error: "Old Password Is Incorrect" }
     }
 
-    const hashedPassword = await hashPassword(newPassword)
+    const hashedPassword = await hashPassword(newPW)
 
-    await usersCollection.updateOne({ username: user.username }, { $set: { password: hashedPassword } })
+    const usernameValueToUpdate: string = user.username as string
+
+    await usersCollection.updateOne({ username: usernameValueToUpdate }, { $set: { password: hashedPassword } })
 
     // passing on error handling for now
 

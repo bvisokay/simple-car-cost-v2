@@ -22,7 +22,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     annualMiles: number
   }
 
-  const { usefulMiles, annualMiles }: UserSettings = req.body
+  const { usefulMiles, annualMiles } = req.body as UserSettings
 
   if (annualMiles < 1200 || annualMiles > 200000) {
     throw { error: "Invalid annual miles" }

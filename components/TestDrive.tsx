@@ -10,9 +10,7 @@ import TestDriveListItemCard from "./TestDriveListItemCard/TestDriveListItemCard
 import { FormControl, BtnWide } from "../styles/GlobalComponents"
 
 //type
-import TestDriveCar from "../models/TestDriveCar"
-import TestDriveCarType from "../models/TestDriveCar"
-import { PrimaryCarFields } from "../lib/types"
+import { PrimaryCarFields, TestDriveCarType, NewTDResponseType } from "../lib/types"
 
 const TDSection = styled.div`
   margin: 5rem auto 2rem auto;
@@ -99,7 +97,7 @@ const TestDrive: React.FC = () => {
         return
       case "deleteExistingItem":
         /* update state to remove from UI */
-        draft.testDriveItems = draft.testDriveItems?.filter((x: TestDriveCar) => {
+        draft.testDriveItems = draft.testDriveItems?.filter((x: TestDriveCarType) => {
           if (x.uniqueId !== action.value) return x
         })
         /* remove from local storage */
@@ -160,9 +158,7 @@ const TestDrive: React.FC = () => {
         return
       case "linkImmediately":
         draft.link.hasErrors = false
-        if (draft.link.value) {
-          draft.link.value = action.value
-        }
+        draft.link.value = action.value
         return
       case "submitForm":
         if (draft.description.value.trim() == "") {
@@ -225,20 +221,22 @@ const TestDrive: React.FC = () => {
   }
 
   function deleteHandler(uniqueId: number) {
-    // update local storage
-    const tdCarsInStorage: [] = JSON.parse(localStorage.getItem("tdCars") || "{}")
-    const updatedTdCarsInStorage = tdCarsInStorage.filter((car: TestDriveCar) => {
-      if (car.uniqueId !== uniqueId) return car
-    })
-    localStorage.setItem("tdCars", JSON.stringify(updatedTdCarsInStorage))
-    // remove from UI
-    dispatch({ type: "deleteExistingItem", value: uniqueId })
+    // update local storage AND remove from UI
+    const tdCarsInStorage: TestDriveCarType[] | null = JSON.parse(localStorage.getItem("tdCars") || "{}") as TestDriveCarType[] | null
+    if (tdCarsInStorage !== null) {
+      const updatedTdCarsInStorage: TestDriveCarType[] = tdCarsInStorage.filter(car => {
+        if (car.uniqueId !== uniqueId) return car
+      })
+      localStorage.setItem("tdCars", JSON.stringify(updatedTdCarsInStorage))
+      // remove from UI
+      dispatch({ type: "deleteExistingItem", value: uniqueId })
+    }
   }
 
   // load existing tdItems on page load
   useEffect(() => {
     if (localStorage.getItem("tdCars") !== null) {
-      const existingTdItems = JSON.parse(localStorage.getItem("tdCars") || "{}")
+      const existingTdItems: TestDriveCarType[] = JSON.parse(localStorage.getItem("tdCars") || "{}") as TestDriveCarType[]
       dispatch({ type: "handleExistingItems", value: existingTdItems })
     }
   }, [])
@@ -265,7 +263,7 @@ const TestDrive: React.FC = () => {
         headers: { "Content-Type": "application/json" }
       })
       //console.log(`Response from /api/create-td-car:${response}`)
-      const data = await response.json()
+      const data = (await response.json()) as NewTDResponseType
 
       if (data.message !== "success") {
         appDispatch({ type: "flashMessage", value: "Could not add item" })
@@ -273,8 +271,10 @@ const TestDrive: React.FC = () => {
       }
 
       const newValidatedTdItem = data.data
-      //console.log("newValidatedTdItem", newValidatedTdItem)
-      dispatch({ type: "addNewValidatedItem", value: newValidatedTdItem })
+      console.log("newValidatedTdItem", newValidatedTdItem)
+      if (newValidatedTdItem) {
+        dispatch({ type: "addNewValidatedItem", value: newValidatedTdItem })
+      }
       dispatch({ type: "clearFields" })
       appDispatch({ type: "flashMessage", value: "Car added" })
     } catch (err) {

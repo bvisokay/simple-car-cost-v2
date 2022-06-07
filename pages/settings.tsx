@@ -7,6 +7,8 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import User from "../models/User"
 import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
 import styled from "styled-components"
+// types
+import { ResponseType, UpdateMilesTypes } from "../lib/types"
 
 const WarningBox = styled.div`
   border: 1px solid orange;
@@ -30,7 +32,6 @@ interface SettingsProps {
 }
 
 const ChangeSettings = (props: SettingsProps) => {
-  console.log("props", props)
   const appDispatch = useContext(GlobalDispatchContext)
   const router = useRouter()
 
@@ -118,7 +119,7 @@ const ChangeSettings = (props: SettingsProps) => {
         })
       })
 
-      const data = await response.json()
+      const data = (await response.json()) as ResponseType
 
       if (data.message !== "success") {
         appDispatch({ type: "flashMessage", value: "Settings not udpated" })
@@ -186,7 +187,6 @@ const ChangeSettings = (props: SettingsProps) => {
 export default ChangeSettings
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  console.log("gssp ran")
   const session = await getSession({ req: context.req })
 
   if (!session) {
@@ -198,15 +198,25 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     }
   }
 
-  const username: string | undefined | null = session.user?.name
+  const username = session.user?.name as string
 
-  const results = await User.getSettings(username)
+  const settingsResults = await User.getSettings(username)
 
-  let data = { useful_miles: "", annual_miles: "" }
-  if (results.data?.result.useful_miles && results.data?.result.annual_miles) {
+  if (settingsResults.message !== "success") {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false
+      }
+    }
+  }
+
+  let data: UpdateMilesTypes = { useful_miles: "", annual_miles: "" }
+
+  if (settingsResults.data?.result.useful_miles && settingsResults.data?.result.annual_miles) {
     data = {
-      useful_miles: results.data.result.useful_miles,
-      annual_miles: results.data.result.annual_miles
+      useful_miles: settingsResults.data.result.useful_miles,
+      annual_miles: settingsResults.data.result.annual_miles
     }
   }
 

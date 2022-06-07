@@ -1,10 +1,10 @@
-//import { TestDriveCarType } from "../lib/types"
+import { PrimaryCarFields } from "../lib/types"
 
 const useful_miles = 150000
 const annual_miles = 15000
 
 export default class TestDriveCar {
-  //Qucik attempt to swap for type failed
+  //Quick attempt to swap for type failed
   //haveing class implement also failed
   description: string
   price: number
@@ -16,7 +16,8 @@ export default class TestDriveCar {
   uniqueId: number
   errors: string[]
 
-  constructor(data: any) {
+  // constructor(data: TestDriveCarClassType) {
+  constructor(data: PrimaryCarFields) {
     this.description = data.description
     this.price = data.price
     this.miles = data.miles

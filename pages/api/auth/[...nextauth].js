@@ -35,6 +35,7 @@ export default NextAuth({
         try {
           const client = await connectToDatabase()
           const usersCollection = client.db().collection("users")
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const user = await usersCollection.findOne({ username: credentials.username })
 
           if (!user) {
@@ -64,7 +65,9 @@ export default NextAuth({
           // close db before return
           //
           void client.close()
+
           return {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             name: user.username
           }
         } catch (err) {

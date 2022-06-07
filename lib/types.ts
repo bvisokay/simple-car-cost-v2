@@ -1,33 +1,6 @@
 import { ObjectId } from "mongodb"
 import type { WithId, Document } from "mongodb"
 
-export interface ResponseType {
-  message: string
-  data?: string
-  errors?: string
-}
-
-// ensure the user is the author
-// used by /api/delete-item, /api/update-item, etc.
-export interface MatchDoc {
-  [key: string]: ObjectId
-}
-
-export interface RegAttemptTypes {
-  username: string
-  email: string
-  password: string
-}
-
-export interface UserDocType {
-  username: string
-  email: string
-  password: string
-  useful_miles?: number
-  annual_miles?: number
-  created_date?: Date
-}
-
 export interface CarDocType extends WithId<Document> {
   authorId: ObjectId
   description: string
@@ -37,18 +10,26 @@ export interface CarDocType extends WithId<Document> {
   createdDate: ObjectId
 }
 
-export interface UpdatedCarType {
+export interface EditReadyCarType {
   _id: string
   authorId: string
   description: string
-  price: number
-  miles: number
+  price: string
+  miles: string
   link: string
   createdDate: string
 }
 
-export interface UpdateTypes extends PrimaryCarFields {
-  carId: number | string
+export interface GetSettingsResultType extends WithId<Document> {
+  _id: ObjectId
+  annual_miles: number | string
+  useful_miles: number | string
+}
+
+// ensure the user is the author
+// used by /api/delete-item, /api/update-item, etc.
+export interface MatchDoc {
+  [key: string]: ObjectId
 }
 
 export interface PrimaryCarFields {
@@ -65,14 +46,26 @@ export interface PrimaryCarFieldStrings {
   link: string
 }
 
-export interface EditReadyCarType {
-  _id: string
-  authorId: string
-  description: string
-  price: string
-  miles: string
-  link: string
-  createdDate: string
+export interface RegAttemptTypes {
+  username: string
+  email: string
+  password: string
+}
+
+export interface ResponseType {
+  message: string
+  data?: string
+  errors?: string
+}
+
+export interface NewTDResponseType {
+  message: string
+  data?: TestDriveCarClassType
+  errors?: string | string[]
+}
+
+export interface TestDriveCarClassType extends TestDriveCarType {
+  errors: string[]
 }
 
 export interface TestDriveCarType {
@@ -84,5 +77,37 @@ export interface TestDriveCarType {
   cost_per_rem_mos: number
   createdDate: Date
   uniqueId: number
-  errors: string[]
+}
+
+export interface UpdatedCarType {
+  _id: string
+  authorId: string
+  description: string
+  price: number
+  miles: number
+  link: string
+  createdDate: string
+}
+
+export interface UpdateMilesTypes {
+  annual_miles: number | string
+  useful_miles: number | string
+}
+
+export interface UpdateTypes extends PrimaryCarFields {
+  carId: number | string
+}
+
+export interface UpdatePassTypes {
+  oldPW: string
+  newPW: string
+}
+
+export interface UserDocType {
+  username: string
+  email: string
+  password: string
+  useful_miles?: number
+  annual_miles?: number
+  created_date?: Date
 }

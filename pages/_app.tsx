@@ -38,6 +38,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   }, [router.events])
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     <Provider session={pageProps.session}>
       <GlobalContextProvider>
         <GlobalStyles />

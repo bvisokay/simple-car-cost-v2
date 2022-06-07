@@ -11,6 +11,9 @@ import styled from "styled-components"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { IoSettings } from "react-icons/io5"
 
+// types
+import { ResponseType } from "../lib/types"
+
 const ListPageHeading = styled.div`
   width: 100%;
   display: flex;
@@ -111,9 +114,10 @@ const List = ({ session, carData, userData }: Props) => {
             carId: carId
           })
         })
-        const data = await response.json()
-        if (data.error) {
-          appDispatch({ type: "flashMessage", value: data.error })
+        const data = (await response.json()) as ResponseType
+
+        if (data.errors) {
+          appDispatch({ type: "flashMessage", value: data.errors })
           //console.warn(`from client: ${data.error}`)
           return
         }

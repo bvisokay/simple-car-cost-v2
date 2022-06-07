@@ -2,7 +2,7 @@ import validator from "validator"
 import { hashPassword } from "../lib/auth"
 import { addUserDocument, connectToDatabase } from "../lib/db"
 import { ObjectId } from "mongodb"
-import { CarDocType, UpdatedCarType } from "../lib/types"
+import { CarDocType, UpdatedCarType, GetSettingsResultType } from "../lib/types"
 //import { PrimaryCarFields } from "../lib/types"
 
 interface UserRegFields {
@@ -86,6 +86,9 @@ export default class User {
       if (this.data.username.length > 2 && this.data.username.length < 31 && validator.isAlphanumeric(this.data.username)) {
         try {
           const client = await connectToDatabase()
+          if (!client) {
+            throw { message: "Error" }
+          }
           const usernameExists = await client.db().collection("users").findOne({ username: this.data.username })
           if (usernameExists) {
             this.errors.push("That username is already taken.")
@@ -101,6 +104,9 @@ export default class User {
       if (validator.isEmail(this.data.email)) {
         try {
           const client = await connectToDatabase()
+          if (!client) {
+            throw { message: "Error" }
+          }
           const emailExists = await client.db().collection("users").findOne({ email: this.data.email })
           if (emailExists) {
             this.errors.push("That email is already being used.")
@@ -136,6 +142,9 @@ export default class User {
       let client
       try {
         client = await connectToDatabase()
+        if (!client) {
+          throw { message: "Error" }
+        }
       } catch (err) {
         return { message: "connection failure", data: null, errors: err }
       }
@@ -161,6 +170,9 @@ export default class User {
     }
     try {
       const client = await connectToDatabase()
+      if (!client) {
+        throw { message: "Error" }
+      }
       const result = await client
         .db()
         .collection("users")
@@ -178,25 +190,28 @@ export default class User {
   } // end doesUserValue Exist
 
   // getSettings
-  static async getSettings(username: string | undefined | null) {
+  static async getSettings(username: string) {
     if (typeof username !== "string") {
-      return { status: "failed", data: null, error: "improper data" }
+      return { message: "failed", error: "improper data" }
     }
     try {
       const client = await connectToDatabase()
-      const result = await client
+      if (!client) {
+        throw { message: "Error" }
+      }
+      const result = (await client
         .db()
         .collection("users")
-        .findOne({ username: username }, { projection: { _id: 1, useful_miles: 1, annual_miles: 1 } })
+        .findOne({ username: username }, { projection: { _id: 1, useful_miles: 1, annual_miles: 1 } })) as GetSettingsResultType
       if (result) {
         void client.close()
-        return { status: "success", data: { result }, error: null }
+        return { message: "success", data: { result } }
       } else {
         void client.close()
-        return { status: "failed", data: null, error: "Could not get existing" }
+        return { message: "failed", error: "Could not get existing" }
       }
     } catch (err) {
-      return { status: "failed", data: null, errors: err }
+      return { message: "failed", errors: err }
     }
   } // end getSettings
 
@@ -209,6 +224,9 @@ export default class User {
     // Lookup userId given username
     try {
       const client = await connectToDatabase()
+      if (!client) {
+        throw { message: "Error" }
+      }
       const idResult = await client.db().collection("users").findOne({ username: username })
       const userId = idResult?._id.toString()
       const carDocument: CarDocType | null = (await client

@@ -4,7 +4,12 @@ import { useRouter } from "next/router"
 import { runServerSidePageGuard } from "../lib/auth"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
+
+//styles
 import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
+
+// types
+import { ResponseType } from "../lib/types"
 
 const ChangePassword: React.FC = () => {
   const appDispatch = useContext(GlobalDispatchContext)
@@ -94,15 +99,16 @@ const ChangePassword: React.FC = () => {
         })
       })
 
-      const data = await response.json()
+      const returnedData = (await response.json()) as ResponseType
+      const { message, errors }: ResponseType = returnedData
 
-      if (data.error) {
-        appDispatch({ type: "flashMessage", value: data.error })
-        throw { message: "error", errors: data.error }
+      if (errors) {
+        appDispatch({ type: "flashMessage", value: errors })
+        throw { message: "error", errors: errors }
       }
 
-      if (data.message === "success") {
-        console.log(data)
+      if (message === "success") {
+        //console.log(returnedData)
         appDispatch({ type: "flashMessage", value: "Password updated" })
         // https://nextjs.org/docs/api-reference/next/router
         void router.push("/dashboard")

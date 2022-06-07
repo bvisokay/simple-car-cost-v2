@@ -1,11 +1,14 @@
 import { runServerSidePageGuard } from "../lib/auth"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
-import { Wrapper, Section, FormControl, BtnWide } from "../styles/GlobalComponents"
 import React, { useContext, useEffect } from "react"
 import { useImmerReducer } from "use-immer"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import Link from "next/link"
+// types
+import { ResponseType } from "../lib/types"
+// styles
 import styled from "styled-components"
+import { Wrapper, Section, FormControl, BtnWide } from "../styles/GlobalComponents"
 
 const NavBack = styled.div`
   margin: 1rem auto 2rem auto;
@@ -128,9 +131,11 @@ const CreateItemPage = () => {
           link: state.link.value
         })
       })
-      const data = await response.json()
-      if (data.error) {
-        appDispatch({ type: "flashMessage", value: data.error })
+
+      const data = (await response.json()) as ResponseType
+
+      if (data.errors) {
+        appDispatch({ type: "flashMessage", value: data.errors })
         //console.warn(`from client: ${data.error}`)
         return
       }

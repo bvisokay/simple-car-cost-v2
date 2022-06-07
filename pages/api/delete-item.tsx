@@ -28,7 +28,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     const userId = idResult?._id.toString()
     //console.log(`userId: ${userId}`)
 
-    const carId: string = req.body.carId
+    const { carId } = req.body as { carId: string }
 
     // See if the session user's id matches the "item-being-edited" authorId sent in
     const tgtCarDoc: MatchDoc | null = await client

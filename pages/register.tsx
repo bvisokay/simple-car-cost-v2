@@ -8,6 +8,9 @@ import { signIn } from "next-auth/client"
 import { getSession } from "next-auth/client"
 import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
 
+// types
+import { ResponseType } from "../lib/types"
+
 type RegisterActionTypes = { type: "usernameImmediately"; value: string } | { type: "usernameAfterDelay"; value?: string; noRequest?: boolean } | { type: "usernameUniqueResults"; value: string } | { type: "emailImmediately"; value: string } | { type: "emailAfterDelay"; value?: string; noRequest?: boolean } | { type: "emailUniqueResults"; value: string } | { type: "passwordImmediately"; value: string } | { type: "passwordAfterDelay"; value?: string } | { type: "submitForm" }
 
 interface InitialStateTypes {
@@ -178,7 +181,7 @@ const Register: React.FC = () => {
           "Content-Type": "application/json"
         }
       })
-      const data = await response.json()
+      const data = (await response.json()) as ResponseType
       //console.log(`data from usernameUnique api: ${data.message}`)
       dispatch({ type: "usernameUniqueResults", value: data.message })
     } catch (err) {
@@ -205,7 +208,7 @@ const Register: React.FC = () => {
           "Content-Type": "application/json"
         }
       })
-      const data = await response.json()
+      const data = (await response.json()) as ResponseType
       //console.log(`data from emailUnique api: ${data.message}`)
       dispatch({ type: "emailUniqueResults", value: data.message })
     } catch (err) {
@@ -237,7 +240,7 @@ const Register: React.FC = () => {
           "Content-Type": "application/json"
         }
       })
-      const data = await response.json()
+      const data = (await response.json()) as ResponseType
 
       if (data.message != "success") {
         appDispatch({ type: "flashMessage", value: "Could not register" })

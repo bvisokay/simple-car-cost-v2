@@ -23,7 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     //console.log(username)
 
     // get extracted values from the body
-    const data: PrimaryCarFieldStrings = req.body
+    const data = req.body as PrimaryCarFieldStrings
     //console.log(data)
 
     // create a new instance of the car class
