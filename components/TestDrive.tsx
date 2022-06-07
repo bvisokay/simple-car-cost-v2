@@ -1,13 +1,15 @@
 import React, { useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import Link from "next/link"
-import styled from "styled-components"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 
-//comps
-//import TestDriveCarCard from "./TestDriveCarCard"
-import TestDriveListItemCard from "./TestDriveListItemCard/TestDriveListItemCard"
+//styles
+import styled from "styled-components"
 import { FormControl, BtnWide } from "../styles/GlobalComponents"
+import { breakpoints } from "../styles/breakpoints"
+
+//comps
+import TestDriveListItemCard from "./TestDriveListItemCard/TestDriveListItemCard"
 
 //type
 import { PrimaryCarFields, TestDriveCarType, NewTDResponseType } from "../lib/types"
@@ -27,10 +29,13 @@ const TDSection = styled.div`
 `
 
 const TestDriveListGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 10px;
-  margin-top: 2rem;
+  @media ${breakpoints.xs} {
+    //background-color: aqua;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 8px;
+    margin-top: 2rem;
+  }
 `
 
 type TestDriveActionTypes = { type: "handleExistingItems"; value: TestDriveCarType[] } | { type: "deleteExistingItem"; value: number } | { type: "addNewValidatedItem"; value: TestDriveCarType } | { type: "descriptionImmediately"; value: string } | { type: "priceImmediately"; value: string | number } | { type: "milesImmediately"; value: string | number } | { type: "removeAnyErrors"; value?: string } | { type: "linkImmediately"; value: string } | { type: "submitForm"; value?: string } | { type: "saveRequestStarted"; value?: string } | { type: "saveRequestFinished"; value?: string } | { type: "clearFields"; value?: string }
