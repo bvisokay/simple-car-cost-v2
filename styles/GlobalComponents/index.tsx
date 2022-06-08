@@ -68,14 +68,20 @@ export const SectionTitle = styled.h2<ColorProps>`
 `
 
 export const LeadMuted = styled.p`
-  font-size: 1.25rem;
+  font-size: 0.775rem;
   color: #6c757d;
   font-weight: 300;
   text-align: center;
   margin: 1.25rem auto;
 
+  @media ${breakpoints.xs} {
+    max-width: 600px;
+    font-size: 1rem;
+  }
+
   @media ${breakpoints.md} {
     max-width: 600px;
+    font-size: 1.25rem;
   }
 `
 
@@ -177,9 +183,17 @@ export const FormControl = styled.div`
   }
 
   label {
-    font-size: 1rem;
+    font-size: 0.675rem;
     padding: 0;
     color: var(--primary);
+
+    @media ${breakpoints.xs} {
+      font-size: 0.875rem;
+    }
+
+    @media ${breakpoints.md} {
+      font-size: 1rem;
+    }
   }
 
   textarea {

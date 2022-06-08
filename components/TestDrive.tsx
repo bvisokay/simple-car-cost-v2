@@ -374,7 +374,7 @@ const TestDrive: React.FC = () => {
       </form>
 
       <p className="small">
-        Assumed driving of 15,000 miles per year and useful life of 150,000 miles. <Link href="/register">Sign up</Link> for a free account to customize miles driven per year and useful life. Also gain access to sorting and the ability to access your listings across multiple devices.
+        Assumed driving of 15,000 miles per year and useful life of 150,000 miles. Customize these values by <Link href="/register">signing up</Link> for a free account and also gain the ability to access your listings across multiple devices.
       </p>
 
       {state.testDriveItems.length >= 1 && (

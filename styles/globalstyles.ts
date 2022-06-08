@@ -87,15 +87,25 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 100;
     color: var(--gray);
     line-height: 1.25;
-    font-size: 1rem;
-    @media ${breakpoints.sm} {
-      font-size: 1rem;
+    font-size: .675rem;
+    letter-spacing: -.2px;
+
+    @media ${breakpoints.xs} {
+      font-size: .875rem;
+    }
+    @media ${breakpoints.md} {
+      font-size: 1.15rem;
     }
   }
 
   p.small {
-    font-size: 0.875rem;
+    font-family: var(--font-primary);
+    font-size: 0.675rem;
     color: gray;
+
+    @media ${breakpoints.sm} {
+      font-size: 0.875rem;
+    }
   }
 
 
