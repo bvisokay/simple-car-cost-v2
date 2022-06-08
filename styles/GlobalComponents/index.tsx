@@ -26,6 +26,11 @@ export const Display = styled.h2`
   max-width: 500px;
   margin: 0 auto;
 
+  @media ${breakpoints.xs} {
+    padding-top: 1.65rem;
+    font-size: 2.75rem;
+  }
+
   @media ${breakpoints.md} {
     padding-top: 2rem;
     font-size: 2.75rem;
@@ -68,11 +73,11 @@ export const SectionTitle = styled.h2<ColorProps>`
 `
 
 export const LeadMuted = styled.p`
+  margin: 1.25rem auto 3rem auto;
   font-size: 0.775rem;
   color: #6c757d;
   font-weight: 300;
   text-align: center;
-  margin: 1.25rem auto;
 
   @media ${breakpoints.xs} {
     max-width: 600px;

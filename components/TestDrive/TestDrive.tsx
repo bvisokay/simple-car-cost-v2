@@ -1,18 +1,18 @@
 import React, { useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import Link from "next/link"
-import { GlobalDispatchContext } from "../store/GlobalContext"
+import { GlobalDispatchContext } from "../../store/GlobalContext"
 
 //styles
 import styled from "styled-components"
-import { FormControl, BtnWide } from "../styles/GlobalComponents"
-import { breakpoints } from "../styles/breakpoints"
+import { FormControl, BtnWide } from "../../styles/GlobalComponents"
+import { breakpoints } from "../../styles/breakpoints"
 
 //comps
-import TestDriveListItemCard from "./TestDriveListItemCard/TestDriveListItemCard"
+import TestDriveListItemCard from "../TestDriveListItemCard/TestDriveListItemCard"
 
 //type
-import { PrimaryCarFields, TestDriveCarType, NewTDResponseType } from "../lib/types"
+import { PrimaryCarFields, TestDriveCarType, NewTDResponseType } from "../../lib/types"
 
 const TDSection = styled.div`
   margin: 5rem auto 2rem auto;
