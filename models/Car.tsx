@@ -104,17 +104,17 @@ export default class Car {
         throw "no user found"
       }
 
-      interface cleanedUserDocTypes {
+      interface CleanedUserDocTypes {
         user_id: string
         useful_miles: number
         monthly_miles: number
       }
 
       // clean up the userDoc (no password)
-      const userData: cleanedUserDocTypes = {
+      const userData: CleanedUserDocTypes = {
         user_id: userDoc._id.toString(),
-        useful_miles: userDoc.useful_miles,
-        monthly_miles: userDoc.annual_miles / 12
+        useful_miles: +userDoc.useful_miles,
+        monthly_miles: +userDoc.annual_miles / 12
       }
       //console.log(userData)
 
