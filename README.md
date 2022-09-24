@@ -2,9 +2,15 @@
 
 :blue_car: A simple way to compare vehicles prices
 
-## Overview
+Using estimates for "useful life in miles" and "annual amount of driving" calculate a "cost per remaining month" value. Users can store links to their favorite vehicle listings from across the web in one centralized list.
 
-Using estimates of useful life in miles and annual amount of driving calculate a "cost per remaingin month" value. Users can store links to their favorite vehicle listings from across the web in one centralized list.
+## Technologies
+
+:computer:
+-NextJS
+-MongoDB
+-Styled Components
+-React Icons
 
 ## Features
 
@@ -15,17 +21,9 @@ Using estimates of useful life in miles and annual amount of driving calculate a
 
 ## Changes from V1
 
-:heavy_check_mark From express with EJS templates to full stack React
-:heavy_check_mark From heroku deployment to Vercel
-:heavy_check_mark From prototype functions to ES6 classes
-
-## Technologies
-
-:computer:
--NextJS
--MongoDB
--Styled Components
--React Icons
+- :heavy_check_mark From express with EJS templates to full stack React
+- :heavy_check_mark From heroku deployment to Vercel
+- :heavy_check_mark From prototype functions to ES6 classes
 
 ## Notes
 
