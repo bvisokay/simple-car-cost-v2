@@ -2,6 +2,7 @@
 
 # custom
 0_ReadMe.txt
+0_ReadMe.md
 __tests__/test_ReadMe.txt
 /components/test/Hello.tsx
 /components/test/Hello.test.tsx
