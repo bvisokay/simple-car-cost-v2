@@ -1,16 +1,15 @@
-# Simple Car Cost V2
+# Simple Car Cost V2 :blue_car:
 
-:blue_car: A simple way to compare vehicles prices
+**A simple way to compare vehicles prices**
 
 Using estimates for "useful life in miles" and "annual amount of driving" calculate a "cost per remaining month" value. Users can store links to their favorite vehicle listings from across the web in one centralized list.
 
-## Technologies
+## Tech Stack :computer:
 
-:computer:
--NextJS
--MongoDB
--Styled Components
--React Icons
+- NextJS
+- MongoDB
+- Styled Components
+- React Icons
 
 ## Features
 
@@ -21,9 +20,9 @@ Using estimates for "useful life in miles" and "annual amount of driving" calcul
 
 ## Changes from V1
 
-- :heavy_check_mark From express with EJS templates to full stack React
-- :heavy_check_mark From heroku deployment to Vercel
-- :heavy_check_mark From prototype functions to ES6 classes
+- :heavy_check_mark: From express with EJS templates to full stack React
+- :heavy_check_mark: From heroku deployment to Vercel
+- :heavy_check_mark: From prototype functions to ES6 classes
 
 ## Notes
 
