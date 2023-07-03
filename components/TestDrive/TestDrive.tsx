@@ -134,11 +134,11 @@ const TestDrive: React.FC = () => {
           draft.price.hasErrors = true
           draft.price.message = "Please enter a price"
         }
-        if (draft.price.value > 250000) {
+        if (+draft.price.value > 250000) {
           draft.price.hasErrors = true
           draft.price.message = "Enter a price under $250,000"
         }
-        if (draft.price.value < 1) {
+        if (+draft.price.value < 1) {
           draft.price.hasErrors = true
           draft.price.message = "The price cannot be less than $1"
         }
@@ -151,7 +151,7 @@ const TestDrive: React.FC = () => {
           draft.miles.hasErrors = true
           draft.miles.message = "Please enter a value for miles"
         }
-        if (draft.miles.value > 250000) {
+        if (+draft.miles.value > 250000) {
           draft.miles.hasErrors = true
           draft.miles.message = "Please enter lower value for the miles"
         }
@@ -178,11 +178,11 @@ const TestDrive: React.FC = () => {
           draft.price.hasErrors = true
           draft.price.message = "You must enter a price."
         }
-        if (draft.price.value > 250000) {
+        if (+draft.price.value > 250000) {
           draft.price.hasErrors = true
           draft.price.message = "You must enter a price."
         }
-        if (draft.price.value < 1) {
+        if (+draft.price.value < 1) {
           draft.price.hasErrors = true
           draft.price.message = "The price cannot be less than $1"
         }
@@ -190,11 +190,11 @@ const TestDrive: React.FC = () => {
           draft.miles.hasErrors = true
           draft.miles.message = "You must enter a value for the miles."
         }
-        if (draft.miles.value < 0) {
+        if (+draft.miles.value < 0) {
           draft.miles.hasErrors = true
           draft.miles.message = "Mileage must be greater than 0."
         }
-        if (draft.miles.value > 300000) {
+        if (+draft.miles.value > 300000) {
           draft.miles.hasErrors = true
           draft.miles.message = "Enter a lower value for the miles"
         }
