@@ -24,7 +24,7 @@ const MainNavContainer = styled.div`
 
   a {
     //border: 1px solid red;
-    border-radius: 4px;
+    border-radius: var(--roundness);
     margin-left: 0.1rem;
   }
 

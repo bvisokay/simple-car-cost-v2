@@ -11,8 +11,8 @@ import styled from "styled-components"
 import { ResponseType, UpdateMilesTypes } from "../lib/types"
 
 const WarningBox = styled.div`
-  border: 1px solid orange;
-  border-radius: 8px;
+  border: var(--border-width) solid orange;
+  border-radius: var(--roundness);
   background-color: #fff3cd;
   padding: 0rem 1rem;
   margin: 1rem 0 1.5rem 0;

@@ -4,8 +4,8 @@ import { breakpoints } from "../../styles/breakpoints"
 const Card = styled.li`
   width: 100%;
   margin: 1.5rem auto;
-  border-radius: 4px;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+  border-radius: var(--roundness);
+  box-shadow: var(--box-shadow);
   background-color: #fff;
   color: var(--primary);
   max-width: 500px;
@@ -18,9 +18,9 @@ const Card = styled.li`
     align-items: center;
     font-size: 1rem;
     justify-content: space-between;
-    border: 2px solid var(--transparent);
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border: var(--border-width) solid var(--transparent);
+    border-top-left-radius: var(--roundness);
+    border-top-right-radius: var(--roundness);
     margin: 0;
 
     @media ${breakpoints.sm} {

@@ -70,7 +70,7 @@ const LogoContainer = styled.div`
 
   a.logo-icon {
     //border: 1px solid crimson;
-    border-radius: 4px;
+    border-radius: var(--roundness);
     display: flex;
     justify-content: center;
     align-items: center;

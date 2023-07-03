@@ -46,9 +46,9 @@ export const SectionNarrow = styled.section`
   margin: 0.5rem auto;
   width: 100%;
   max-width: var(--wrapper-width-narrow);
-  border: 3px solid var(--tertiary);
+  border: var(--border-width) solid var(--tertiary);
   //background: var(--transparent-dark);
-  border-radius: 10px;
+  border-radius: var(--roundness);
 `
 
 export const SectionVeryNarrow = styled.section`
@@ -56,9 +56,9 @@ export const SectionVeryNarrow = styled.section`
   margin: 0.5rem auto;
   width: 100%;
   max-width: var(--wrapper-width-very-narrow);
-  border: 3px solid var(--tertiary);
+  border: var(--border-width) solid var(--tertiary);
   //background: var(--transparent-dark);
-  border-radius: 10px;
+  border-radius: var(--roundness);
 `
 
 export const SectionTitle = styled.h2<ColorProps>`
@@ -93,9 +93,9 @@ export const LeadMuted = styled.p`
 export const Btn = styled.button<ColorProps>`
   cursor: pointer;
   background-color: ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
-  border: 2px solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 0.2rem;
+  border: var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+  box-shadow: var(--box-shadow);
+  border-radius: var(--roundness);
   margin: 0.15rem;
   padding: 0.1rem 0.1rem;
   font-size: 0.5rem;
@@ -118,12 +118,12 @@ export const Btn = styled.button<ColorProps>`
   :disabled {
     cursor: wait;
     background: linear-gradient(180deg, #fff, #777);
-    border: 2px solid #999;
+    border: var(--border-width) solid #999;
     color: #555;
   }
 
   :focus {
-    outline: 2px solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+    outline: var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
     box-shadow: 0 0 0 0.1rem ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   }
 
@@ -137,9 +137,9 @@ export const BtnWide = styled.button<ColorProps>`
   width: 100%;
   cursor: pointer;
   background-color: ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
-  border: 2px solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 0.5rem;
+  border: var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+  box-shadow: var(--box-shadow);
+  border-radius: var(--roundness);
   margin: 1rem 0;
   padding: 0.4rem 0.5rem;
   color: #fff;
@@ -158,7 +158,7 @@ export const BtnWide = styled.button<ColorProps>`
   :disabled {
     cursor: wait;
     background: linear-gradient(180deg, #fff, #777);
-    border: 2px solid #999;
+    border: var(--border-width) solid #999;
     color: #555;
   }
 
@@ -175,7 +175,7 @@ export const BtnWide = styled.button<ColorProps>`
 
 export const FormControl = styled.div`
   //border: 1px solid var(--secondary);
-  border-radius: 0.5rem;
+  border-radius: var(--roundness);
   margin: 0.5rem auto;
   padding: 0.35rem 0.25rem;
   color: var(--primary);
@@ -218,8 +218,8 @@ export const FormControl = styled.div`
     width: 100%;
     position: relative;
     z-index: 2;
-    border-radius: 0.5rem;
-    border: 2px solid var(--secondary);
+    border-radius: var(--roundness);
+    border: var(--border-width) solid var(--secondary);
 
     @media ${breakpoints.sm} {
       min-width: 275px;

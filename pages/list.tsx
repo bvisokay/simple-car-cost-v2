@@ -35,8 +35,8 @@ const ListPageHeading = styled.div`
 `
 
 const SettingsBadge = styled.div`
-  border: 1px solid var(--primary);
-  border-radius: 8px;
+  border: var(--border-width) solid var(--primary);
+  border-radius: var(--roundness);
   letter-spacing: -0.5px;
   font-style: italic;
   display: flex;

@@ -13,13 +13,13 @@ import styled from "styled-components"
 import { IoIosList, IoIosRefreshCircle, IoMdAddCircle, IoIosCog, IoIosBulb } from "react-icons/io"
 
 const DashboardItem = styled.div`
-  border: 2px solid var(--primary);
-  border-radius: 4px;
+  border: var(--border-width) solid var(--primary);
+  border-radius: var(--roundness);
   padding: 0.5rem 0.5rem;
   display: flex;
   width: 100%;
   margin: 0.75rem auto;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--box-shadow);
   background-color: #fff;
   color: var(--primary);
   align-items: center;

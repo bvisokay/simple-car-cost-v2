@@ -16,8 +16,8 @@ import { PrimaryCarFields, TestDriveCarType, NewTDResponseType } from "../../lib
 
 const TDSection = styled.div`
   margin: 5rem auto 2rem auto;
-  border: 3px solid var(--primary);
-  border-radius: 6px;
+  border: var(--border-width) solid var(--primary);
+  border-radius: var(--roundness);
   padding: 1rem;
   background-color: white;
 
