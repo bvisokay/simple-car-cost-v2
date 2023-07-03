@@ -11,7 +11,16 @@ import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalCompone
 // types
 import { ResponseType } from "../lib/types"
 
-type RegisterActionTypes = { type: "usernameImmediately"; value: string } | { type: "usernameAfterDelay"; value?: string; noRequest?: boolean } | { type: "usernameUniqueResults"; value: string } | { type: "emailImmediately"; value: string } | { type: "emailAfterDelay"; value?: string; noRequest?: boolean } | { type: "emailUniqueResults"; value: string } | { type: "passwordImmediately"; value: string } | { type: "passwordAfterDelay"; value?: string } | { type: "submitForm" }
+type RegisterActionTypes =
+  | { type: "usernameImmediately"; value: string } // This comment helps with prettier formatting
+  | { type: "usernameAfterDelay"; value?: string; noRequest?: boolean }
+  | { type: "usernameUniqueResults"; value: string }
+  | { type: "emailImmediately"; value: string }
+  | { type: "emailAfterDelay"; value?: string; noRequest?: boolean }
+  | { type: "emailUniqueResults"; value: string }
+  | { type: "passwordImmediately"; value: string }
+  | { type: "passwordAfterDelay"; value?: string }
+  | { type: "submitForm" }
 
 interface InitialStateTypes {
   username: {
@@ -37,7 +46,6 @@ interface InitialStateTypes {
 }
 
 const Register: React.FC = () => {
-  // Assignments
   const appDispatch = useContext(GlobalDispatchContext)
   const router = useRouter()
 
@@ -63,6 +71,7 @@ const Register: React.FC = () => {
     },
     submitCount: 0
   }
+
   const [state, dispatch] = useImmerReducer(ourReducer, initialState)
 
   // Reducer Function
