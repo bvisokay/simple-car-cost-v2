@@ -21,10 +21,14 @@ export default function Home() {
           <br />
           <br />
           <Link href="/register">
-            <Btn bgColor={"var(--cyan)"}>Get Started</Btn>
+            <Btn bgColor={"var(--cyan)"} hoverBg={"var(--alt-cyan)"}>
+              Get Started
+            </Btn>
           </Link>
           <Link href="/overview">
-            <Btn bgColor={"var(--indigo)"}>Learn More</Btn>
+            <Btn bgColor={"var(--indigo)"} hoverBg={"var(--alt-indigo)"}>
+              Learn More
+            </Btn>
           </Link>
         </LeadMuted>
         <motion.div
