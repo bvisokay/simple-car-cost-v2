@@ -30,7 +30,8 @@ export const GlobalStyles = createGlobalStyle`
   --wrapper-width: 1015px;
   --wrapper-width-narrow: 600px;
   --wrapper-width-very-narrow: 400px;
-  --font-primary: monospace, sans-serif;
+  /* --font-primary: monospace, sans-serif; */
+  --font-primary: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   --font-secondary: 'Oswald', sans-serif;
   --roundness: .3875rem;
   --box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);

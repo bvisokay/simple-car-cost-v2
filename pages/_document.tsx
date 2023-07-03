@@ -34,6 +34,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <meta name="description" content="A Simple Way To Compare Vehicle Prices" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600&display=swap" rel="stylesheet" />
         <Head>
           {isProd && process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS && (
