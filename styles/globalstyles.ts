@@ -7,19 +7,25 @@ export const GlobalStyles = createGlobalStyle`
 
 :root {
   --blue: #007bff;
+  --alt-blue: #007bff95;
   --indigo: #6610f2;
+  --alt-indigo: #6610f295;
   --purple: #6f42c1;
+  --alt-purple: #6f42c195;
   --pink: #e83e8c;
   --red: #dc3545;
   --orange: #fd7e14;
   --yellow: #ffc107;
   --green: #28a745;
   --teal: #20c997;
+  --alt-teal: #20c99795;
   --cyan: #17a2b8;
+  --alt-cyan: #17a2b895;
   --white: #fff;
   --gray: #6c757d;
   --gray-dark: #343a40;
   --primary: #007bff;
+  --alt-primary: #007bff90;
   --secondary: #6c757d;
   --success: #28a745;
   --info: #17a2b8;

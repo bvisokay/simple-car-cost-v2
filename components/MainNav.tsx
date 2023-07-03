@@ -74,23 +74,21 @@ const MainNav = () => {
       {status && (
         <>
           <Link href="/dashboard">
-            <Btn bgColor={"var(--indigo)"} hoverColor={"white"}>
+            <Btn bgColor={"var(--indigo)"} hoverBg={"var(--alt-indigo)"}>
               Dashboard
             </Btn>
           </Link>
           <Link href="/create-item">
-            <Btn bgColor={"var(--cyan)"} hoverColor={"white"}>
+            <Btn bgColor={"var(--cyan)"} hoverBg={"var(--alt-cyan)"}>
               Add Car
             </Btn>
           </Link>
           <Link href="/list">
-            <Btn bgColor={"var(--teal)"} hoverColor={"white"}>
+            <Btn bgColor={"var(--teal)"} hoverBg={"var(--alt-teal)"}>
               My List
             </Btn>
           </Link>
-          <Btn onClick={() => logoutHandler()} color={"var(--secondary)"} hoverColor={"white"}>
-            Log Out
-          </Btn>
+          <Btn onClick={() => logoutHandler()}>Log Out</Btn>
           <Link href="/settings">
             <motion.a
               whileHover={{

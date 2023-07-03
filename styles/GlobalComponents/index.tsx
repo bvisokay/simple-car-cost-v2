@@ -6,6 +6,7 @@ type ColorProps = {
   color?: string
   bgColor?: string
   hoverColor?: string
+  hoverBg?: string
 }
 
 export const Wrapper = styled.div`
@@ -96,6 +97,7 @@ export const Btn = styled.button<ColorProps>`
   border: var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   box-shadow: var(--box-shadow);
   border-radius: var(--roundness);
+  font-weight: 500;
   margin: 0.15rem;
   padding: 0.1rem 0.1rem;
   font-size: 0.5rem;
@@ -128,8 +130,9 @@ export const Btn = styled.button<ColorProps>`
   }
 
   :hover {
-    background-color: transparent;
-    color: ${props => (props.hoverColor ? `${props.hoverColor}` : props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+    background-color: ${props => (props.hoverBg ? `${props.hoverBg}` : props.bgColor ? `${props.bgColor}` : "var(--alt-primary)")};
+    color: ${props => (props.hoverColor ? `${props.hoverColor}` : "var(--white)")};
+    border: var(--border-width) solid ${props => (props.hoverBg ? `${props.hoverBg}` : `var(--alt-primary)`)};
   }
 `
 
@@ -167,9 +170,11 @@ export const BtnWide = styled.button<ColorProps>`
     box-shadow: 0 0 0 0.1rem ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   }
 
+  // hover color should default to white and pass in a non-white-color
   :hover {
-    background-color: transparent;
+    background-color: ${props => (props.hoverBg ? `${props.hoverBg}` : "transparent")};
     color: ${props => (props.hoverColor ? `${props.hoverColor}` : props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+    var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   }
 `
 
