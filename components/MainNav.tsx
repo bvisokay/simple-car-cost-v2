@@ -42,9 +42,13 @@ const MainNavContainer = styled.div`
 const MainNav = () => {
   //const [session, loading] = useSession()
   const { status } = useSession()
+  console.log("status: ", status)
   const router = useRouter()
 
   //console.log("session", session)
+  if (!status) {
+    console.log("There is no status")
+  }
 
   // log user out on click
   function logoutHandler() {
@@ -58,7 +62,7 @@ const MainNav = () => {
   return (
     <MainNavContainer>
       {/* Was !session and !loading */}
-      {!status && (
+      {status !== "loading" && status !== "authenticated" && (
         <>
           <Link href="/login">
             <Btn hoverColor={"white"}>Log In</Btn>
@@ -71,7 +75,7 @@ const MainNav = () => {
         </>
       )}
 
-      {status && (
+      {status !== "loading" && status === "authenticated" && (
         <>
           <Link href="/dashboard">
             <Btn bgColor={"var(--indigo)"} hoverBg={"var(--alt-indigo)"}>
