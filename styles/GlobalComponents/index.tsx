@@ -95,14 +95,12 @@ export const Btn = styled.button<ColorProps>`
   cursor: pointer;
   background-color: ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   border: var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
-  box-shadow: var(--box-shadow);
   border-radius: var(--roundness);
   font-weight: 500;
   margin: 0.15rem;
   padding: 0.1rem 0.1rem;
   font-size: 0.5rem;
   color: #fff;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   line-height: 1.5;
   font-family: var(--font-primary);
 
@@ -126,7 +124,6 @@ export const Btn = styled.button<ColorProps>`
 
   :focus {
     outline: var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
-    box-shadow: 0 0 0 0.1rem ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   }
 
   :hover {
@@ -141,13 +138,11 @@ export const BtnWide = styled.button<ColorProps>`
   cursor: pointer;
   background-color: ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
   border: var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
-  box-shadow: var(--box-shadow);
   border-radius: var(--roundness);
   margin: 1rem 0;
   padding: 0.4rem 0.5rem;
   color: #fff;
   font-size: 0.875rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   line-height: 1.5;
   font-family: var(--font-primary);
   font-weight: 700;
@@ -166,15 +161,13 @@ export const BtnWide = styled.button<ColorProps>`
   }
 
   :focus {
-    outline: 2px solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
-    box-shadow: 0 0 0 0.1rem ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+    outline: var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--alt-primary)")};
   }
 
-  // hover color should default to white and pass in a non-white-color
   :hover {
-    background-color: ${props => (props.hoverBg ? `${props.hoverBg}` : "transparent")};
-    color: ${props => (props.hoverColor ? `${props.hoverColor}` : props.bgColor ? `${props.bgColor}` : "var(--primary)")};
-    var(--border-width) solid ${props => (props.bgColor ? `${props.bgColor}` : "var(--primary)")};
+    background-color: ${props => (props.hoverBg ? `${props.hoverBg}` : props.bgColor ? `${props.bgColor}` : "var(--alt-primary)")};
+    color: ${props => (props.hoverColor ? `${props.hoverColor}` : "var(--white)")};
+    border: var(--border-width) solid ${props => (props.hoverBg ? `${props.hoverBg}` : `var(--alt-primary)`)};
   }
 `
 
