@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { getSession } from "next-auth/client"
+import { getSession } from "next-auth/react"
 import { connectToDatabase } from "../../lib/db"
 import { ObjectId } from "mongodb"
 import { MatchDoc } from "../../lib/types"

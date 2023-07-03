@@ -32,6 +32,7 @@ export const GlobalStyles = createGlobalStyle`
   --wrapper-width-very-narrow: 400px;
   --font-primary: monospace, sans-serif;
   --font-secondary: 'Oswald', sans-serif;
+  --roundness: .25rem;
 }
 
   * {

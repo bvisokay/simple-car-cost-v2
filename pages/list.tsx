@@ -1,6 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { Session } from "next-auth"
-import { getSession } from "next-auth/client"
+import { getSession } from "next-auth/react"
 import { useState, useContext } from "react"
 import { breakpoints } from "../styles/breakpoints"
 import { Wrapper, Section } from "../styles/GlobalComponents"

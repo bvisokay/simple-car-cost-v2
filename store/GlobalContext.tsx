@@ -1,4 +1,4 @@
-import React, { createContext } from "react"
+import { createContext } from "react"
 import { useImmerReducer } from "use-immer"
 
 type GlobalActionTypes = { type: "flashMessage"; value: string } | { type: "setLightTheme" } | { type: "setDarkTheme" }
@@ -16,7 +16,11 @@ const initialState = {
 export const GlobalDispatchContext = createContext({} as React.Dispatch<GlobalActionTypes>)
 export const GlobalStateContext = createContext<InitialStateType>(initialState)
 
-export const GlobalContextProvider: React.FC = props => {
+type GlobalCTXProps = {
+  children?: React.ReactNode
+}
+
+export const GlobalContextProvider: React.FC<GlobalCTXProps> = props => {
   function ourReducer(draft: typeof initialState, action: GlobalActionTypes): void {
     switch (action.type) {
       case "flashMessage":

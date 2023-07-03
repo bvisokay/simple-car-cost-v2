@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import Car from "../../models/Car"
-import { getSession } from "next-auth/client"
+import { getSession } from "next-auth/react"
 import { connectToDatabase } from "../../lib/db"
 import { ObjectId } from "mongodb"
 import { PrimaryCarFieldStrings } from "../../lib/types"

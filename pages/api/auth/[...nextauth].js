@@ -1,5 +1,5 @@
 import NextAuth from "next-auth"
-import Providers from "next-auth/providers"
+import CredentialsProvider from "next-auth/providers/credentials"
 import { connectToDatabase } from "../../../lib/db"
 import { verifyPassword } from "../../../lib/auth"
 //
@@ -25,12 +25,11 @@ import { verifyPassword } from "../../../lib/auth"
 
 export default NextAuth({
   session: {
-    // setting explicityly although not required
-    jwt: true,
-    maxAge: 30 * 24 * 60 * 60 // 30 days
+    // setting explicitly although not required
+    jwt: true
   },
   providers: [
-    Providers.Credentials({
+    CredentialsProvider({
       async authorize(credentials) {
         try {
           const client = await connectToDatabase()

@@ -4,8 +4,8 @@ import React, { useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { useRouter } from "next/router"
-import { signIn } from "next-auth/client"
-import { getSession } from "next-auth/client"
+import { signIn } from "next-auth/react"
+import { getSession } from "next-auth/react"
 import { BtnWide, SectionVeryNarrow, FormControl } from "../styles/GlobalComponents"
 
 // types

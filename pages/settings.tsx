@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import { useRouter } from "next/router"
-import { getSession } from "next-auth/client"
+import { getSession } from "next-auth/react"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import User from "../models/User"

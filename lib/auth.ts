@@ -1,7 +1,7 @@
 import { hash, compare } from "bcryptjs"
 import { GetServerSidePropsContext } from "next"
 import { Session } from "next-auth"
-import { getSession } from "next-auth/client"
+import { getSession } from "next-auth/react"
 
 export async function hashPassword(password: string) {
   const hashedPassword = await hash(password, 12)

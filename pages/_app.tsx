@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app"
-import { Provider } from "next-auth/client"
+import { SessionProvider } from "next-auth/react"
 import Layout from "../components/Layout"
 import Head from "next/head"
 import { useEffect } from "react"
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    <Provider session={pageProps.session}>
+    <SessionProvider session={pageProps.session}>
       <GlobalContextProvider>
         <GlobalStyles />
         <Layout>
@@ -49,7 +49,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           <Component {...pageProps} />
         </Layout>
       </GlobalContextProvider>
-    </Provider>
+    </SessionProvider>
   )
 }
 export default MyApp

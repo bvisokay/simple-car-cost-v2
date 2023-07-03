@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { Btn } from "../styles/GlobalComponents"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useSession, signOut } from "next-auth/client"
+import { useSession, signOut } from "next-auth/react"
 import { motion } from "framer-motion"
 import { breakpoints } from "../styles/breakpoints"
 
@@ -41,7 +41,7 @@ const MainNavContainer = styled.div`
 
 const MainNav = () => {
   //const [session, loading] = useSession()
-  const [session] = useSession()
+  const { status } = useSession()
   const router = useRouter()
 
   //console.log("session", session)
@@ -58,7 +58,7 @@ const MainNav = () => {
   return (
     <MainNavContainer>
       {/* Was !session and !loading */}
-      {!session && (
+      {!status && (
         <>
           <Link href="/login">
             <Btn hoverColor={"white"}>Log In</Btn>
@@ -71,7 +71,7 @@ const MainNav = () => {
         </>
       )}
 
-      {session && (
+      {status && (
         <>
           <Link href="/dashboard">
             <Btn bgColor={"var(--indigo)"} hoverColor={"white"}>

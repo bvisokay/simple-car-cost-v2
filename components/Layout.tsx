@@ -29,7 +29,11 @@ const Container = styled.div`
   //flex-direction: column;
 `
 
-const Layout: React.FC = props => {
+type LayoutProps = {
+  children?: React.ReactNode
+}
+
+const Layout: React.FC<LayoutProps> = props => {
   //const appDispatch = useContext(GlobalDispatchContext)
 
   return (

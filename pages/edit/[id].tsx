@@ -1,4 +1,4 @@
-import { getSession } from "next-auth/client"
+import { getSession } from "next-auth/react"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 import { Wrapper, Section, FormControl, BtnWide } from "../../styles/GlobalComponents"
 import React, { useContext, useEffect } from "react"
