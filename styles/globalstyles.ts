@@ -220,11 +220,11 @@ export const GlobalStyles = createGlobalStyle`
   animation: floatingAlert ease-in 5s forwards;
   -webkit-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
-  background-color: #CBC3E3;
-  border: 2px solid var(--indigo);
+  background-color: var(--orange);
+  border: var(--border-width) solid var(--yellow);
   border-radius: var(--roundness);
   padding: .5rem 1rem;
-  color: blueviolet;
+  color: white;
   font-weight: bold;
 }
 
