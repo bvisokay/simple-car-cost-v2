@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { motion } from "framer-motion"
 import Head from "next/head"
 // comps
@@ -6,7 +5,8 @@ import CarImage from "../components/CarImage"
 import TestDrive from "../components/TestDrive/TestDrive"
 
 // styled comps
-import { WrapperNarrow, Display, LeadMuted, Btn } from "../styles/GlobalComponents"
+import { WrapperNarrow } from "../styles/GlobalComponents"
+import Hero from "../components/Hero/Hero"
 
 export default function Home() {
   return (
@@ -15,22 +15,7 @@ export default function Home() {
         <title>Home | Simple Car Cost</title>
       </Head>
       <WrapperNarrow>
-        <Display>A Simple Way to Compare Vehicle Prices</Display>
-        <LeadMuted>
-          The typical vehicle listing is missing some very important information. Summarize a vehicle&apos;s price into a simple &ldquo;cost per remaining month&rdquo; based on how much driving you do and other basic assumptions.
-          <br />
-          <br />
-          <Link href="/register">
-            <Btn bgColor={"var(--cyan)"} hoverBg={"var(--alt-cyan)"}>
-              Get Started
-            </Btn>
-          </Link>
-          <Link href="/overview">
-            <Btn bgColor={"var(--indigo)"} hoverBg={"var(--alt-indigo)"}>
-              Learn More
-            </Btn>
-          </Link>
-        </LeadMuted>
+        <Hero />
         <motion.div
           initial="hidden"
           animate="visible"

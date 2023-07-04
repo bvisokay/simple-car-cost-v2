@@ -97,7 +97,7 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 100;
     color: var(--gray);
     line-height: 1.25;
-    font-size: .675rem;
+    font-size: .75rem;
     letter-spacing: -.2px;
 
     @media ${breakpoints.xs} {
