@@ -1,25 +1,31 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import Car from "../../models/Car"
-import { getSession } from "next-auth/react"
 import { connectToDatabase } from "../../lib/db"
 import { ObjectId } from "mongodb"
 import { PrimaryCarFieldStrings } from "../../lib/types"
 
+// auth
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "../api/auth/[...nextauth]"
+
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
-    res.status(200).json({ message: "let's get cars" })
+    return res.status(200).json({ message: "let's get cars" })
   }
-  if (req.method === "POST") {
-    // make sure there is a logged in user, redirect if not
 
-    const session = await getSession({ req: req })
+  if (req.method === "POST") {
+    const session = await getServerSession(req, res, authOptions)
     if (!session) {
+      return res.status(401).json({ message: "Not authenticated" })
+    }
+    if (!session.user) {
       res.status(401).json({ message: "Not authenticated" })
       return
     }
 
     // get the username from the session
-    const username = session.user?.name
+    //eslint-disable-next-line
+    const username = session?.user?.name
     //console.log(username)
 
     // get extracted values from the body
@@ -39,10 +45,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     if (car.errors.length) {
       //console.log(`error thrown in /api/create-item ${car.errors}`)
-      res.status(422).json({ message: car.errors })
-      throw car.errors
-    } else {
-      //console.log("No car.errors")
+      return res.status(422).json({ message: car.errors })
     }
 
     try {
@@ -50,8 +53,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const client = await connectToDatabase()
 
       if (!client) {
-        res.status(500).json({ message: "Could not connect to the data" })
-        throw "Could not connect to the data"
+        return res.status(500).json({ message: "Could not connect to the data" })
       }
 
       // find the users collection
@@ -63,8 +65,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       if (!userId) {
         void client.close()
-        res.status(404).json({ message: "Could not find registered user" })
-        throw "Could not find the user"
+        return res.status(404).json({ message: "Could not find registered user" })
       }
 
       // console.log(userId._id.toString())
@@ -100,8 +101,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       // if this operation failed then throw an error
       if (!result) {
         void client.close()
-        res.status(422).json({ message: "Could not add vehicle" })
-        throw "Could not add vehicle"
+        return res.status(422).json({ message: "Could not add vehicle" })
       }
 
       const createdCarItem = {
@@ -115,7 +115,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       // return the new car details back as a respons with a success message
       res.status(200).json({ message: "success", data: createdCarItem, errors: null })
     } catch (err) {
-      //console.log(`There was a problem: ${err}`)
+      console.log(`There was a problem: `, err)
+      res.status(403).json({ message: "Unable to add car at this time" })
     }
   }
 }

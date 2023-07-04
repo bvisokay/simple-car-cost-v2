@@ -1,9 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { getSession } from "next-auth/react"
 import { connectToDatabase } from "../../lib/db"
 import { hashPassword, verifyPassword } from "../../lib/auth"
 import { MongoClient } from "mongodb"
 import { UpdatePassTypes } from "../../lib/types"
+
+// auth
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "../api/auth/[...nextauth]"
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "PATCH") {
@@ -11,8 +14,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return
   }
 
-  const session = await getSession({ req: req })
+  const session = await getServerSession(req, res, authOptions)
   if (!session) {
+    return res.status(401).json({ message: "Not authenticated" })
+  }
+  if (!session.user) {
     res.status(401).json({ message: "Not authenticated" })
     return
   }
