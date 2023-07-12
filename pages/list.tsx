@@ -11,8 +11,12 @@ import styled from "styled-components"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { IoSettings } from "react-icons/io5"
 
+// components
+import ScatterPlot from "../components/ScatterPlot/ScatterPlot"
+
 // types
 import { ResponseType } from "../lib/types"
+import { CarInList } from "../lib/types"
 
 const ListPageHeading = styled.div`
   width: 100%;
@@ -72,17 +76,6 @@ const SettingsBadge = styled.div`
   } */
 `
 
-interface CarInList {
-  carId: string
-  description: string
-  price: number
-  miles: number
-  link: string
-  createdDate: string
-  rem_months: number
-  cprm: number
-}
-
 type Props = {
   session?: Session
   carData?: CarInList[]
@@ -118,7 +111,7 @@ const List = ({ session, carData, userData }: Props) => {
 
         if (data.errors) {
           appDispatch({ type: "flashMessage", value: data.errors })
-          //console.warn(`from client: ${data.error}`)
+
           return
         }
         if (data.message === "success") {
@@ -128,13 +121,10 @@ const List = ({ session, carData, userData }: Props) => {
               return car.carId !== carId
             })
           )
-
-          //console.log(data.data)
           return
         }
       } catch (err) {
         appDispatch({ type: "flashMessage", value: "Could not remove car" })
-        //console.error(err)
       }
     }
     void sendDeleteRequest()
@@ -203,6 +193,8 @@ const List = ({ session, carData, userData }: Props) => {
           </select>
         </FormControl>
           <hr /> */}
+        {cars && cars.length > 1 && <ScatterPlot cars={cars} />}
+
         <ul>{cars?.length ? cars.map(item => <CarListItemCard key={item.carId} item={item} deleteItem={deleteItem} />) : <></>}</ul>
       </Section>
     </Wrapper>

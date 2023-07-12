@@ -10,6 +10,17 @@ export interface CarDocType extends WithId<Document> {
   createdDate: ObjectId
 }
 
+export interface CarInList {
+  carId: string
+  description: string
+  price: number
+  miles: number
+  link: string
+  createdDate: string
+  rem_months: number
+  cprm: number
+}
+
 export interface EditReadyCarType {
   _id: string
   authorId: string
