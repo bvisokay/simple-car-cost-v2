@@ -124,7 +124,7 @@ export default class Car {
 
       // Send to client
       const carDataArr: object[] = cars.map(carItem => {
-        console.log(carItem)
+        //console.log(carItem)
         return {
           carId: carItem._id.toString(),
           description: carItem.description.toString(),
@@ -139,13 +139,19 @@ export default class Car {
 
       //console.log(carDataArr)
 
-      void client.close()
+      if (client) {
+        void client.close()
+      }
 
       if (carDataArr.length) {
-        void client.close()
+        if (client) {
+          void client.close()
+        }
         return { carData: carDataArr, userData: userData }
       } else {
-        void client.close()
+        if (client) {
+          void client.close()
+        }
         return { carData: carDataArr, userData: userData }
       }
     } catch (err) {

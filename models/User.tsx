@@ -93,7 +93,7 @@ export default class User {
           if (usernameExists) {
             this.errors.push("That username is already taken.")
           }
-          void client.close()
+          if (client) void client.close()
         } catch (err) {
           this.errors.push("Error checking username.")
           return { message: "failure", data: null, errors: err }

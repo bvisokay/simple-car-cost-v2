@@ -57,7 +57,9 @@ export const authOptions: NextAuthOptions = {
 
           if (!user) {
             // throwing new Error inside authorize rejects promise
-            void client.close()
+            if (client) {
+              void client.close()
+            }
             // message will show in flash message
             //throw new Error("No user found")
             // redirects by default
