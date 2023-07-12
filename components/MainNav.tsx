@@ -42,7 +42,6 @@ const MainNavContainer = styled.div`
 const MainNav = () => {
   //const [session, loading] = useSession()
   const { status } = useSession()
-  console.log("status: ", status)
   const router = useRouter()
 
   //console.log("session", session)
