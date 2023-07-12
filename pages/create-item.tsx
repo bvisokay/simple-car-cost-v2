@@ -1,6 +1,6 @@
 import { runServerSidePageGuard } from "../lib/auth"
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 import { useImmerReducer } from "use-immer"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import Link from "next/link"
@@ -17,12 +17,10 @@ const NavBack = styled.div`
   }
 `
 
-/* description, price, miles, link */
-
 const CreateItemPage = () => {
-  type CreateItemActionTypes = { type: "descriptionCheck"; value: string } | { type: "priceCheck"; value: string } | { type: "milesCheck"; value: string } | { type: "linkCheck"; value: string } | { type: "submitForm"; value?: string } | { type: "clearFields"; value?: string }
+  const descriptionInputRef = useRef<HTMLInputElement>(null)
 
-  //const router = useRouter()
+  type CreateItemActionTypes = { type: "descriptionCheck"; value: string } | { type: "priceCheck"; value: string } | { type: "milesCheck"; value: string } | { type: "linkCheck"; value: string } | { type: "submitForm"; value?: string } | { type: "clearFields"; value?: string }
 
   const appDispatch = useContext(GlobalDispatchContext)
 
@@ -136,20 +134,20 @@ const CreateItemPage = () => {
 
       if (data.errors) {
         appDispatch({ type: "flashMessage", value: data.errors })
-        //console.warn(`from client: ${data.error}`)
-        return
+        throw new Error("something went wrong")
       }
       if (data.message === "success") {
         appDispatch({ type: "flashMessage", value: "Car Added" })
-        //router.push("/list")
-        // clear the form in case we revisit this page immediately?
         dispatch({ type: "clearFields" })
-        //console.log(data.data)
+        if (descriptionInputRef.current) {
+          descriptionInputRef.current.focus()
+        }
+
         return
       }
     } catch (err) {
       appDispatch({ type: "flashMessage", value: "Could not add car: Ref#: 239" })
-      //console.error(err)
+      console.error(err)
     }
   }
 
@@ -159,6 +157,12 @@ const CreateItemPage = () => {
       const signal = controller.signal
 
       void sendRequest(signal)
+        .then(res => {
+          console.log("res: ", res)
+        })
+        .catch(err => {
+          console.log("err: ", err)
+        })
       return () => controller.abort()
     }
   }, [state.submitCount])
@@ -193,6 +197,7 @@ const CreateItemPage = () => {
                 dispatch({ type: "descriptionCheck", value: e.target.value })
               }}
               placeholder={`${new Date().getFullYear()} Jeep Wrangler`}
+              ref={descriptionInputRef}
             />
             {state.description.hasErrors && <div className="liveValidateMessage">{state.description.message}</div>}
           </FormControl>
