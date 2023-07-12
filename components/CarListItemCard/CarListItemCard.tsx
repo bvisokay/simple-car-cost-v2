@@ -21,8 +21,6 @@ type Props = {
 }
 
 const CarListItemCard = (props: Props) => {
-  console.log(props)
-
   const router = useRouter()
 
   return (
