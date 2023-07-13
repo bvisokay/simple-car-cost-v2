@@ -122,6 +122,10 @@ export default class Car {
 
       const cars = (await carsCollection.find({ authorId: new ObjectId(userDoc._id) }).toArray()) as CarDocType[]
 
+      if (!cars) {
+        throw "no cars found"
+      }
+
       // Send to client
       const carDataArr: object[] = cars.map(carItem => {
         //console.log(carItem)
@@ -144,15 +148,10 @@ export default class Car {
       }
 
       if (carDataArr.length) {
-        if (client) {
-          void client.close()
-        }
         return { carData: carDataArr, userData: userData }
-      } else {
-        if (client) {
-          void client.close()
-        }
-        return { carData: carDataArr, userData: userData }
+      }
+      if (!carDataArr.length) {
+        throw "no cars found"
       }
     } catch (err) {
       throw { error: err }
