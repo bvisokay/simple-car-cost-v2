@@ -1,6 +1,4 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
-import { Session } from "next-auth"
-import { getSession } from "next-auth/react"
 import { useState, useContext } from "react"
 import { breakpoints } from "../styles/breakpoints"
 import { Wrapper, Section } from "../styles/GlobalComponents"
@@ -10,6 +8,10 @@ import Link from "next/link"
 import styled from "styled-components"
 import { GlobalDispatchContext } from "../store/GlobalContext"
 import { IoSettings } from "react-icons/io5"
+
+// auth
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "../pages/api/auth/[...nextauth]"
 
 // components
 import ScatterPlot from "../components/ScatterPlot/ScatterPlot"
@@ -77,7 +79,7 @@ const SettingsBadge = styled.div`
 `
 
 type Props = {
-  session?: Session
+  username?: string
   carData?: CarInList[]
   userData?: {
     user_id: string
@@ -86,7 +88,7 @@ type Props = {
   }
 }
 
-const List = ({ session, carData, userData }: Props) => {
+const List = ({ username, carData, userData }: Props) => {
   const [cars, setCars] = useState(carData)
 
   const appDispatch = useContext(GlobalDispatchContext)
@@ -135,10 +137,10 @@ const List = ({ session, carData, userData }: Props) => {
     <Wrapper>
       <Section>
         <ListPageHeading>
-          {session !== undefined && session !== null && (
+          {username !== undefined && username !== null && (
             <h2>
-              {session.user?.name?.charAt(0).toUpperCase()}
-              {session.user?.name?.slice(1)}&apos;s List
+              {username.charAt(0).toUpperCase()}
+              {username.slice(1)}&apos;s List
             </h2>
           )}
 
@@ -202,8 +204,8 @@ const List = ({ session, carData, userData }: Props) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const session = await getSession({ req: context.req })
-  // redirect away from page if there is no session
+  const session = await getServerSession(context.req, context.res, authOptions)
+
   if (!session) {
     return {
       redirect: {
@@ -213,10 +215,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     }
   }
 
-  let username
-  if (session?.user?.name) {
-    username = session.user.name.toString()
-  }
+  const username = session.user?.name as string
 
   let data
 
@@ -224,14 +223,18 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     if (username) {
       data = await Car.findByAuthor(username)
     }
+    if (!data) {
+      throw "No data found"
+    }
   } catch (err) {
+    console.log("Err: ", err)
     throw { message: "error", errors: err }
   }
 
   // send session and vehicle data as props
   return {
     props: {
-      session,
+      username,
       carData: data?.carData,
       userData: data?.userData
     }
