@@ -20,6 +20,7 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ cars }) => {
       y: carObject.price
     }
   })
+
   const data = {
     labels: cars.map(item => item.description),
     datasets: [
@@ -38,12 +39,48 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ cars }) => {
       }
     },
     scales: {
-      /*  x: {
-        type: "linear", // Use 'linear' scale for X-axis
-        position: "bottom"
-      }, */
+      x: {
+        title: {
+          display: true,
+          text: "Miles",
+          font: {
+            size: 16,
+            family: "Oswald"
+          },
+          padding: 8
+        },
+        grid: {
+          display: false
+        },
+        ticks: {
+          callback: function (item: number | string) {
+            if (typeof item === "string") return item
+            if (item === 0) return item
+            if (item > 1000) {
+              const divided = item / 1000
+              return divided.toLocaleString() + "k"
+            } else {
+              return item.toLocaleString() + "k"
+            }
+          }
+        }
+      },
       y: {
-        beginAtZero: true
+        grid: {
+          display: false
+        },
+        ticks: {
+          callback: function (item: number | string) {
+            if (typeof item === "string") return item
+            if (item === 0) return item
+            if (item > 1000) {
+              const divided = item / 1000
+              return "$" + divided.toLocaleString() + "k"
+            } else {
+              return item.toLocaleString() + "k"
+            }
+          }
+        }
       }
     }
   }
