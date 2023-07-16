@@ -51,7 +51,7 @@ const CarListItemCard = (props: Props) => {
               <div className="title">Price</div>
               <IoMdCash />
             </div>
-            <p>${props.item.price.toLocaleString()}</p>
+            <p>${props.item.price ? props.item.price.toLocaleString() : "err"}</p>
           </div>
 
           <div className="box">
