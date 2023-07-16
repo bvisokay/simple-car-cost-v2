@@ -26,8 +26,8 @@ export default class Car {
 
   constructor(data: CarInput) {
     this.description = data.description.trim()
-    this.price = parseFloat(data.price)
-    this.miles = parseFloat(data.miles)
+    this.price = parseInt(data.price)
+    this.miles = parseInt(data.miles)
     this.link = data.link
     this.createdDate = new Date()
     // scrap unique Id for autoGen mongoDb
@@ -65,6 +65,35 @@ export default class Car {
   }
 
   validate(this: Car) {
+    if (this.description !== "" && this.description.length < 3) {
+      this.errors.push("You must provide a longer description")
+    }
+    if (this.description !== "" && this.description.length > 60) {
+      this.errors.push("Please provide a shorter description")
+    }
+    /* price */
+    if (this.price < 0) {
+      this.errors.push("You must provide a price greater than 0")
+    }
+    if (this.price === 0) {
+      this.errors.push("You must provide a price")
+    }
+    if (this.price < 1) {
+      this.price = 1
+    }
+    if (this.price > 250000) {
+      this.errors.push("You must provide a lower price")
+    }
+    /* miles */
+    if (this.miles < 0) {
+      this.errors.push("Incorrect miles")
+    }
+    if (this.miles < 1) {
+      this.miles = 1
+    }
+    if (this.miles > 250000) {
+      this.errors.push("Please enter a lower miles value")
+    }
     // if a field is left blank
     if (this.description == "") {
       this.errors.push("You must provide a description")
@@ -74,6 +103,10 @@ export default class Car {
     }
     if (this.miles < 0) {
       this.miles = 0
+    }
+    /* link */
+    if (this.link && this.link.length && !this.link.startsWith("https://")) {
+      this.link = `https://${this.link}`
     }
   }
 
