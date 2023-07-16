@@ -14,6 +14,19 @@ const NavBack = styled.div`
   margin: 1rem auto 2rem auto;
   a {
     color: var(--primary);
+    font-weight: 600;
+  }
+`
+
+const QuickImportDiv = styled.div`
+  margin: 3rem auto 5rem auto;
+  background: #d8ecf3;
+  border: var(--border-width) solid var(--primary);
+  border-radius: var(--roundness);
+  padding: 1rem;
+  a {
+    color: var(--primary);
+    font-weight: 600;
   }
 `
 
@@ -256,6 +269,9 @@ const CreateItemPage = () => {
         <NavBack>
           <Link href="/list">&laquo; Go to list</Link>
         </NavBack>
+        <QuickImportDiv>
+          Using the chrome extension? Visit the quick import page <Link href="/quick-import">here</Link>
+        </QuickImportDiv>
       </Section>
     </Wrapper>
   )
