@@ -5,7 +5,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
       const { key, value } = req.body as { key: string; value: string }
-      const result = await User.doesUserValueExist(key, value)
+      const lowerCaseValue = value.toLowerCase()
+
+      const result = await User.doesUserValueExist(key, lowerCaseValue)
       if (result) {
         //Send message as answer to doesUserValueExist
         res.json({ message: true })
