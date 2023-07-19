@@ -1,11 +1,12 @@
-import { PrimaryCarFields } from "../lib/types"
+//import { PrimaryCarFields } from "../lib/types"
+import { CarInput } from "../lib/types"
 
 const useful_miles = 150000
 const annual_miles = 15000
 
 export default class TestDriveCar {
-  //Quick attempt to swap for type failed
-  //haveing class implement also failed
+  // Quick attempt to swap for type failed
+  // having class implement also failed
   description: string
   price: number
   miles: number
@@ -17,10 +18,10 @@ export default class TestDriveCar {
   errors: string[]
 
   // constructor(data: TestDriveCarClassType) {
-  constructor(data: PrimaryCarFields) {
-    this.description = data.description
-    this.price = data.price
-    this.miles = data.miles
+  constructor(data: CarInput) {
+    this.description = data.description.trim()
+    this.price = parseInt(data.price)
+    this.miles = parseInt(data.miles)
     this.link = data.link
     this.rem_months = Math.round((useful_miles - this.miles) / (annual_miles / 12))
     this.cost_per_rem_mos = parseFloat((this.price / ((useful_miles - this.miles) / (annual_miles / 12))).toFixed(2))
@@ -46,7 +47,8 @@ export default class TestDriveCar {
     if (typeof this.miles !== "number") {
       this.errors.push("Miles must be a number")
     } else {
-      this.miles = Math.round((this.miles + Number.EPSILON) * 100) / 100
+      //this.miles = Math.round((this.miles + Number.EPSILON) * 100) / 100
+      this.miles = Math.round(this.miles)
     }
     if (typeof this.link !== "string") {
       this.link = ""

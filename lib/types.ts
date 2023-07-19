@@ -1,6 +1,13 @@
 import { ObjectId } from "mongodb"
 import type { WithId, Document } from "mongodb"
 
+export type CarInput = {
+  description: string
+  price: string
+  miles: string
+  link?: string
+}
+
 export interface CarDocType extends WithId<Document> {
   authorId: ObjectId
   description: string

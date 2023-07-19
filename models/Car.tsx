@@ -1,14 +1,7 @@
 import { connectToDatabase } from "../lib/db"
 import { ObjectId } from "mongodb"
 
-import { CarDocType } from "../lib/types"
-
-type CarInput = {
-  description: string
-  price: string
-  miles: string
-  link?: string
-}
+import { CarInput, CarDocType } from "../lib/types"
 
 //const DEFAULT_USEFUL_MILES = 150000
 //const DEFAULT_MONTHLY_MILES = 1250

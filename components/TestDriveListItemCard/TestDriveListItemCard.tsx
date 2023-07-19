@@ -54,7 +54,7 @@ const TestDriveListItemCard = (props: Props) => {
               <div className="title">Miles</div>
               <MdSpeed />
             </div>
-            <p>{props.item.miles >= 0 || props.item.miles <= 1 ? "Brand New" : props.item.miles.toLocaleString()}</p>
+            <p>{props.item.miles <= 10 ? "New" : props.item.miles.toLocaleString()}</p>
           </div>
           <div className="box">
             <div className="box-header">
