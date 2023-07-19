@@ -43,10 +43,7 @@ const TestDriveListItemCard = (props: Props) => {
               <div className="title">Time Left</div>
               <HiOutlineClock />
             </div>
-            <p>
-              {/* 3 Layer Ternary */}
-              {props.item.rem_months > 12 ? `~${(Math.round(props.item.rem_months) / 12).toFixed(1)} years` : `${props.item.rem_months > 1 ? `${Math.round(props.item.rem_months)} months` : `${props.item.rem_months === 1 ? "1 month" : "n/a"}`}`}
-            </p>
+            <p>{props.item.rem_months > 12 ? `~${(Math.round(props.item.rem_months) / 12).toFixed(1)} years` : `${props.item.rem_months > 1 ? `${Math.round(props.item.rem_months)} months` : `${props.item.rem_months === 1 ? "1 month" : "n/a"}`}`}</p>
           </div>
 
           <div className="box">
@@ -75,11 +72,6 @@ const TestDriveListItemCard = (props: Props) => {
               <HiOutlineExternalLink />
             </a>
           )}
-
-          {/* <div>
-            <span>Visit Link</span>
-            <HiOutlineExternalLink />
-          </div> */}
         </div>
       </div>
     </Card>
