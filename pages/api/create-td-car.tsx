@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import TestDriveCar from "../../models/TestDriveCar"
-import { PrimaryCarFields } from "../../lib/types"
+//import { PrimaryCarFields } from "../../lib/types"
+import { CarInput } from "../../lib/types"
 
 function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -8,7 +9,7 @@ function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === "POST") {
-    const data = req.body as PrimaryCarFields
+    const data = req.body as CarInput
     const newTdItem = new TestDriveCar(data)
     newTdItem.register()
     if (newTdItem.errors.length) {
